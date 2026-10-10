@@ -4,50 +4,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💙</title>
+<title>💙 For My Hon</title>
+
 <style>
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
   margin:0;min-height:100vh;color:#eaf5ff;
   background:radial-gradient(ellipse at 50% 35%,#071c43 0%,#020817 48%,#01030b 100%);
   font-family:Georgia,serif;overflow-x:hidden
 }
-#space{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-main{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px 70px}
-.universe{position:relative;width:min(100%,520px);height:450px;display:flex;align-items:center;justify-content:center}
-#heart{width:100%;height:100%;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#space{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none
+}
+main{
+  position:relative;z-index:1;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:20px 16px 70px
+}
+.universe{
+  position:relative;width:min(100%,520px);height:450px;
+  display:flex;align-items:center;justify-content:center
+}
+#heart{
+  width:100%;height:100%;cursor:pointer;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent
+}
 .hint{
-  position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#8fcaff;
-  font:12px Arial,sans-serif;letter-spacing:2px;opacity:.85;animation:pulse 2s infinite;
+  position:absolute;bottom:12px;left:0;right:0;
+  text-align:center;color:#8fcaff;font:12px Arial,sans-serif;
+  letter-spacing:2px;opacity:.85;animation:pulse 2s infinite;
   pointer-events:none
 }
 @keyframes pulse{50%{opacity:.35}}
-#letter{
-  width:min(100%,620px);margin:26px auto 0;padding:27px 23px;
-  border:1px solid rgba(91,173,255,.55);border-radius:20px;
-  background:rgba(3,12,32,.9);
-  box-shadow:0 0 35px rgba(0,108,255,.16),inset 0 0 30px rgba(35,111,255,.05);
-  line-height:1.9;font-size:15px;white-space:pre-line;
-  opacity:0;transform:translateY(20px);visibility:hidden;
+
+#letterWrap{
+  position:relative;
+  width:min(100%,620px);
+  margin:26px auto 0;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(18px);
 }
-#letter.show{visibility:visible;animation:reveal 1.6s ease forwards}
-@keyframes reveal{to{opacity:1;transform:translateY(0)}}
-.close-note{text-align:center;color:#75baff;font-size:22px;margin-top:24px}
+#letterWrap.show{
+  visibility:visible;
+  animation:reveal .8s ease forwards;
+}
+@keyframes reveal{
+  to{opacity:1;transform:translateY(0)}
+}
+#letter{
+  position:relative;
+  width:100%;
+  padding:27px 23px;
+  border:1px solid rgba(91,173,255,.55);
+  border-radius:20px;
+  background:rgba(3,12,32,.94);
+  box-shadow:0 0 35px rgba(0,108,255,.16),inset 0 0 30px rgba(35,111,255,.05);
+  line-height:1.9;
+  font-size:15px;
+  overflow-wrap:anywhere;
+}
+#letterText{
+  white-space:pre-wrap;
+  margin:0;
+}
+.close-note{
+  text-align:center;color:#75baff;font-size:22px;margin-top:24px
+}
+
+/* The particle canvas covers the whole letter during formation. */
+#formation{
+  position:absolute;
+  left:0;top:0;
+  width:100%;height:100%;
+  z-index:5;
+  pointer-events:none;
+  border-radius:20px;
+}
+
 @media(max-width:480px){
   .universe{height:370px}
   #letter{padding:22px 18px;font-size:14px}
 }
 </style>
 </head>
+
 <body>
 <canvas id="space"></canvas>
+
 <main>
   <div class="universe">
-    <canvas id="heart" aria-label="Tap the heart to reveal a message"></canvas>
+    <canvas id="heart" aria-label="Tap the heart to reveal your letter"></canvas>
     <div class="hint" id="hint">✦ CLICK THE HEART ✦</div>
   </div>
 
-  <article id="letter">Hi, hon. 💙
+  <section id="letterWrap">
+    <article id="letter">
+      <pre id="letterText">Hi, hon. 💙
 
 Today marks the 4th month since I gathered the courage to ask you kung ano ba tayo. HAHAHAHAHA. Wala eh, crush talaga kita, hehez. I know, nasabi ko naman na before na type talaga kita. The moment na pinakilala ka ni Pat, na-curious agad ako sa'yo. Sobrang aloof mo sa social media, walang pics, kaya nung una, I was really interested in knowing you more. Pero habang mas nakikilala kita, mas lalo rin kitang nagugustuhan. Sige, ako na nauna. HAHAHAHAHA. 😭
 
@@ -83,10 +138,11 @@ I love you, hon. Thank you for being my hon, my boi, tomboi, buseng, ssob or kun
 
 Happy 4th monthsary, hoooon. More months, memories, and little moments with you. Always remember that you are appreciated, you are special to me, and I'm so happy that out of all the people in this world, somehow, I got to know you.
 
-I love you so muchyyyyy!!!!!
-
-<div class="close-note">♡</div>
-</article>
+I love you so muchyyyyy!!!!!</pre>
+      <div class="close-note">♡</div>
+    </article>
+    <canvas id="formation"></canvas>
+  </section>
 </main>
 
 <script>
@@ -95,29 +151,32 @@ const ctx=canvas.getContext("2d");
 const bg=document.getElementById("space");
 const bctx=bg.getContext("2d");
 const hint=document.getElementById("hint");
+const letterWrap=document.getElementById("letterWrap");
 const letter=document.getElementById("letter");
+const letterText=document.getElementById("letterText");
+const formation=document.getElementById("formation");
+const fctx=formation.getContext("2d");
 
-let W,H,dpr,particles=[],stars=[],asteroids=[],sparkles=[];
-let clicked=false,formingLetter=false,rotation=0,burstTime=0;
-let letterTargets=[];
+let W=innerWidth,H=innerHeight,dpr=1;
+let particles=[],stars=[],burstParticles=[];
+let clicked=false,rotation=0,forming=false,targets=[];
+let burstStart=0,formationStart=0,resizeTimer;
 
-const words=[
-  "I love you","hon","always","my favorite","four months",
-  "you","my boi","happy","forever","my person","thank you",
-  "us","lambing","my hon","love","together","💙"
-];
+const words=["I love you","hon","always","my favorite","four months","my person","thank you","us","lambing","my hon","love","together","💙"];
 
 function resize(){
-  dpr=Math.min(window.devicePixelRatio||1,2);
-  W=window.innerWidth;H=window.innerHeight;
+  dpr=Math.min(devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
   bg.width=W*dpr;bg.height=H*dpr;
   bg.style.width=W+"px";bg.style.height=H+"px";
   bctx.setTransform(dpr,0,0,dpr,0,0);
 
   const r=canvas.getBoundingClientRect();
-  canvas.width=r.width*dpr;canvas.height=r.height*dpr;
+  canvas.width=Math.max(1,Math.round(r.width*dpr));
+  canvas.height=Math.max(1,Math.round(r.height*dpr));
   ctx.setTransform(dpr,0,0,dpr,0,0);
-  makeScene();makeStars();
+
+  makeHeart();makeStars();
 }
 
 function heartPoint(t,layer){
@@ -127,16 +186,16 @@ function heartPoint(t,layer){
   return{x:x*1.05*depth,y:y*1.05*depth,z:layer*9};
 }
 
-function makeScene(){
+function makeHeart(){
   particles=[];
-  const count=Math.min(1500,Math.max(750,Math.floor(W*1.3)));
+  const count=Math.min(1400,Math.max(750,Math.floor(W*1.1)));
   for(let i=0;i<count;i++){
     const p=heartPoint(Math.random()*Math.PI*2,Math.random()*2-1);
     particles.push({
       x:p.x,y:p.y,z:p.z,
-      size:Math.random()*1.6+.35,
+      size:Math.random()*1.5+.4,
       phase:Math.random()*Math.PI*2,
-      speed:.3+Math.random()*1.4,
+      speed:.4+Math.random()*1.5,
       alpha:.4+Math.random()*.6
     });
   }
@@ -144,7 +203,7 @@ function makeScene(){
 
 function makeStars(){
   stars=[];
-  for(let i=0;i<Math.floor(W*H/3000);i++){
+  for(let i=0;i<Math.floor(W*H/2800);i++){
     stars.push({
       x:Math.random()*W,y:Math.random()*H,
       r:Math.random()*1.5+.2,
@@ -168,19 +227,24 @@ function project(p,angle,scale,cx,cy){
   const x=p.x*cos-p.z*sin;
   const z=p.x*sin+p.z*cos;
   const perspective=1/(1+z/210);
-  return{x:cx+x*scale*perspective,y:cy-p.y*scale*perspective,z,perspective};
+  return{
+    x:cx+x*scale*perspective,
+    y:cy-p.y*scale*perspective,
+    perspective
+  };
 }
 
 function drawHeart(time){
-  const r=canvas.getBoundingClientRect(),cw=r.width,ch=r.height;
+  const r=canvas.getBoundingClientRect();
+  const cw=r.width,ch=r.height;
   ctx.clearRect(0,0,cw,ch);
+
   const cx=cw/2,cy=ch/2-8;
   const scale=Math.min(cw/39,ch/38)*.9;
 
-  if(!clicked)rotation+=.0032;
+  if(!clicked)rotation+=.0034;
   else rotation+=.001;
 
-  // Orbital rings
   ctx.save();ctx.translate(cx,cy);
   for(let j=0;j<3;j++){
     ctx.save();
@@ -192,140 +256,260 @@ function drawHeart(time){
   }
   ctx.restore();
 
-  // Planet glow
   const glow=ctx.createRadialGradient(cx,cy,5,cx,cy,scale*19);
   glow.addColorStop(0,"rgba(0,100,255,.22)");
   glow.addColorStop(.6,"rgba(0,70,255,.08)");
   glow.addColorStop(1,"rgba(0,30,100,0)");
   ctx.fillStyle=glow;ctx.beginPath();ctx.arc(cx,cy,scale*19,0,Math.PI*2);ctx.fill();
 
-  for(let i=0;i<particles.length;i++){
-    const p=particles[i];
-    const q=project(p,rotation,scale,cx,cy);
-    const shimmer=.6+.4*Math.sin(time*.002*p.speed+p.phase);
-    ctx.beginPath();
-    ctx.arc(q.x,q.y,p.size*q.perspective,0,Math.PI*2);
-    ctx.fillStyle=`rgba(${i%9===0?"175,225,255":"43,144,255"},${p.alpha*shimmer})`;
-    ctx.shadowBlur=p.size>1.5?12:4;ctx.shadowColor="#168bff";ctx.fill();
-  }
-  ctx.shadowBlur=0;
+  if(!clicked){
+    for(let i=0;i<particles.length;i++){
+      const p=particles[i],q=project(p,rotation,scale,cx,cy);
+      const shimmer=.6+.4*Math.sin(time*.002*p.speed+p.phase);
+      ctx.beginPath();ctx.arc(q.x,q.y,p.size*q.perspective,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${i%9===0?"175,225,255":"43,144,255"},${p.alpha*shimmer})`;
+      ctx.shadowBlur=p.size>1.5?12:4;ctx.shadowColor="#168bff";ctx.fill();
+    }
+    ctx.shadowBlur=0;
 
-  for(let i=0;i<5;i++){
-    const a=rotation*(i%2?-1:1)+i*1.26;
-    ctx.beginPath();
-    ctx.arc(cx+Math.cos(a)*scale*19,cy+Math.sin(a*1.4)*scale*6,2,0,Math.PI*2);
-    ctx.fillStyle="#c5ecff";ctx.shadowBlur=15;ctx.shadowColor="#168bff";ctx.fill();
+    for(let i=0;i<6;i++){
+      const a=rotation*(i%2?-1:1)+i*1.1;
+      ctx.beginPath();
+      ctx.arc(cx+Math.cos(a)*scale*19,cy+Math.sin(a*1.4)*scale*6,2,0,Math.PI*2);
+      ctx.fillStyle="#c5ecff";ctx.shadowBlur=14;ctx.shadowColor="#168bff";ctx.fill();
+    }
+    ctx.shadowBlur=0;
   }
-  ctx.shadowBlur=0;
-
-  drawBurst(time,cw,ch);
 }
 
 function burst(){
   if(clicked)return;
-  clicked=true;burstTime=performance.now();
-  hint.textContent="✦ MADE OF YOU & ME ✦";
+  clicked=true;
+  burstStart=performance.now();
+  hint.textContent="✦ MADE WITH LOVE ✦";
 
   const r=canvas.getBoundingClientRect();
   const cx=r.width/2,cy=r.height/2;
-  asteroids=[];sparkles=[];
+  burstParticles=[];
 
-  for(let i=0;i<85;i++){
-    const a=Math.random()*Math.PI*2,s=4+Math.random()*8;
-    asteroids.push({
-      x:cx,y:cy,vx:Math.cos(a)*s,vy:Math.sin(a)*s,
-      size:10+Math.random()*9,
-      word:words[Math.floor(Math.random()*words.length)],
-      targetX:cx,targetY:cy,angle:Math.random()*6,
-      life:1,delay:Math.random()*100
+  // Bright, fast explosion.
+  for(let i=0;i<380;i++){
+    const a=Math.random()*Math.PI*2;
+    const speed=4+Math.random()*17;
+    burstParticles.push({
+      x:cx,y:cy,
+      vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,
+      size:.5+Math.random()*3,
+      life:1,
+      color:Math.random()>.35?"#8bdcff":"#ffffff"
     });
   }
 
-  for(let i=0;i<220;i++){
-    const a=Math.random()*Math.PI*2,s=2+Math.random()*11;
-    sparkles.push({
-      x:cx,y:cy,vx:Math.cos(a)*s,vy:Math.sin(a)*s,
-      size:Math.random()*2.5+.5,life:1
+  // Reveal the real full-letter area and build its complete text target.
+  setTimeout(()=>{
+    letterWrap.classList.add("show");
+    requestAnimationFrame(()=>{
+      prepareFullLetterTargets();
+      startFormation();
+    });
+  },350);
+}
+
+function prepareFullLetterTargets(){
+  const rect=letter.getBoundingClientRect();
+  const d=Math.min(devicePixelRatio||1,1.25);
+
+  formation.width=Math.max(1,Math.round(rect.width*d));
+  formation.height=Math.max(1,Math.round(rect.height*d));
+  formation.style.width=rect.width+"px";
+  formation.style.height=rect.height+"px";
+
+  fctx.setTransform(d,0,0,d,0,0);
+  fctx.clearRect(0,0,rect.width,rect.height);
+
+  // Draw the full letter using the same wrapping width and approximate line layout.
+  const style=getComputedStyle(letterText);
+  const fontSize=parseFloat(style.fontSize);
+  const lineHeight=parseFloat(style.lineHeight)||fontSize*1.9;
+  const font=style.font;
+  const padding=parseFloat(getComputedStyle(letter).paddingLeft);
+  const usableWidth=rect.width-padding*2;
+  const text=letterText.textContent;
+  const paragraphs=text.split("\n");
+  const off=document.createElement("canvas");
+  const octx=off.getContext("2d");
+  octx.font=font;
+
+  let y=padding+fontSize;
+  const linePositions=[];
+
+  for(const paragraph of paragraphs){
+    if(paragraph.trim()===""){
+      y+=lineHeight*.65;
+      continue;
+    }
+
+    const tokens=paragraph.split(/\s+/);
+    let line="";
+
+    for(const token of tokens){
+      const test=line?line+" "+token:token;
+      if(octx.measureText(test).width>usableWidth && line){
+        linePositions.push({text:line,y});
+        y+=lineHeight;
+        line=token;
+      }else{
+        line=test;
+      }
+    }
+
+    if(line){
+      linePositions.push({text:line,y});
+      y+=lineHeight;
+    }
+    y+=lineHeight*.45;
+  }
+
+  octx.font=font;
+  octx.textBaseline="alphabetic";
+  octx.fillStyle="#ffffff";
+  for(const line of linePositions){
+    octx.fillText(line.text,padding,line.y,usableWidth);
+  }
+
+  const image=octx.getImageData(0,0,off.width||1,off.height||1);
+  targets=[];
+
+  // Sample pixels from the whole rendered message, including every paragraph.
+  for(let py=0;py<off.height;py+=3){
+    for(let px=0;px<off.width;px+=3){
+      if(image.data[(py*off.width+px)*4+3]>100){
+        targets.push({x:px/d,y:py/d});
+      }
+    }
+  }
+
+  // Keep the full letter itself legible after the particle animation.
+}
+
+function startFormation(){
+  forming=true;
+  formationStart=performance.now();
+
+  // Give each target pixel a particle, sampling across the whole letter.
+  const maxParticles=9500;
+  const chosen=[];
+  const step=Math.max(1,Math.ceil(targets.length/maxParticles));
+  for(let i=0;i<targets.length;i+=step)chosen.push(targets[i]);
+
+  const rect=letter.getBoundingClientRect();
+  const originX=rect.width/2;
+  const originY=Math.min(220,rect.height/2);
+
+  burstParticles=[];
+  for(let i=0;i<chosen.length;i++){
+    const t=chosen[i];
+    const angle=Math.random()*Math.PI*2;
+    const radius=100+Math.random()*260;
+    burstParticles.push({
+      x:originX+Math.cos(angle)*radius,
+      y:originY+Math.sin(angle)*radius,
+      vx:(Math.random()-.5)*5,
+      vy:(Math.random()-.5)*5,
+      tx:t.x,ty:t.y,
+      size:Math.random()*.9+.35,
+      life:1,
+      color:Math.random()>.18?"#72caff":"#e5f8ff"
     });
   }
 
-  // Quickly scatter, then assemble the words into the message.
-  setTimeout(()=>{createTargets();formingLetter=true;},450);
+  // The text starts hidden under the forming particles and becomes readable at the end.
+  letterText.style.visibility="hidden";
+  letterText.style.opacity="0";
+  requestAnimationFrame(drawFormation);
 }
 
-function createTargets(){
-  const r=canvas.getBoundingClientRect(),cw=r.width,ch=r.height;
-  const temp=document.createElement("canvas");
-  temp.width=Math.max(1,Math.floor(cw));
-  temp.height=Math.max(1,Math.floor(ch));
-  const tctx=temp.getContext("2d");
-  const fs=Math.min(32,cw/10);
-  tctx.fillStyle="#fff";tctx.font=`bold ${fs}px Georgia`;
-  tctx.textAlign="center";tctx.textBaseline="middle";
-  tctx.fillText("I LOVE YOU,",cw/2,ch/2-fs*.7);
-  tctx.fillText("HON. 💙",cw/2,ch/2+fs*.7);
+function drawFormation(time){
+  if(!forming)return;
 
-  const data=tctx.getImageData(0,0,temp.width,temp.height).data;
-  letterTargets=[];
-  for(let y=0;y<temp.height;y+=3){
-    for(let x=0;x<temp.width;x+=3){
-      if(data[(y*temp.width+x)*4+3]>100)letterTargets.push({x,y});
-    }
+  const rect=letter.getBoundingClientRect();
+  const d=Math.min(devicePixelRatio||1,1.25);
+  fctx.setTransform(d,0,0,d,0,0);
+  fctx.clearRect(0,0,rect.width,rect.height);
+
+  const elapsed=time-formationStart;
+  const progress=Math.min(1,elapsed/3200);
+  const ease=1-Math.pow(1-progress,3);
+
+  for(const p of burstParticles){
+    p.x+=(p.tx-p.x)*(.035+ease*.15);
+    p.y+=(p.ty-p.y)*(.035+ease*.15);
+
+    fctx.globalAlpha=.55+.45*Math.random();
+    fctx.fillStyle=p.color;
+    fctx.shadowBlur=4;
+    fctx.shadowColor="#39aaff";
+    fctx.beginPath();
+    fctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    fctx.fill();
   }
 
-  asteroids.forEach((a,i)=>{
-    const target=letterTargets[Math.floor(i*letterTargets.length/asteroids.length)];
-    if(target){a.targetX=target.x;a.targetY=target.y;}
-  });
-}
+  fctx.globalAlpha=1;
+  fctx.shadowBlur=0;
 
-function drawBurst(time,cw,ch){
-  for(const p of sparkles){
-    if(p.life<=0)continue;
-    p.x+=p.vx;p.y+=p.vy;p.vx*=.96;p.vy*=.96;p.life-=.014;
-    ctx.globalAlpha=Math.max(0,p.life);
-    ctx.fillStyle="#9fe3ff";ctx.shadowBlur=18;ctx.shadowColor="#168bff";
-    ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
-  }
-  ctx.globalAlpha=1;ctx.shadowBlur=0;
+  if(progress<1){
+    requestAnimationFrame(drawFormation);
+  }else{
+    // Let the particles finish the full letter, then reveal the actual readable text.
+    setTimeout(()=>{
+      letterText.style.visibility="visible";
+      letterText.style.transition="opacity .55s ease";
+      letterText.style.opacity="1";
+      formation.style.transition="opacity .6s ease";
+      formation.style.opacity="0";
+      hint.textContent="♡";
 
-  for(const a of asteroids){
-    if(!formingLetter){
-      a.x+=a.vx;a.y+=a.vy;a.vx*=.985;a.vy*=.985;
-    }else{
-      a.x+=(a.targetX-a.x)*.095;
-      a.y+=(a.targetY-a.y)*.095;
-    }
-
-    ctx.save();ctx.translate(a.x,a.y);
-    ctx.rotate(formingLetter?a.angle*.05:a.angle);
-    ctx.globalAlpha=1;
-    ctx.shadowBlur=18;ctx.shadowColor="#38aaff";
-    ctx.fillStyle=formingLetter?"#d7f1ff":"#9bdcff";
-    ctx.font="bold 11px Arial";
-    ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.fillText(formingLetter?"✦":a.word,0,0,100);
-    ctx.restore();
-  }
-
-  if(formingLetter&&time-burstTime>1800){
-    letter.classList.add("show");
-    hint.textContent="♡";
+      setTimeout(()=>{
+        formation.style.display="none";
+      },650);
+    },350);
   }
 }
 
 canvas.addEventListener("click",burst);
-canvas.addEventListener("touchend",function(e){
-  // Click event handles touch too; avoid triggering twice.
-},{passive:true});
 
 function animate(time){
   drawBackground(time);
   drawHeart(time);
+
+  if(!forming && clicked){
+    const r=canvas.getBoundingClientRect();
+    ctx.clearRect(0,0,r.width,r.height);
+
+    const elapsed=time-burstStart;
+    for(const p of burstParticles){
+      if(p.life<=0)continue;
+      p.x+=p.vx;p.y+=p.vy;
+      p.vx*=.965;p.vy*=.965;
+      p.life-=.018;
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle=p.color;
+      ctx.shadowBlur=18;
+      ctx.shadowColor="#168bff";
+      ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalAlpha=1;ctx.shadowBlur=0;
+  }
+
   requestAnimationFrame(animate);
 }
 
-window.addEventListener("resize",resize);
+window.addEventListener("resize",()=>{
+  if(clicked)return;
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(resize,100);
+});
+
 resize();
 requestAnimationFrame(animate);
 </script>
