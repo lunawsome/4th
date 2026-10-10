@@ -9,12 +9,6 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Patrick+Hand&display=swap');
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 :root {
     --blue: #8bd7ff;
     --light-blue: #c6eaff;
@@ -22,26 +16,32 @@
     --navy: #030713;
 }
 
-html, body {
-    width: 100%;
-    min-height: 100%;
-    overflow-x: hidden;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
     background: var(--navy);
-    color: white;
-    font-family: 'Short Stack', cursive;
 }
 
 body {
     min-height: 100vh;
+    overflow-x: hidden;
+    color: white;
+    background: var(--navy);
+    font-family: 'Short Stack', cursive;
 }
 
 #space {
     position: fixed;
     inset: 0;
-    overflow: hidden;
-    background:
-        radial-gradient(ellipse at 50% 45%, #14264b 0%, #080f24 40%, #02040c 100%);
     z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 50% 45%, #172c53 0%, #080f24 43%, #02040c 100%);
 }
 
 #starCanvas,
@@ -53,240 +53,230 @@ body {
     pointer-events: none;
 }
 
-#starCanvas {
-    z-index: 1;
-}
-
-#burstCanvas {
-    z-index: 6;
-}
+#starCanvas { z-index: 1; }
+#burstCanvas { z-index: 6; }
 
 .universe {
     position: relative;
     z-index: 2;
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 25px 15px;
-    transition: opacity 1.2s ease, transform 1.5s ease, filter 1.5s ease;
+    transition:
+        opacity 1.6s ease,
+        transform 1.8s cubic-bezier(.2,.8,.2,1),
+        filter 1.6s ease;
 }
 
 .universe.vanish {
     opacity: 0;
-    transform: scale(0.82);
-    filter: blur(12px);
+    transform: scale(.72);
+    filter: blur(16px);
     pointer-events: none;
 }
 
 .scene {
     position: relative;
-    width: min(88vw, 390px);
+    width: min(86vw, 370px);
     aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: floatHeart 4s ease-in-out infinite;
+    animation: heartFloat 4.5s ease-in-out infinite;
 }
 
-@keyframes floatHeart {
+@keyframes heartFloat {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-9px); }
 }
 
 .orbit {
     position: absolute;
-    width: 95%;
-    height: 35%;
-    border: 1px solid rgba(137, 206, 255, 0.24);
+    width: 98%;
+    height: 36%;
+    border: 1px solid rgba(137,206,255,.3);
     border-radius: 50%;
     transform: rotate(-28deg);
-    box-shadow: 0 0 20px rgba(91, 174, 255, 0.09);
+    box-shadow: 0 0 22px rgba(91,174,255,.12);
     animation: orbitGlow 4s ease-in-out infinite;
 }
 
 .orbit.two {
-    width: 110%;
-    height: 48%;
+    width: 112%;
+    height: 49%;
     transform: rotate(35deg);
-    border-color: rgba(255, 226, 164, 0.2);
-    animation-delay: 1s;
+    border-color: rgba(255,226,164,.23);
+    animation-delay: 1.1s;
 }
 
 .orbit.three {
     width: 78%;
     height: 110%;
     transform: rotate(62deg);
-    border-color: rgba(125, 186, 255, 0.13);
+    border-color: rgba(125,186,255,.18);
     animation-delay: 2s;
 }
 
 @keyframes orbitGlow {
-    0%, 100% { opacity: 0.45; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: .35; }
+    50% { opacity: .95; }
 }
 
 #heart {
-    position: relative;
-    z-index: 2;
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0 0 22px rgba(93, 174, 255, 0.6));
+    position: relative;
+    z-index: 2;
     cursor: pointer;
-    transition: transform 0.4s ease, filter 0.4s ease;
+    filter: drop-shadow(0 0 20px rgba(93,174,255,.6));
+    transition: filter .5s ease, transform .5s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
 }
 
-#heart:hover {
-    transform: scale(1.035);
-    filter: drop-shadow(0 0 35px rgba(126, 202, 255, 0.9));
+#heart:hover,
+#heart:focus-visible {
+    filter: drop-shadow(0 0 35px rgba(126,202,255,.95));
+    transform: scale(1.025);
 }
 
 .hint {
+    margin-top: 19px;
     text-align: center;
-    margin-top: 20px;
     color: #c9e8ff;
     font-size: clamp(12px, 3vw, 15px);
     letter-spacing: 1px;
-    animation: hintPulse 2.5s ease-in-out infinite;
-}
-
-@keyframes hintPulse {
-    0%, 100% { opacity: 0.55; }
-    50% { opacity: 1; }
+    animation: hintPulse 2.7s ease-in-out infinite;
 }
 
 .subtitle {
     margin-top: 10px;
-    color: rgba(220, 237, 255, 0.55);
-    font-size: 11px;
+    color: rgba(220,237,255,.55);
+    font-size: 10px;
     text-align: center;
     letter-spacing: 1.5px;
 }
 
+@keyframes hintPulse {
+    0%, 100% { opacity: .5; }
+    50% { opacity: 1; }
+}
+
+/* LETTER REVEAL */
+
 #letterWrap {
     position: relative;
     z-index: 5;
-    min-height: 100vh;
     width: 100%;
+    min-height: 100vh;
     display: none;
-    align-items: center;
     justify-content: center;
-    padding: 35px 14px;
+    align-items: flex-start;
+    padding: 32px 13px 45px;
     opacity: 0;
-    background:
-        radial-gradient(ellipse at 50% 25%, rgba(32, 61, 111, 0.2), transparent 65%);
 }
 
 #letterWrap.show {
     display: flex;
-    animation: letterReveal 2.4s cubic-bezier(.16, 1, .3, 1) forwards;
+    animation: letterAppear 2.2s cubic-bezier(.16,1,.3,1) forwards;
 }
 
-@keyframes letterReveal {
+@keyframes letterAppear {
     0% {
         opacity: 0;
         filter: blur(12px);
-        transform: scale(0.96);
+        transform: translateY(15px) scale(.975);
     }
-    45% {
-        opacity: 0.4;
-        filter: blur(5px);
-    }
-    75% {
-        opacity: 0.85;
-        filter: blur(1px);
+    55% {
+        opacity: .72;
+        filter: blur(2px);
     }
     100% {
         opacity: 1;
         filter: blur(0);
-        transform: scale(1);
+        transform: translateY(0) scale(1);
     }
 }
 
 .letter-card {
     position: relative;
+    isolation: isolate;
     width: min(100%, 760px);
     margin: auto;
     padding: clamp(23px, 5vw, 48px);
-    border: 1px solid rgba(151, 206, 255, 0.3);
+    overflow: hidden;
+    border: 1px solid rgba(151,206,255,.32);
     border-radius: 25px;
-    background: linear-gradient(
-        145deg,
-        rgba(15, 30, 59, 0.94),
-        rgba(5, 12, 29, 0.97)
-    );
+    background: linear-gradient(145deg, rgba(15,30,59,.97), rgba(5,12,29,.98));
     box-shadow:
-        0 0 35px rgba(91, 158, 255, 0.13),
-        0 0 90px rgba(72, 126, 230, 0.08),
-        inset 0 0 30px rgba(146, 202, 255, 0.035);
+        0 0 35px rgba(91,158,255,.16),
+        0 0 100px rgba(72,126,230,.09),
+        inset 0 0 35px rgba(146,202,255,.045);
     animation: cardGlow 5s ease-in-out infinite;
 }
 
-@keyframes cardGlow {
-    0%, 100% {
-        box-shadow:
-            0 0 35px rgba(91, 158, 255, 0.13),
-            0 0 90px rgba(72, 126, 230, 0.08),
-            inset 0 0 30px rgba(146, 202, 255, 0.035);
-    }
-    50% {
-        box-shadow:
-            0 0 45px rgba(91, 158, 255, 0.24),
-            0 0 110px rgba(72, 126, 230, 0.13),
-            inset 0 0 40px rgba(146, 202, 255, 0.055);
-    }
-}
-
 .letter-card::before {
-    content: "✧";
+    content: "";
     position: absolute;
-    top: 13px;
-    right: 20px;
-    color: var(--gold);
-    font-size: 24px;
-    opacity: 0.85;
-    animation: twinkle 2s ease-in-out infinite;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(110,180,255,.1), transparent 35%),
+        radial-gradient(circle at 100% 100%, rgba(255,220,157,.055), transparent 35%);
 }
 
 .letter-card::after {
     content: "✧";
     position: absolute;
-    bottom: 13px;
-    left: 20px;
-    color: var(--blue);
-    font-size: 20px;
-    opacity: 0.75;
-    animation: twinkle 2.7s ease-in-out infinite reverse;
+    top: 13px;
+    right: 19px;
+    color: var(--gold);
+    font-size: 24px;
+    animation: twinkle 2.4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes cardGlow {
+    0%, 100% {
+        box-shadow: 0 0 32px rgba(91,158,255,.13), 0 0 80px rgba(72,126,230,.07);
+    }
+    50% {
+        box-shadow: 0 0 48px rgba(91,158,255,.23), 0 0 115px rgba(72,126,230,.13);
+    }
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0); }
+    0%, 100% { opacity: .35; transform: scale(.8) rotate(0); }
     50% { opacity: 1; transform: scale(1.2) rotate(35deg); }
 }
 
 #formation {
     display: block;
     width: 100%;
-    height: 130px;
+    height: 115px;
     margin: 0 auto 12px;
 }
 
 .letter-title {
-    text-align: center;
+    margin-bottom: 9px;
     color: var(--light-blue);
-    font-size: clamp(22px, 5vw, 33px);
+    font-size: clamp(21px, 5vw, 32px);
     line-height: 1.5;
-    text-shadow: 0 0 20px rgba(130, 197, 255, 0.55);
-    margin-bottom: 8px;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(130,197,255,.55);
 }
 
 .letter-subtitle {
-    text-align: center;
+    margin-bottom: 29px;
     color: var(--gold);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 2px;
-    margin-bottom: 28px;
+    line-height: 1.8;
+    text-align: center;
 }
 
 .letter-content {
@@ -300,8 +290,8 @@ body {
 .letter-content p {
     margin: 0 0 22px;
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateY(13px);
+    transition: opacity .85s ease, transform .85s ease;
 }
 
 .letter-content p.visible {
@@ -310,39 +300,32 @@ body {
 }
 
 .signature {
-    text-align: center;
+    margin-top: 32px;
     color: #b8dfff;
     font-family: 'Short Stack', cursive;
-    font-size: clamp(17px, 4vw, 21px);
+    font-size: clamp(16px, 4vw, 21px);
     line-height: 1.8;
-    margin-top: 32px;
+    text-align: center;
 }
 
 .bottom-sparkle {
-    text-align: center;
-    color: var(--gold);
-    letter-spacing: 10px;
     margin-top: 24px;
+    color: var(--gold);
+    text-align: center;
+    letter-spacing: 10px;
     animation: hintPulse 3s ease-in-out infinite;
 }
 
 @media (max-width: 480px) {
-    .scene {
-        width: min(88vw, 340px);
-    }
-
-    .letter-card {
-        border-radius: 20px;
-    }
-
-    #formation {
-        height: 105px;
-    }
+    .scene { width: min(87vw, 335px); }
+    .letter-card { border-radius: 20px; }
+    #formation { height: 95px; }
+    .letter-content { line-height: 1.8; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
-        animation-duration: 0.01ms !important;
+        animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
     }
@@ -360,7 +343,7 @@ body {
         <div class="orbit"></div>
         <div class="orbit two"></div>
         <div class="orbit three"></div>
-        <canvas id="heart"></canvas>
+        <canvas id="heart" role="button" tabindex="0" aria-label="Open your monthsary letter"></canvas>
     </div>
     <div class="hint">✧ tap the heart, hon ✧</div>
     <div class="subtitle">A LITTLE PIECE OF MY HEART, JUST FOR YOU</div>
@@ -431,17 +414,26 @@ const universe = document.getElementById('universe');
 const letterWrap = document.getElementById('letterWrap');
 const letterContent = document.getElementById('letterContent');
 
+let width = window.innerWidth;
+let height = window.innerHeight;
+let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
 let stars = [];
 let heartParticles = [];
 let burstParticles = [];
 let formationParticles = [];
-let burstRaf = null;
+
 let heartRaf = null;
+let burstRaf = null;
 let formationRaf = null;
+let starsRaf = null;
 let opened = false;
-let width = window.innerWidth;
-let height = window.innerHeight;
-let dpr = Math.min(window.devicePixelRatio || 1, 2);
+let burstStart = 0;
+let lastBurstFrame = 0;
+
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
 function resizeCanvas(canvas, ctx, w, h) {
     canvas.width = Math.round(w * dpr);
@@ -451,40 +443,38 @@ function resizeCanvas(canvas, ctx, w, h) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-function resizeAll() {
+function resizeBackground() {
     width = window.innerWidth;
     height = window.innerHeight;
     dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     resizeCanvas(starCanvas, starCtx, width, height);
     resizeCanvas(burstCanvas, burstCtx, width, height);
-
-    const heartRect = heartCanvas.getBoundingClientRect();
-    resizeCanvas(heartCanvas, heartCtx, heartRect.width, heartRect.height);
-
     createStars();
-    createHeartParticles();
-    drawHeart();
 }
 
-function rand(min, max) {
-    return Math.random() * (max - min) + min;
+function heartPoint(t) {
+    return {
+        x: 16 * Math.pow(Math.sin(t), 3),
+        y: -(13 * Math.cos(t) - 5 * Math.cos(2 * t)
+            - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+    };
 }
 
-/* Background stars */
+/* TWINKLING BACKGROUND */
 function createStars() {
     stars = [];
-    const count = Math.min(220, Math.floor(width * height / 4500));
+    const count = Math.min(240, Math.floor(width * height / 3800));
 
     for (let i = 0; i < count; i++) {
         stars.push({
             x: Math.random() * width,
             y: Math.random() * height,
-            r: rand(0.35, 1.5),
-            alpha: rand(0.2, 0.9),
+            r: rand(.35, 1.45),
+            alpha: rand(.2, .9),
             phase: rand(0, Math.PI * 2),
-            speed: rand(0.006, 0.025),
-            gold: Math.random() < 0.12
+            speed: rand(.008, .028),
+            gold: Math.random() < .12
         });
     }
 }
@@ -494,7 +484,7 @@ function drawStars() {
 
     for (const s of stars) {
         s.phase += s.speed;
-        const alpha = s.alpha * (0.55 + 0.45 * Math.sin(s.phase));
+        const alpha = s.alpha * (.55 + .45 * Math.sin(s.phase));
 
         starCtx.beginPath();
         starCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
@@ -507,40 +497,30 @@ function drawStars() {
     }
 
     starCtx.shadowBlur = 0;
-    requestAnimationFrame(drawStars);
+    starsRaf = requestAnimationFrame(drawStars);
 }
 
-/* Build a glowing 3D heart out of particles */
-function heartPoint(t) {
-    const x = 16 * Math.pow(Math.sin(t), 3);
-    const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t)
-        - 2 * Math.cos(3 * t) - Math.cos(4 * t));
-
-    return { x, y };
-}
-
+/* PARTICLE HEART */
 function createHeartParticles() {
     heartParticles = [];
 
     const rect = heartCanvas.getBoundingClientRect();
     const scale = Math.min(rect.width, rect.height) / 36;
 
-    for (let i = 0; i < 950; i++) {
+    for (let i = 0; i < 1150; i++) {
         const t = Math.random() * Math.PI * 2;
         const edge = heartPoint(t);
         const fill = Math.sqrt(Math.random());
 
-        const x = edge.x * fill * scale + rect.width / 2;
-        const y = edge.y * fill * scale + rect.height / 2;
-
         heartParticles.push({
-            x, y,
+            x: edge.x * fill * scale + rect.width / 2,
+            y: edge.y * fill * scale + rect.height / 2,
             z: rand(-1, 1),
-            r: rand(0.45, 1.65),
+            r: rand(.45, 1.55),
             phase: rand(0, Math.PI * 2),
-            speed: rand(0.008, 0.035),
-            alpha: rand(0.35, 1),
-            gold: Math.random() < 0.045
+            speed: rand(.008, .028),
+            alpha: rand(.35, 1),
+            gold: Math.random() < .055
         });
     }
 }
@@ -556,11 +536,11 @@ function drawHeart() {
 
     const glow = heartCtx.createRadialGradient(
         w / 2, h / 2, 2,
-        w / 2, h / 2, w * 0.47
+        w / 2, h / 2, w * .47
     );
 
-    glow.addColorStop(0, 'rgba(72,151,255,0.11)');
-    glow.addColorStop(0.65, 'rgba(46,105,205,0.045)');
+    glow.addColorStop(0, 'rgba(72,151,255,.14)');
+    glow.addColorStop(.65, 'rgba(46,105,205,.05)');
     glow.addColorStop(1, 'rgba(0,0,0,0)');
 
     heartCtx.fillStyle = glow;
@@ -569,16 +549,18 @@ function drawHeart() {
     for (const p of heartParticles) {
         p.phase += p.speed;
 
-        const pulse = 0.65 + Math.sin(p.phase) * 0.35;
-        const depthScale = 0.75 + (p.z + 1) * 0.16;
-        const x = w / 2 + (p.x - w / 2) * depthScale;
-        const y = h / 2 + (p.y - h / 2) * depthScale;
+        const pulse = .65 + Math.sin(p.phase) * .35;
+        const depth = .78 + (p.z + 1) * .13;
+        const x = w / 2 + (p.x - w / 2) * depth;
+        const y = h / 2 + (p.y - h / 2) * depth;
 
         heartCtx.beginPath();
-        heartCtx.arc(x, y, p.r * depthScale, 0, Math.PI * 2);
+        heartCtx.arc(x, y, p.r * depth, 0, Math.PI * 2);
+
         heartCtx.fillStyle = p.gold
             ? `rgba(255,224,160,${p.alpha * pulse})`
             : `rgba(${115 + Math.floor(pulse * 55)},${180 + Math.floor(pulse * 50)},255,${p.alpha * pulse})`;
+
         heartCtx.shadowBlur = p.r * 5;
         heartCtx.shadowColor = p.gold ? '#ffe2a3' : '#78c5ff';
         heartCtx.fill();
@@ -588,119 +570,156 @@ function drawHeart() {
     heartRaf = requestAnimationFrame(drawHeart);
 }
 
-/* Magical burst: slow spirals, glitter, comet trails, and a central flash */
-function createBurst() {
+/* MAGICAL BURST */
+function createBurst(originX, originY) {
     burstParticles = [];
 
-    const cx = width / 2;
-    const cy = height / 2;
-
-    // Main radiant sparks
-    for (let i = 0; i < 460; i++) {
+    // A soft ring expands around the heart.
+    for (let i = 0; i < 230; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = rand(1.2, 6.4);
-        const hue = Math.random();
+        const speed = rand(1.2, 4.7);
 
         burstParticles.push({
-            type: 'spark',
-            x: cx + rand(-15, 15),
-            y: cy + rand(-15, 15),
+            type: 'ring',
+            x: originX + rand(-5, 5),
+            y: originY + rand(-5, 5),
             vx: Math.cos(angle) * speed,
             vy: Math.sin(angle) * speed,
-            drag: rand(0.982, 0.994),
-            gravity: rand(-0.008, 0.018),
-            size: rand(0.8, 2.6),
-            life: rand(125, 205),
-            maxLife: 205,
-            delay: rand(0, 650),
-            hue,
-            twinkle: rand(0, Math.PI * 2)
+            drag: rand(.985, .994),
+            size: rand(.8, 2.2),
+            life: rand(100, 165),
+            delay: rand(0, 300),
+            color: Math.random() < .25 ? 'gold' : 'blue',
+            phase: rand(0, Math.PI * 2)
         });
     }
 
-    // Slow golden dust
-    for (let i = 0; i < 180; i++) {
+    // Bright comet sparks.
+    for (let i = 0; i < 250; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = rand(0.35, 2.5);
+        const speed = rand(2.2, 7.2);
+
+        burstParticles.push({
+            type: 'comet',
+            x: originX + rand(-8, 8),
+            y: originY + rand(-8, 8),
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            drag: rand(.979, .991),
+            size: rand(.8, 2.5),
+            life: rand(80, 145),
+            delay: rand(100, 650),
+            color: Math.random() < .23 ? 'gold' : 'blue',
+            phase: rand(0, Math.PI * 2)
+        });
+    }
+
+    // Slow drifting golden dust.
+    for (let i = 0; i < 190; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = rand(.25, 2.1);
 
         burstParticles.push({
             type: 'dust',
-            x: cx + rand(-12, 12),
-            y: cy + rand(-12, 12),
+            x: originX + rand(-12, 12),
+            y: originY + rand(-12, 12),
             vx: Math.cos(angle) * speed,
             vy: Math.sin(angle) * speed,
-            drag: rand(0.988, 0.997),
-            gravity: -0.006,
-            size: rand(0.7, 2),
-            life: rand(140, 230),
-            maxLife: 230,
-            delay: rand(100, 950),
-            hue: 1,
-            twinkle: rand(0, Math.PI * 2)
+            drag: rand(.988, .997),
+            size: rand(.65, 1.8),
+            life: rand(115, 185),
+            delay: rand(250, 1000),
+            color: 'gold',
+            phase: rand(0, Math.PI * 2)
         });
     }
 
-    // Curving spiral particles
-    for (let i = 0; i < 240; i++) {
+    // Swirling blue particles.
+    for (let i = 0; i < 200; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = rand(0.8, 3.2);
+        const speed = rand(.6, 2.7);
 
         burstParticles.push({
-            type: 'spiral',
-            x: cx + rand(-8, 8),
-            y: cy + rand(-8, 8),
+            type: 'swirl',
+            x: originX + rand(-6, 6),
+            y: originY + rand(-6, 6),
             vx: Math.cos(angle) * speed,
             vy: Math.sin(angle) * speed,
-            drag: rand(0.989, 0.996),
-            gravity: 0,
-            size: rand(0.8, 2),
-            life: rand(120, 205),
-            maxLife: 205,
-            delay: rand(150, 1100),
-            hue: Math.random(),
-            twinkle: rand(0, Math.PI * 2),
-            swirl: Math.random() < 0.5 ? -1 : 1
+            drag: rand(.989, .996),
+            size: rand(.7, 1.9),
+            life: rand(110, 180),
+            delay: rand(200, 850),
+            color: Math.random() < .18 ? 'gold' : 'blue',
+            phase: rand(0, Math.PI * 2),
+            direction: Math.random() < .5 ? -1 : 1
         });
     }
 }
 
-function drawComet(ctx, p, alpha, color) {
-    const tailLength = p.type === 'spiral' ? 15 : 11;
-    const tx = p.x - p.vx * tailLength;
-    const ty = p.y - p.vy * tailLength;
+function drawComet(p, alpha) {
+    const tail = p.type === 'dust' ? 5 : p.type === 'swirl' ? 10 : 14;
+    const tx = p.x - p.vx * tail;
+    const ty = p.y - p.vy * tail;
 
-    const gradient = ctx.createLinearGradient(tx, ty, p.x, p.y);
-    gradient.addColorStop(0, 'rgba(110,180,255,0)');
-    gradient.addColorStop(1, color.replace('ALPHA', String(alpha)));
+    const gradient = burstCtx.createLinearGradient(tx, ty, p.x, p.y);
+    gradient.addColorStop(0, 'rgba(120,190,255,0)');
+    gradient.addColorStop(1, p.color === 'gold'
+        ? `rgba(255,225,166,${alpha})`
+        : `rgba(142,203,255,${alpha})`);
 
-    ctx.beginPath();
-    ctx.moveTo(tx, ty);
-    ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = gradient;
-    ctx.lineWidth = p.size;
-    ctx.lineCap = 'round';
-    ctx.stroke();
+    burstCtx.beginPath();
+    burstCtx.moveTo(tx, ty);
+    burstCtx.lineTo(p.x, p.y);
+    burstCtx.strokeStyle = gradient;
+    burstCtx.lineWidth = p.size;
+    burstCtx.lineCap = 'round';
+    burstCtx.stroke();
 }
 
-function drawBurst() {
-    // Fade previous frame without painting an opaque background.
+function drawBurst(now) {
+    const dt = lastBurstFrame ? Math.min((now - lastBurstFrame) / 16.67, 2) : 1;
+    lastBurstFrame = now;
+
+    // Fade the old frame transparently to create gentle trails.
     burstCtx.globalCompositeOperation = 'destination-out';
-    burstCtx.fillStyle = 'rgba(0,0,0,0.12)';
+    burstCtx.fillStyle = 'rgba(0,0,0,.095)';
     burstCtx.fillRect(0, 0, width, height);
     burstCtx.globalCompositeOperation = 'lighter';
 
-    const cx = width / 2;
-    const cy = height / 2;
+    const elapsed = now - burstStart;
+    const heartRect = heartCanvas.getBoundingClientRect();
+    const cx = heartRect.left + heartRect.width / 2;
+    const cy = heartRect.top + heartRect.height / 2;
 
-    // A gentle luminous pulse at the heart's center
-    const elapsed = performance.now() - burstStart;
-    const flashAlpha = Math.max(0, 1 - elapsed / 900);
+    // Several expanding light rings.
+    for (let i = 0; i < 3; i++) {
+        const ringAge = elapsed - i * 330;
+
+        if (ringAge > 0 && ringAge < 1500) {
+            const progress = ringAge / 1500;
+            const radius = 18 + progress * Math.min(width, height) * .52;
+            const alpha = (1 - progress) * .4;
+
+            burstCtx.beginPath();
+            burstCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+            burstCtx.strokeStyle = `rgba(133,204,255,${alpha})`;
+            burstCtx.lineWidth = 1.2;
+            burstCtx.shadowBlur = 12;
+            burstCtx.shadowColor = '#7ccaff';
+            burstCtx.stroke();
+        }
+    }
+
+    // Central flash blooms softly and then fades.
+    const flashAlpha = Math.max(0, 1 - elapsed / 1100);
 
     if (flashAlpha > 0) {
-        const radius = 30 + elapsed * 0.17;
+        const radius = 25 + elapsed * .15;
         const flash = burstCtx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        flash.addColorStop(0, `rgba(225,244,255,${flashAlpha * 0.7})`);
-        flash.addColorStop(0.22, `rgba(116,191,255,${flashAlpha * 0.32})`);
+
+        flash.addColorStop(0, `rgba(245,251,255,${flashAlpha * .8})`);
+        flash.addColorStop(.2, `rgba(133,204,255,${flashAlpha * .45})`);
+        flash.addColorStop(.55, `rgba(92,151,255,${flashAlpha * .13})`);
         flash.addColorStop(1, 'rgba(80,140,255,0)');
 
         burstCtx.fillStyle = flash;
@@ -711,66 +730,43 @@ function drawBurst() {
 
     for (const p of burstParticles) {
         if (p.delay > 0) {
-            p.delay -= 16.67;
+            p.delay -= 16.67 * dt;
             continue;
         }
 
         if (p.life <= 0) continue;
 
-        if (p.type === 'spiral') {
+        if (p.type === 'swirl') {
             const dx = p.x - cx;
             const dy = p.y - cy;
-
-            p.vx += (-dy) * 0.0008 * p.swirl;
-            p.vy += dx * 0.0008 * p.swirl;
+            p.vx += -dy * .00075 * p.direction * dt;
+            p.vy += dx * .00075 * p.direction * dt;
         }
 
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= p.drag;
-        p.vy = p.vy * p.drag + p.gravity;
-        p.life--;
-        p.twinkle += 0.11;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vx *= Math.pow(p.drag, dt);
+        p.vy *= Math.pow(p.drag, dt);
+        p.life -= dt;
+        p.phase += .12 * dt;
 
-        const lifeAlpha = Math.min(1, p.life / 28);
-        const shimmer = 0.6 + 0.4 * Math.sin(p.twinkle);
-        const alpha = lifeAlpha * shimmer;
-
-        let color;
-
-        if (p.hue > 0.82) {
-            color = `rgba(255,224,157,${alpha})`;
-        } else if (p.hue > 0.5) {
-            color = `rgba(182,225,255,${alpha})`;
-        } else {
-            color = `rgba(93,166,255,${alpha})`;
-        }
-
-        if (p.type === 'dust') {
-            color = `rgba(255,225,166,${alpha})`;
-        }
-
-        drawComet(
-            burstCtx,
-            p,
-            alpha,
-            p.type === 'dust'
-                ? 'rgba(255,225,166,ALPHA)'
-                : 'rgba(142,203,255,ALPHA)'
-        );
+        const alpha = Math.min(1, p.life / 26) * (.68 + .32 * Math.sin(p.phase));
+        drawComet(p, alpha);
 
         burstCtx.beginPath();
-        burstCtx.arc(p.x, p.y, p.size * (0.65 + shimmer * 0.5), 0, Math.PI * 2);
-        burstCtx.fillStyle = color;
-        burstCtx.shadowBlur = p.type === 'dust' ? 13 : 9;
-        burstCtx.shadowColor = p.type === 'dust' ? '#ffe4a6' : '#7fc7ff';
+        burstCtx.arc(p.x, p.y, p.size * (.8 + .2 * Math.sin(p.phase)), 0, Math.PI * 2);
+        burstCtx.fillStyle = p.color === 'gold'
+            ? `rgba(255,228,174,${alpha})`
+            : `rgba(169,220,255,${alpha})`;
+        burstCtx.shadowBlur = p.type === 'dust' ? 10 : 13;
+        burstCtx.shadowColor = p.color === 'gold' ? '#ffe4a6' : '#80cbff';
         burstCtx.fill();
 
-        // Tiny four-point star sparkles
-        if (p.type === 'spark' && Math.random() < 0.045) {
-            const s = p.size * 2.6;
-            burstCtx.strokeStyle = `rgba(235,247,255,${alpha})`;
-            burstCtx.lineWidth = 0.8;
+        // Occasional four-point glitter.
+        if (p.type !== 'dust' && Math.random() < .025) {
+            const s = p.size * 2.8;
+            burstCtx.strokeStyle = `rgba(244,250,255,${alpha})`;
+            burstCtx.lineWidth = .8;
             burstCtx.beginPath();
             burstCtx.moveTo(p.x - s, p.y);
             burstCtx.lineTo(p.x + s, p.y);
@@ -786,40 +782,46 @@ function drawBurst() {
     burstRaf = requestAnimationFrame(drawBurst);
 }
 
-let burstStart = 0;
-
+/* PARTICLES FORM THE WORDS "I ♥ YOU" */
 function prepareFormation() {
     const rect = formationCanvas.getBoundingClientRect();
     resizeCanvas(formationCanvas, formationCtx, rect.width, rect.height);
 
     const w = rect.width;
     const h = rect.height;
+    const scale = dpr;
 
     formationCtx.clearRect(0, 0, w, h);
-    formationCtx.font = '36px "Short Stack"';
+    formationCtx.fillStyle = '#fff';
     formationCtx.textAlign = 'center';
     formationCtx.textBaseline = 'middle';
-    formationCtx.fillStyle = '#fff';
 
+    const fontSize = Math.min(36, w * .12);
+    formationCtx.font = `${fontSize}px "Short Stack", cursive`;
     formationCtx.fillText('I ♥ YOU', w / 2, h / 2);
 
-    const image = formationCtx.getImageData(0, 0, w * dpr, h * dpr);
-    const data = image.data;
-    formationParticles = [];
+    const image = formationCtx.getImageData(
+        0, 0,
+        formationCanvas.width,
+        formationCanvas.height
+    );
 
-    for (let y = 0; y < image.height; y += 4) {
-        for (let x = 0; x < image.width; x += 4) {
+    formationParticles = [];
+    const step = 4;
+
+    for (let y = 0; y < image.height; y += step) {
+        for (let x = 0; x < image.width; x += step) {
             const index = (y * image.width + x) * 4 + 3;
 
-            if (data[index] > 100) {
+            if (image.data[index] > 100) {
                 formationParticles.push({
                     x: rand(0, w),
                     y: rand(0, h),
-                    tx: x / dpr,
-                    ty: y / dpr,
-                    size: rand(0.7, 1.8),
-                    alpha: rand(0.5, 1),
-                    delay: rand(0, 45)
+                    tx: x / scale,
+                    ty: y / scale,
+                    size: rand(.7, 1.6),
+                    alpha: rand(.55, 1),
+                    delay: rand(0, 40)
                 });
             }
         }
@@ -832,104 +834,120 @@ function animateFormation() {
     const rect = formationCanvas.getBoundingClientRect();
     const w = rect.width;
     const h = rect.height;
+    let moving = false;
 
     formationCtx.clearRect(0, 0, w, h);
-
-    let allArrived = true;
 
     for (const p of formationParticles) {
         if (p.delay > 0) {
             p.delay--;
-            allArrived = false;
+            moving = true;
         } else {
-            p.x += (p.tx - p.x) * 0.075;
-            p.y += (p.ty - p.y) * 0.075;
+            p.x += (p.tx - p.x) * .085;
+            p.y += (p.ty - p.y) * .085;
 
-            if (Math.abs(p.tx - p.x) > 0.6 || Math.abs(p.ty - p.y) > 0.6) {
-                allArrived = false;
+            if (Math.abs(p.tx - p.x) > .35 || Math.abs(p.ty - p.y) > .35) {
+                moving = true;
             }
         }
 
         formationCtx.beginPath();
         formationCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         formationCtx.fillStyle = `rgba(158,218,255,${p.alpha})`;
-        formationCtx.shadowBlur = 7;
+        formationCtx.shadowBlur = 8;
         formationCtx.shadowColor = '#78c5ff';
         formationCtx.fill();
     }
 
     formationCtx.shadowBlur = 0;
 
-    if (!allArrived) {
+    if (moving) {
         formationRaf = requestAnimationFrame(animateFormation);
     }
 }
 
+/* LETTER PARAGRAPHS FADE IN GENTLY */
 function revealLetterParagraphs() {
     const paragraphs = [...letterContent.querySelectorAll('p')];
 
     paragraphs.forEach((paragraph, index) => {
         setTimeout(() => {
             paragraph.classList.add('visible');
-        }, 500 + index * 240);
+        }, 450 + index * 180);
     });
 }
 
+/* CLICK THE HEART */
 function openLetter() {
     if (opened) return;
     opened = true;
 
     if (heartRaf) cancelAnimationFrame(heartRaf);
 
+    const rect = heartCanvas.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
     burstStart = performance.now();
-    createBurst();
+    lastBurstFrame = 0;
 
-    // Hide the heart gently while the magical burst continues.
+    createBurst(cx, cy);
     universe.classList.add('vanish');
-    drawBurst();
 
-    // Keep the burst on screen longer for a more magical reveal.
+    // The burst lasts long enough for the sparkles to spread.
+    burstRaf = requestAnimationFrame(drawBurst);
+
     setTimeout(() => {
         if (burstRaf) cancelAnimationFrame(burstRaf);
 
-        burstCtx.clearRect(0, 0, width, height);
+        // Leave a few lingering sparkles as the letter appears.
+        burstCtx.globalCompositeOperation = 'destination-out';
+        burstCtx.fillStyle = 'rgba(0,0,0,.4)';
+        burstCtx.fillRect(0, 0, width, height);
+        burstCtx.globalCompositeOperation = 'source-over';
 
         letterWrap.classList.add('show');
 
-        prepareFormation();
-        animateFormation();
-        revealLetterParagraphs();
-    }, 3000);
+        requestAnimationFrame(() => {
+            prepareFormation();
+            animateFormation();
+            revealLetterParagraphs();
+        });
+
+        // Clear the burst canvas gradually after the reveal.
+        setTimeout(() => {
+            burstCtx.clearRect(0, 0, width, height);
+        }, 1800);
+    }, 3600);
 }
 
 heartCanvas.addEventListener('click', openLetter);
 
-heartCanvas.addEventListener('keydown', (event) => {
+heartCanvas.addEventListener('keydown', event => {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         openLetter();
     }
 });
 
-heartCanvas.setAttribute('role', 'button');
-heartCanvas.setAttribute('aria-label', 'Open your monthsary letter');
-heartCanvas.setAttribute('tabindex', '0');
-
 window.addEventListener('resize', () => {
+    resizeBackground();
+
     if (!opened) {
-        resizeAll();
-    } else {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        resizeCanvas(starCanvas, starCtx, width, height);
-        resizeCanvas(burstCanvas, burstCtx, width, height);
-        createStars();
+        const rect = heartCanvas.getBoundingClientRect();
+        resizeCanvas(heartCanvas, heartCtx, rect.width, rect.height);
+        createHeartParticles();
     }
 });
 
-resizeAll();
+resizeBackground();
+
+const heartRect = heartCanvas.getBoundingClientRect();
+resizeCanvas(heartCanvas, heartCtx, heartRect.width, heartRect.height);
+createHeartParticles();
+
 drawStars();
+drawHeart();
 </script>
 </body>
 </html>
