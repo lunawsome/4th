@@ -1,517 +1,831 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💙 For My Hon</title>
+<title>For My Hon 💙</title>
 
 <style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;min-height:100vh;color:#eaf5ff;
-  background:radial-gradient(ellipse at 50% 35%,#071c43 0%,#020817 48%,#01030b 100%);
-  font-family:Georgia,serif;overflow-x:hidden
-}
-#space{
-  position:fixed;inset:0;width:100%;height:100%;
-  z-index:0;pointer-events:none
-}
-main{
-  position:relative;z-index:1;min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;
-  padding:20px 16px 70px
-}
-.universe{
-  position:relative;width:min(100%,520px);height:450px;
-  display:flex;align-items:center;justify-content:center
-}
-#heart{
-  width:100%;height:100%;cursor:pointer;
-  touch-action:manipulation;-webkit-tap-highlight-color:transparent
-}
-.hint{
-  position:absolute;bottom:12px;left:0;right:0;
-  text-align:center;color:#8fcaff;font:12px Arial,sans-serif;
-  letter-spacing:2px;opacity:.85;animation:pulse 2s infinite;
-  pointer-events:none
-}
-@keyframes pulse{50%{opacity:.35}}
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Patrick+Hand&display=swap');
 
-#letterWrap{
-  position:relative;
-  width:min(100%,620px);
-  margin:26px auto 0;
-  opacity:0;
-  visibility:hidden;
-  transform:translateY(18px);
-}
-#letterWrap.show{
-  visibility:visible;
-  animation:reveal .8s ease forwards;
-}
-@keyframes reveal{
-  to{opacity:1;transform:translateY(0)}
-}
-#letter{
-  position:relative;
-  width:100%;
-  padding:27px 23px;
-  border:1px solid rgba(91,173,255,.55);
-  border-radius:20px;
-  background:rgba(3,12,32,.94);
-  box-shadow:0 0 35px rgba(0,108,255,.16),inset 0 0 30px rgba(35,111,255,.05);
-  line-height:1.9;
-  font-size:15px;
-  overflow-wrap:anywhere;
-}
-#letterText{
-  white-space:pre-wrap;
-  margin:0;
-}
-.close-note{
-  text-align:center;color:#75baff;font-size:22px;margin-top:24px
+* {
+    box-sizing: border-box;
 }
 
-/* The particle canvas covers the whole letter during formation. */
-#formation{
-  position:absolute;
-  left:0;top:0;
-  width:100%;height:100%;
-  z-index:5;
-  pointer-events:none;
-  border-radius:20px;
+html {
+    scroll-behavior: smooth;
 }
 
-@media(max-width:480px){
-  .universe{height:370px}
-  #letter{padding:22px 18px;font-size:14px}
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #020511;
+    color: #dcecff;
+    font-family: 'Patrick Hand', cursive;
+    overflow-x: hidden;
+}
+
+#space {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.universe {
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 12px;
+    transition: opacity 0.7s ease;
+}
+
+#heart {
+    display: block;
+    width: min(94vw, 650px);
+    height: min(72vh, 560px);
+    min-height: 340px;
+    max-height: 560px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.hint {
+    margin-top: -15px;
+    color: #9fcaff;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    text-align: center;
+    text-shadow: 0 0 12px #287aff;
+    animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+    0%, 100% { opacity: .55; }
+    50% { opacity: 1; }
+}
+
+#letterWrap {
+    position: relative;
+    z-index: 2;
+    width: min(940px, 94%);
+    margin: 35px auto 70px;
+    display: none;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#letterWrap.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.letter-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(99, 164, 255, .42);
+    border-radius: 24px;
+    padding: clamp(22px, 5vw, 52px);
+    background:
+        radial-gradient(ellipse at top, rgba(35, 95, 181, .19), transparent 60%),
+        rgba(3, 10, 29, .94);
+    box-shadow:
+        0 0 35px rgba(36, 111, 255, .15),
+        inset 0 0 30px rgba(49, 119, 255, .05);
+}
+
+.letter-heading {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #a9d5ff;
+    font-family: 'Short Stack', cursive;
+    font-size: clamp(23px, 4vw, 34px);
+    text-shadow: 0 0 20px rgba(66, 147, 255, .6);
+}
+
+.letter-heading span {
+    display: block;
+    margin-top: 8px;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 17px;
+    letter-spacing: 2px;
+    color: #78b6ff;
+}
+
+#letterText {
+    color: #dce9ff;
+    font-size: clamp(16px, 2.3vw, 19px);
+    line-height: 1.95;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    text-shadow: 0 0 5px rgba(83, 151, 255, .12);
+}
+
+#letterText p {
+    margin: 0 0 23px;
+}
+
+#letterText .opening {
+    color: #a9d5ff;
+    font-size: 22px;
+    margin-bottom: 24px;
+}
+
+#letterText .ending {
+    text-align: center;
+    color: #a9d5ff;
+    font-family: 'Short Stack', cursive;
+    font-size: 21px;
+    margin-top: 35px;
+}
+
+.close-note {
+    display: block;
+    margin: 28px auto 0;
+    border: 1px solid rgba(117, 180, 255, .5);
+    background: rgba(30, 93, 181, .17);
+    color: #b9dcff;
+    border-radius: 30px;
+    padding: 10px 24px;
+    font: inherit;
+    font-size: 17px;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.close-note:hover {
+    background: rgba(47, 123, 224, .3);
+    box-shadow: 0 0 18px rgba(69, 146, 255, .3);
+}
+
+#formation {
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+
+#formation.fade-out {
+    opacity: 0;
+}
+
+#burstCanvas {
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 600px) {
+    .universe {
+        padding: 12px 5px;
+    }
+
+    #heart {
+        width: 100vw;
+        height: 54vh;
+        min-height: 300px;
+    }
+
+    .hint {
+        font-size: 14px;
+    }
+
+    #letterWrap {
+        width: 95%;
+        margin-top: 18px;
+    }
+
+    .letter-card {
+        border-radius: 18px;
+        padding: 23px 19px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hint {
+        animation: none;
+    }
 }
 </style>
 </head>
 
 <body>
+
 <canvas id="space"></canvas>
+<canvas id="burstCanvas"></canvas>
 
-<main>
-  <div class="universe">
-    <canvas id="heart" aria-label="Tap the heart to reveal your letter"></canvas>
-    <div class="hint" id="hint">✦ CLICK THE HEART ✦</div>
-  </div>
+<section class="universe" id="universe">
+    <canvas id="heart" aria-label="Click the blue heart to open your letter"></canvas>
+    <div class="hint" id="hint">✦ click the heart, hon ✦</div>
+</section>
 
-  <section id="letterWrap">
-    <article id="letter">
-      <pre id="letterText">Hi, hon. 💙
+<main id="letterWrap">
+    <article class="letter-card" id="letterCard">
+        <div class="letter-heading">
+            For My Hon 💙
+            <span>four months with you ✦</span>
+        </div>
 
-Today marks the 4th month since I gathered the courage to ask you kung ano ba tayo. HAHAHAHAHA. Wala eh, crush talaga kita, hehez. I know, nasabi ko naman na before na type talaga kita. The moment na pinakilala ka ni Pat, na-curious agad ako sa'yo. Sobrang aloof mo sa social media, walang pics, kaya nung una, I was really interested in knowing you more. Pero habang mas nakikilala kita, mas lalo rin kitang nagugustuhan. Sige, ako na nauna. HAHAHAHAHA. 😭
+        <div id="letterText">
+            <p class="opening">Hi, hon. 💙</p>
 
-Looking back, natatawa na lang ako kasi who would've thought na yung simpleng curiosity ko about you would turn into something this special? I didn't expect na aabot tayo sa ganito, pero I'm really glad na naglakas-loob ako. Kasi kung hindi, baka hanggang ngayon, walang mangyayari HAHAHAHA.
+            <p>Today marks the 4th month since I gathered the courage to ask you kung ano ba tayo. HAHAHAHAHA. Wala eh, crush talaga kita, hehez. I know, nasabi ko naman na before na type talaga kita. The moment na pinakilala ka ni Pat, na-curious agad ako sa'yo. Sobrang aloof mo sa social media, walang pics, kaya nung una, I was really interested in knowing you more. Pero habang mas nakikilala kita, mas lalo rin kitang nagugustuhan. Sige, ako na nauna. HAHAHAHAHA. 😭</p>
 
-I still remember the first time I called you "hon." Sobrang awkward pa HAHAHAHAHA, parang ang weird sa feeling sabihin, and I didn't even know if I could get used to calling you that. Pero ngayon, it feels so natural. Parang it's just one of those little things na naging part na ng everyday life ko. Ang simple lang, pero looking back, it makes me smile kasi something that used to feel awkward became something that feels so warm and familiar. Now, calling you hon is one of those little things that remind me na ikaw 'yung taong gusto kong lambingin, kulitin, share my random thoughts and my future with. 🥹
+            <p>Looking back, natatawa na lang ako kasi who would've thought na yung simpleng curiosity ko about you would turn into something this special? I didn't expect na aabot tayo sa ganito, pero I'm really glad na naglakas-loob ako. Kasi kung hindi, baka hanggang ngayon, walang mangyayari HAHAHAHA.</p>
 
-And now, here we are, four months later. Four months of getting to know each other, making memories, sharing random conversations, and finding more reasons to like each other. Hindi man natin alam lahat sa ngayon tungkol sa isa't-isa, I'm happy that we get to discover those things little by little. I love how even the simplest conversations with you can make my day better. Minsan nga, hindi mo naman kailangan gumawa ng something grand para mapasaya ako. Sometimes, just talking to you is enough to make me happy.
+            <p>I still remember the first time I called you "hon." Sobrang awkward pa HAHAHAHAHA, parang ang weird sa feeling sabihin, and I didn't even know if I could get used to calling you that. Pero ngayon, it feels so natural. Parang it's just one of those little things na naging part na ng everyday life ko. Ang simple lang, pero looking back, it makes me smile kasi something that used to feel awkward became something that feels so warm and familiar. Now, calling you hon is one of those little things that remind me na ikaw 'yung taong gusto kong lambingin, kulitin, share my random thoughts and my future with. 🥹</p>
 
-Hon, I'm really happy that I met you. Thank you for being someone I get to care for this way. Thank you for the little moments, the random laughs, the conversations, and even the things that might seem ordinary to you but end up becoming special memories for me. Maybe you don't always notice it, pero you make me happy in ways na hindi ko naman laging kayang i-explain.
+            <p>And now, here we are, four months later. Four months of getting to know each other, making memories, sharing random conversations, and finding more reasons to like each other. Hindi man natin alam lahat sa ngayon tungkol sa isa't-isa, I'm happy that we get to discover those things little by little. I love how even the simplest conversations with you can make my day better. Minsan nga, hindi mo naman kailangan gumawa ng something grand para mapasaya ako. Sometimes, just talking to you is enough to make me happy.</p>
 
-I know four months isn't that long, and we still have so much to learn about each other. We'll have good days, bad days, misunderstandings, and moments na baka hindi tayo agad magkaintindihan. But I hope that even during those times, we continue to choose patience, honesty, and understanding (kahit ako yung madalas na walang patience hehe). I hope we keep learning how to love and care for each other in ways that make us both feel appreciated and secure. Hindi naman kailangang perfect tayo all the time. Ang importante sa atin is that what we have is genuine, and we're both willing to grow together.
+            <p>Hon, I'm really happy that I met you. Thank you for being someone I get to care for this way. Thank you for the little moments, the random laughs, the conversations, and even the things that might seem ordinary to you but end up becoming special memories for me. Maybe you don't always notice it, pero you make me happy in ways na hindi ko naman laging kayang i-explain.</p>
 
-I hope you know that I appreciate you more than you probably realize. I hope I can make you feel loved not just through my words, but through the little things I do for you, too. I want to be someone you can run to when you're tired, someone you can share your random thoughts with, someone who will listen when you have a lot on your mind, and someone you can be yourself around. You don't always have to be okay, hon. You can be you. I hope you know that you can have your vulnerable moments with me, too.
+            <p>I know four months isn't that long, and we still have so much to learn about each other. We'll have good days, bad days, misunderstandings, and moments na baka hindi tayo agad magkaintindihan. But I hope that even during those times, we continue to choose patience, honesty, and understanding (kahit ako yung madalas na walang patience hehe). I hope we keep learning how to love and care for each other in ways that make us both feel appreciated and secure. Hindi naman kailangang perfect tayo all the time. Ang importante sa atin is that what we have is genuine, and we're both willing to grow together.</p>
 
-To be honest, I'm happy that I was the one who made the first move. HAHAHAHAHA. Kahit nakakahiya aminin, at least I took the chance, diba? 😭 I was not really used to being the first one na gagawa ng first move HAHAHAHA. But I did, and I'm thankful that I did, because it led me here, with you.
+            <p>I hope you know that I appreciate you more than you probably realize. I hope I can make you feel loved not just through my words, but through the little things I do for you, too. I want to be someone you can run to when you're tired, someone you can share your random thoughts with, someone who will listen when you have a lot on your mind, and someone you can be yourself around. You don't always have to be okay, hon. You can be you. I hope you know that you can have your vulnerable moments with me, too.</p>
 
-If there's one thing I want you to remember, it's that you don't have to do anything just to be special to me. You being yourself is already something I appreciate. I like learning about you, understanding you, and discovering the little things that make you who you are. And even as time passes and the kilig becomes a little more familiar, I hope we never stop making each other feel special. I hope we never forget the little things that made us happy in the beginning.
+            <p>To be honest, I'm happy that I was the one who made the first move. HAHAHAHAHA. Kahit nakakahiya aminin, at least I took the chance, diba? 😭 I was not really used to being the first one na gagawa ng first move HAHAHAHA. But I did, and I'm thankful that I did, because it led me here, with you.</p>
 
-Happy 4th monthsary, hon! 💙🫶🏻 Four months na pala, pero kinikilig pa rin ako hehe. HAHAHAHAHA. Thank you for being part of my life and for giving me more reasons to smile. I hope we get to make memories together, try new things, laugh at the most nonsense jokes, and collect more little moments na tayo lang ang nakakaintindi.
+            <p>If there's one thing I want you to remember, it's that you don't have to do anything just to be special to me. You being yourself is already something I appreciate. I like learning about you, understanding you, and discovering the little things that make you who you are. And even as time passes and the kilig becomes a little more familiar, I hope we never stop making each other feel special. I hope we never forget the little things that made us happy in the beginning.</p>
 
-I hope that when we look back on this someday, we'll smile at how everything started. From me being curious kasi para kang scammer HAHAHAHAHA, to this na kaya ka nang tarayan HAHAHAHA. Ang cute lang isipin na ang daming nagbago in just four months, and yet there's still so much waiting for us to discover.
+            <p>Happy 4th monthsary, hon! 💙🫶🏻 Four months na pala, pero kinikilig pa rin ako hehe. HAHAHAHAHA. Thank you for being part of my life and for giving me more reasons to smile. I hope we get to make memories together, try new things, laugh at the most nonsense jokes, and collect more little moments na tayo lang ang nakakaintindi.</p>
 
-I'm not saying na alam ko na alam ko na ang mangyayari in the future, but I do know that I'm happy to have you in my present. And I want to keep making the most of what we have, one day at a time. I want more ordinary days with you, more random kwentos, more lambing, more kulit, more memories, and more moments that remind us why we chose to give this a chance.
+            <p>I hope that when we look back on this someday, we'll smile at how everything started. From me being curious kasi para kang scammer HAHAHAHAHA, to this na kaya ka nang tarayan HAHAHAHA. Ang cute lang isipin na ang daming nagbago in just four months, and yet there's still so much waiting for us to discover.</p>
 
-Thank you for being you, hon. Thank you for being the person who makes me smile at my phone, the person I look forward to talking to, and the person who made taking that little risk worth it.
+            <p>I'm not saying na alam ko na alam ko na ang mangyayari in the future, but I do know that I'm happy to have you in my present. And I want to keep making the most of what we have, one day at a time. I want more ordinary days with you, more random kwentos, more lambing, more kulit, more memories, and more moments that remind us why we chose to give this a chance.</p>
 
-Four months down, and I'm still glad that it was you. If I could go back to that day when I first asked you kung ano ba tayo, knowing what I know now, I'd still do it all over again. I'd still choose to be brave, even if I had to be the first one to make a move, because getting to know you and having you in my life is something I'm genuinely grateful for.
+            <p>Thank you for being you, hon. Thank you for being the person who makes me smile at my phone, the person I look forward to talking to, and the person who made taking that little risk worth it.</p>
 
-Happy 4th monthsary ulit, hon. I love you more than my words can fully explain, and I hope I get to show you that in a thousand little ways. I hope you'll feel the sincerity behind every word I wrote here.
+            <p>Four months down, and I'm still glad that it was you. If I could go back to that day when I first asked you kung ano ba tayo, knowing what I know now, I'd still do it all over again. I'd still choose to be brave, even if I had to be the first one to make a move, because getting to know you and having you in my life is something I'm genuinely grateful for.</p>
 
-I love you, hon. Thank you for being my hon, my boi, tomboi, buseng, ssob or kung ano man maisip kong itawag sayo HAHAHAHAHA. I really love giving you nicknames kasi di ka naman nagrereklamo. Try lang HAHAHAHA eme.
+            <p>Happy 4th monthsary ulit, hon. I love you more than my words can fully explain, and I hope I get to show you that in a thousand little ways. I hope you'll feel the sincerity behind every word I wrote here.</p>
 
-Happy 4th monthsary, hoooon. More months, memories, and little moments with you. Always remember that you are appreciated, you are special to me, and I'm so happy that out of all the people in this world, somehow, I got to know you.
+            <p>I love you, hon. Thank you for being my hon, my boi, tomboi, buseng, ssob or kung ano man maisip kong itawag sayo HAHAHAHAHA. I really love giving you nicknames kasi di ka naman nagrereklamo. Try lang HAHAHAHA eme.</p>
 
-I love you so muchyyyyy!!!!!</pre>
-      <div class="close-note">♡</div>
+            <p>Happy 4th monthsary, hoooon. More months, memories, and little moments with you. Always remember that you are appreciated, you are special to me, and I'm so happy that out of all the people in this world, somehow, I got to know you.</p>
+
+            <p class="ending">I love you so muchyyyyy!!!!! 💙🫶🏻</p>
+        </div>
+
+        <button class="close-note" id="closeNote">♡ back to the stars ♡</button>
+        <canvas id="formation"></canvas>
     </article>
-    <canvas id="formation"></canvas>
-  </section>
 </main>
 
 <script>
-const canvas=document.getElementById("heart");
-const ctx=canvas.getContext("2d");
-const bg=document.getElementById("space");
-const bctx=bg.getContext("2d");
-const hint=document.getElementById("hint");
-const letterWrap=document.getElementById("letterWrap");
-const letter=document.getElementById("letter");
-const letterText=document.getElementById("letterText");
-const formation=document.getElementById("formation");
-const fctx=formation.getContext("2d");
+(() => {
+"use strict";
 
-let W=innerWidth,H=innerHeight,dpr=1;
-let particles=[],stars=[],burstParticles=[];
-let clicked=false,rotation=0,forming=false,targets=[];
-let burstStart=0,formationStart=0,resizeTimer;
+const heartCanvas = document.getElementById("heart");
+const heartCtx = heartCanvas.getContext("2d");
+const spaceCanvas = document.getElementById("space");
+const spaceCtx = spaceCanvas.getContext("2d");
+const burstCanvas = document.getElementById("burstCanvas");
+const burstCtx = burstCanvas.getContext("2d");
+const formationCanvas = document.getElementById("formation");
+const formationCtx = formationCanvas.getContext("2d");
 
-const words=["I love you","hon","always","my favorite","four months","my person","thank you","us","lambing","my hon","love","together","💙"];
+const universe = document.getElementById("universe");
+const hint = document.getElementById("hint");
+const letterWrap = document.getElementById("letterWrap");
+const letterCard = document.getElementById("letterCard");
+const letterText = document.getElementById("letterText");
+const closeNote = document.getElementById("closeNote");
 
-function resize(){
-  dpr=Math.min(devicePixelRatio||1,2);
-  W=innerWidth;H=innerHeight;
-  bg.width=W*dpr;bg.height=H*dpr;
-  bg.style.width=W+"px";bg.style.height=H+"px";
-  bctx.setTransform(dpr,0,0,dpr,0,0);
+let W = innerWidth;
+let H = innerHeight;
+let dpr = Math.min(devicePixelRatio || 1, 2);
 
-  const r=canvas.getBoundingClientRect();
-  canvas.width=Math.max(1,Math.round(r.width*dpr));
-  canvas.height=Math.max(1,Math.round(r.height*dpr));
-  ctx.setTransform(dpr,0,0,dpr,0,0);
+let heartW = 0;
+let heartH = 0;
+let heartParticles = [];
+let stars = [];
+let burstParticles = [];
+let letterParticles = [];
 
-  makeHeart();makeStars();
+let clicked = false;
+let animating = false;
+let formationRunning = false;
+let rotation = 0;
+let burstStart = 0;
+let formationStart = 0;
+let formationTargets = [];
+let formationWidth = 0;
+let formationHeight = 0;
+let animationFrame = 0;
+
+const rand = (min, max) => Math.random() * (max - min) + min;
+const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+function setCanvasSize(canvas, ctx, width, height) {
+    canvas.width = Math.max(1, Math.floor(width * dpr));
+    canvas.height = Math.max(1, Math.floor(height * dpr));
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-function heartPoint(t,layer){
-  const x=16*Math.pow(Math.sin(t),3);
-  const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-  const depth=Math.sqrt(Math.max(0,1-layer*layer));
-  return{x:x*1.05*depth,y:y*1.05*depth,z:layer*9};
-}
+function resize() {
+    W = innerWidth;
+    H = innerHeight;
+    dpr = Math.min(devicePixelRatio || 1, 2);
 
-function makeHeart(){
-  particles=[];
-  const count=Math.min(1400,Math.max(750,Math.floor(W*1.1)));
-  for(let i=0;i<count;i++){
-    const p=heartPoint(Math.random()*Math.PI*2,Math.random()*2-1);
-    particles.push({
-      x:p.x,y:p.y,z:p.z,
-      size:Math.random()*1.5+.4,
-      phase:Math.random()*Math.PI*2,
-      speed:.4+Math.random()*1.5,
-      alpha:.4+Math.random()*.6
-    });
-  }
-}
+    setCanvasSize(spaceCanvas, spaceCtx, W, H);
+    setCanvasSize(burstCanvas, burstCtx, W, H);
 
-function makeStars(){
-  stars=[];
-  for(let i=0;i<Math.floor(W*H/2800);i++){
-    stars.push({
-      x:Math.random()*W,y:Math.random()*H,
-      r:Math.random()*1.5+.2,
-      a:Math.random()*.7+.2,
-      phase:Math.random()*6.28
-    });
-  }
-}
+    const rect = heartCanvas.getBoundingClientRect();
+    heartW = rect.width;
+    heartH = rect.height;
+    setCanvasSize(heartCanvas, heartCtx, heartW, heartH);
 
-function drawBackground(time){
-  bctx.clearRect(0,0,W,H);
-  for(const s of stars){
-    const a=s.a*(.5+.5*Math.sin(time*.001+s.phase));
-    bctx.beginPath();bctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    bctx.fillStyle=`rgba(120,190,255,${a})`;bctx.fill();
-  }
-}
+    makeStars();
+    makeHeartParticles();
 
-function project(p,angle,scale,cx,cy){
-  const cos=Math.cos(angle),sin=Math.sin(angle);
-  const x=p.x*cos-p.z*sin;
-  const z=p.x*sin+p.z*cos;
-  const perspective=1/(1+z/210);
-  return{
-    x:cx+x*scale*perspective,
-    y:cy-p.y*scale*perspective,
-    perspective
-  };
-}
-
-function drawHeart(time){
-  const r=canvas.getBoundingClientRect();
-  const cw=r.width,ch=r.height;
-  ctx.clearRect(0,0,cw,ch);
-
-  const cx=cw/2,cy=ch/2-8;
-  const scale=Math.min(cw/39,ch/38)*.9;
-
-  if(!clicked)rotation+=.0034;
-  else rotation+=.001;
-
-  ctx.save();ctx.translate(cx,cy);
-  for(let j=0;j<3;j++){
-    ctx.save();
-    ctx.rotate(rotation*(j%2?-1.1:.8)+j*1.05);
-    ctx.beginPath();
-    ctx.ellipse(0,0,scale*18.5,scale*(5+j*.8),j*.15,0,Math.PI*2);
-    ctx.strokeStyle=`rgba(47,145,255,${.23-j*.04})`;
-    ctx.lineWidth=1;ctx.stroke();ctx.restore();
-  }
-  ctx.restore();
-
-  const glow=ctx.createRadialGradient(cx,cy,5,cx,cy,scale*19);
-  glow.addColorStop(0,"rgba(0,100,255,.22)");
-  glow.addColorStop(.6,"rgba(0,70,255,.08)");
-  glow.addColorStop(1,"rgba(0,30,100,0)");
-  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(cx,cy,scale*19,0,Math.PI*2);ctx.fill();
-
-  if(!clicked){
-    for(let i=0;i<particles.length;i++){
-      const p=particles[i],q=project(p,rotation,scale,cx,cy);
-      const shimmer=.6+.4*Math.sin(time*.002*p.speed+p.phase);
-      ctx.beginPath();ctx.arc(q.x,q.y,p.size*q.perspective,0,Math.PI*2);
-      ctx.fillStyle=`rgba(${i%9===0?"175,225,255":"43,144,255"},${p.alpha*shimmer})`;
-      ctx.shadowBlur=p.size>1.5?12:4;ctx.shadowColor="#168bff";ctx.fill();
+    if (formationRunning) {
+        prepareLetterTargets();
     }
-    ctx.shadowBlur=0;
-
-    for(let i=0;i<6;i++){
-      const a=rotation*(i%2?-1:1)+i*1.1;
-      ctx.beginPath();
-      ctx.arc(cx+Math.cos(a)*scale*19,cy+Math.sin(a*1.4)*scale*6,2,0,Math.PI*2);
-      ctx.fillStyle="#c5ecff";ctx.shadowBlur=14;ctx.shadowColor="#168bff";ctx.fill();
-    }
-    ctx.shadowBlur=0;
-  }
 }
 
-function burst(){
-  if(clicked)return;
-  clicked=true;
-  burstStart=performance.now();
-  hint.textContent="✦ MADE WITH LOVE ✦";
+function makeStars() {
+    stars = [];
+    const count = Math.min(230, Math.floor(W * H / 5500));
 
-  const r=canvas.getBoundingClientRect();
-  const cx=r.width/2,cy=r.height/2;
-  burstParticles=[];
+    for (let i = 0; i < count; i++) {
+        stars.push({
+            x: rand(0, W),
+            y: rand(0, H),
+            r: rand(.3, 1.5),
+            alpha: rand(.2, .95),
+            twinkle: rand(.005, .025),
+            phase: rand(0, Math.PI * 2)
+        });
+    }
+}
 
-  // Bright, fast explosion.
-  for(let i=0;i<380;i++){
-    const a=Math.random()*Math.PI*2;
-    const speed=4+Math.random()*17;
-    burstParticles.push({
-      x:cx,y:cy,
-      vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,
-      size:.5+Math.random()*3,
-      life:1,
-      color:Math.random()>.35?"#8bdcff":"#ffffff"
-    });
-  }
+function drawBackground(time) {
+    spaceCtx.clearRect(0, 0, W, H);
 
-  // Reveal the real full-letter area and build its complete text target.
-  setTimeout(()=>{
+    const gradient = spaceCtx.createRadialGradient(
+        W * .5, H * .45, 0,
+        W * .5, H * .45, Math.max(W, H) * .72
+    );
+
+    gradient.addColorStop(0, "#07152d");
+    gradient.addColorStop(.52, "#030918");
+    gradient.addColorStop(1, "#01030a");
+
+    spaceCtx.fillStyle = gradient;
+    spaceCtx.fillRect(0, 0, W, H);
+
+    for (const s of stars) {
+        const twinkle = .55 + .45 * Math.sin(time * s.twinkle + s.phase);
+        spaceCtx.beginPath();
+        spaceCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        spaceCtx.fillStyle = `rgba(157,202,255,${s.alpha * twinkle})`;
+        spaceCtx.fill();
+
+        if (s.r > 1.1 && twinkle > .9) {
+            spaceCtx.strokeStyle = `rgba(130,185,255,${.25 * twinkle})`;
+            spaceCtx.lineWidth = .5;
+            spaceCtx.beginPath();
+            spaceCtx.moveTo(s.x - 3, s.y);
+            spaceCtx.lineTo(s.x + 3, s.y);
+            spaceCtx.moveTo(s.x, s.y - 3);
+            spaceCtx.lineTo(s.x, s.y + 3);
+            spaceCtx.stroke();
+        }
+    }
+}
+
+function makeHeartParticles() {
+    heartParticles = [];
+
+    const scale = Math.min(heartW, heartH) * .016;
+    const count = Math.min(1500, Math.max(650, Math.floor(heartW * heartH / 220)));
+
+    for (let i = 0; i < count; i++) {
+        const t = Math.random() * Math.PI * 2;
+        const fill = Math.sqrt(Math.random());
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+
+        heartParticles.push({
+            x: heartW / 2 + x * scale * fill,
+            y: heartH / 2 + y * scale * fill,
+            z: rand(-1, 1),
+            size: rand(.6, 2.2),
+            alpha: rand(.45, 1),
+            phase: rand(0, Math.PI * 2),
+            speed: rand(.3, 1.2)
+        });
+    }
+}
+
+function drawHeart(time) {
+    heartCtx.clearRect(0, 0, heartW, heartH);
+
+    // Once clicked, remove the heart AND all orbital rings immediately.
+    if (clicked) return;
+
+    rotation += .0045;
+
+    const cx = heartW / 2;
+    const cy = heartH / 2;
+    const orbitX = Math.min(heartW * .36, heartH * .43);
+    const orbitY = Math.min(heartW * .16, heartH * .18);
+
+    // Orbit rings
+    heartCtx.save();
+    heartCtx.translate(cx, cy);
+    heartCtx.rotate(-.35 + Math.sin(rotation * .5) * .12);
+
+    for (let i = 0; i < 3; i++) {
+        heartCtx.beginPath();
+        heartCtx.ellipse(
+            0, 0,
+            orbitX + i * 13,
+            orbitY + i * 5,
+            i * .12,
+            0, Math.PI * 2
+        );
+        heartCtx.strokeStyle = `rgba(61,145,255,${.17 - i * .035})`;
+        heartCtx.lineWidth = 1;
+        heartCtx.stroke();
+    }
+
+    heartCtx.restore();
+
+    // Heart-shaped 3D particle globe
+    for (const p of heartParticles) {
+        const x = p.x - cx;
+        const y = p.y - cy;
+        const cos = Math.cos(rotation);
+        const sin = Math.sin(rotation);
+
+        const rx = x * cos - p.z * 35 * sin;
+        const rz = x * sin + p.z * 35 * cos;
+        const perspective = 1 + rz / 400;
+
+        const px = cx + rx * perspective;
+        const py = cy + y * perspective;
+
+        const depthAlpha = clamp(.55 + rz / 100, .16, 1);
+        const pulse = .75 + .25 * Math.sin(time * .002 * p.speed + p.phase);
+        const size = p.size * clamp(perspective, .55, 1.4);
+
+        heartCtx.beginPath();
+        heartCtx.arc(px, py, size, 0, Math.PI * 2);
+        heartCtx.fillStyle = `rgba(${90 + Math.floor(pulse * 70)},${165 + Math.floor(pulse * 60)},255,${p.alpha * depthAlpha})`;
+        heartCtx.shadowBlur = 8;
+        heartCtx.shadowColor = "#338dff";
+        heartCtx.fill();
+    }
+
+    heartCtx.shadowBlur = 0;
+
+    // Orbiting blue glows
+    for (let i = 0; i < 5; i++) {
+        const a = rotation * 1.5 + i * Math.PI * 2 / 5;
+        const ox = cx + Math.cos(a) * orbitX;
+        const oy = cy + Math.sin(a) * orbitY;
+
+        heartCtx.beginPath();
+        heartCtx.arc(ox, oy, 2.3, 0, Math.PI * 2);
+        heartCtx.fillStyle = "#9ed4ff";
+        heartCtx.shadowBlur = 14;
+        heartCtx.shadowColor = "#348bff";
+        heartCtx.fill();
+    }
+
+    heartCtx.shadowBlur = 0;
+}
+
+function burstHeart() {
+    if (clicked || animating) return;
+
+    clicked = true;
+    animating = true;
+    burstStart = performance.now();
+
+    hint.style.display = "none";
+
+    const rect = heartCanvas.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    burstParticles = [];
+
+    const count = 1700;
+
+    for (let i = 0; i < count; i++) {
+        const angle = rand(0, Math.PI * 2);
+        const speed = rand(2, 13);
+        const source = heartParticles[Math.floor(Math.random() * heartParticles.length)];
+
+        const x = rect.left + source.x;
+        const y = rect.top + source.y;
+
+        burstParticles.push({
+            x, y,
+            vx: Math.cos(angle) * speed + (x - cx) * .012,
+            vy: Math.sin(angle) * speed + (y - cy) * .012,
+            size: rand(.7, 2.8),
+            alpha: rand(.5, 1),
+            life: rand(.7, 1.2),
+            hue: Math.random() > .25 ? rand(195, 218) : rand(220, 245)
+        });
+    }
+
+    // Hide the globe immediately; no orbit is drawn after this point.
+    heartCtx.clearRect(0, 0, heartW, heartH);
+
+    // Start preparing the letter while the explosion runs.
+    letterWrap.style.display = "block";
     letterWrap.classList.add("show");
-    requestAnimationFrame(()=>{
-      prepareFullLetterTargets();
-      startFormation();
+
+    requestAnimationFrame(() => {
+        prepareLetterTargets();
     });
-  },350);
 }
 
-function prepareFullLetterTargets(){
-  const rect=letter.getBoundingClientRect();
-  const d=Math.min(devicePixelRatio||1,1.25);
+function drawBurst(time) {
+    burstCtx.clearRect(0, 0, W, H);
 
-  formation.width=Math.max(1,Math.round(rect.width*d));
-  formation.height=Math.max(1,Math.round(rect.height*d));
-  formation.style.width=rect.width+"px";
-  formation.style.height=rect.height+"px";
+    if (!animating) return;
 
-  fctx.setTransform(d,0,0,d,0,0);
-  fctx.clearRect(0,0,rect.width,rect.height);
+    const elapsed = time - burstStart;
+    const duration = 650;
+    const progress = clamp(elapsed / duration, 0, 1);
 
-  // Draw the full letter using the same wrapping width and approximate line layout.
-  const style=getComputedStyle(letterText);
-  const fontSize=parseFloat(style.fontSize);
-  const lineHeight=parseFloat(style.lineHeight)||fontSize*1.9;
-  const font=style.font;
-  const padding=parseFloat(getComputedStyle(letter).paddingLeft);
-  const usableWidth=rect.width-padding*2;
-  const text=letterText.textContent;
-  const paragraphs=text.split("\n");
-  const off=document.createElement("canvas");
-  const octx=off.getContext("2d");
-  octx.font=font;
+    for (const p of burstParticles) {
+        const drag = Math.pow(.985, elapsed / 16.7);
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= drag;
+        p.vy *= drag;
 
-  let y=padding+fontSize;
-  const linePositions=[];
+        const fade = p.alpha * (1 - progress);
 
-  for(const paragraph of paragraphs){
-    if(paragraph.trim()===""){
-      y+=lineHeight*.65;
-      continue;
+        if (fade <= 0) continue;
+
+        burstCtx.beginPath();
+        burstCtx.arc(p.x, p.y, p.size * (1 - progress * .35), 0, Math.PI * 2);
+        burstCtx.fillStyle = `hsla(${p.hue},100%,${70 + progress * 15}%,${fade})`;
+        burstCtx.shadowBlur = 10;
+        burstCtx.shadowColor = "#368fff";
+        burstCtx.fill();
     }
 
-    const tokens=paragraph.split(/\s+/);
-    let line="";
+    burstCtx.shadowBlur = 0;
 
-    for(const token of tokens){
-      const test=line?line+" "+token:token;
-      if(octx.measureText(test).width>usableWidth && line){
-        linePositions.push({text:line,y});
-        y+=lineHeight;
-        line=token;
-      }else{
-        line=test;
-      }
+    if (elapsed >= duration) {
+        animating = false;
+        burstCtx.clearRect(0, 0, W, H);
+        beginLetterFormation();
     }
-
-    if(line){
-      linePositions.push({text:line,y});
-      y+=lineHeight;
-    }
-    y+=lineHeight*.45;
-  }
-
-  octx.font=font;
-  octx.textBaseline="alphabetic";
-  octx.fillStyle="#ffffff";
-  for(const line of linePositions){
-    octx.fillText(line.text,padding,line.y,usableWidth);
-  }
-
-  const image=octx.getImageData(0,0,off.width||1,off.height||1);
-  targets=[];
-
-  // Sample pixels from the whole rendered message, including every paragraph.
-  for(let py=0;py<off.height;py+=3){
-    for(let px=0;px<off.width;px+=3){
-      if(image.data[(py*off.width+px)*4+3]>100){
-        targets.push({x:px/d,y:py/d});
-      }
-    }
-  }
-
-  // Keep the full letter itself legible after the particle animation.
 }
 
-function startFormation(){
-  forming=true;
-  formationStart=performance.now();
+function prepareLetterTargets() {
+    const cardRect = letterCard.getBoundingClientRect();
+    const textRect = letterText.getBoundingClientRect();
 
-  // Give each target pixel a particle, sampling across the whole letter.
-  const maxParticles=9500;
-  const chosen=[];
-  const step=Math.max(1,Math.ceil(targets.length/maxParticles));
-  for(let i=0;i<targets.length;i+=step)chosen.push(targets[i]);
+    formationWidth = Math.max(1, Math.floor(cardRect.width));
+    formationHeight = Math.max(1, Math.floor(cardRect.height));
 
-  const rect=letter.getBoundingClientRect();
-  const originX=rect.width/2;
-  const originY=Math.min(220,rect.height/2);
+    setCanvasSize(formationCanvas, formationCtx, formationWidth, formationHeight);
 
-  burstParticles=[];
-  for(let i=0;i<chosen.length;i++){
-    const t=chosen[i];
-    const angle=Math.random()*Math.PI*2;
-    const radius=100+Math.random()*260;
-    burstParticles.push({
-      x:originX+Math.cos(angle)*radius,
-      y:originY+Math.sin(angle)*radius,
-      vx:(Math.random()-.5)*5,
-      vy:(Math.random()-.5)*5,
-      tx:t.x,ty:t.y,
-      size:Math.random()*.9+.35,
-      life:1,
-      color:Math.random()>.18?"#72caff":"#e5f8ff"
-    });
-  }
+    // Keep the overlay aligned with the card's full content.
+    formationCanvas.style.position = "absolute";
+    formationCanvas.style.inset = "0";
+    formationCanvas.style.width = "100%";
+    formationCanvas.style.height = "100%";
 
-  // The text starts hidden under the forming particles and becomes readable at the end.
-  letterText.style.visibility="hidden";
-  letterText.style.opacity="0";
-  requestAnimationFrame(drawFormation);
-}
+    const off = document.createElement("canvas");
+    off.width = Math.max(1, Math.floor(textRect.width));
+    off.height = Math.max(1, Math.floor(textRect.height));
 
-function drawFormation(time){
-  if(!forming)return;
+    const octx = off.getContext("2d", { willReadFrequently: true });
 
-  const rect=letter.getBoundingClientRect();
-  const d=Math.min(devicePixelRatio||1,1.25);
-  fctx.setTransform(d,0,0,d,0,0);
-  fctx.clearRect(0,0,rect.width,rect.height);
+    const styles = getComputedStyle(letterText);
+    const fontSize = parseFloat(styles.fontSize) || 18;
+    const lineHeight = parseFloat(styles.lineHeight) || fontSize * 1.95;
 
-  const elapsed=time-formationStart;
-  const progress=Math.min(1,elapsed/3200);
-  const ease=1-Math.pow(1-progress,3);
+    octx.clearRect(0, 0, off.width, off.height);
+    octx.fillStyle = "#ffffff";
+    octx.textBaseline = "top";
+    octx.font = `${fontSize}px "Patrick Hand", cursive`;
 
-  for(const p of burstParticles){
-    p.x+=(p.tx-p.x)*(.035+ease*.15);
-    p.y+=(p.ty-p.y)*(.035+ease*.15);
+    // Render every paragraph onto the offscreen canvas, preserving wrapping.
+    const paragraphs = [...letterText.children];
+    let y = 0;
+    const paragraphGap = 23;
 
-    fctx.globalAlpha=.55+.45*Math.random();
-    fctx.fillStyle=p.color;
-    fctx.shadowBlur=4;
-    fctx.shadowColor="#39aaff";
-    fctx.beginPath();
-    fctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-    fctx.fill();
-  }
+    for (const paragraph of paragraphs) {
+        const content = paragraph.innerText || "";
+        const pStyle = getComputedStyle(paragraph);
+        const pFontSize = parseFloat(pStyle.fontSize) || fontSize;
+        const pLineHeight = parseFloat(pStyle.lineHeight) || pFontSize * 1.95;
+        const isCentered = pStyle.textAlign === "center";
+        const isEnding = paragraph.classList.contains("ending");
+        const isOpening = paragraph.classList.contains("opening");
 
-  fctx.globalAlpha=1;
-  fctx.shadowBlur=0;
+        octx.font = `${pFontSize}px "Patrick Hand", cursive`;
+        octx.textAlign = isCentered ? "center" : "left";
 
-  if(progress<1){
-    requestAnimationFrame(drawFormation);
-  }else{
-    // Let the particles finish the full letter, then reveal the actual readable text.
-    setTimeout(()=>{
-      letterText.style.visibility="visible";
-      letterText.style.transition="opacity .55s ease";
-      letterText.style.opacity="1";
-      formation.style.transition="opacity .6s ease";
-      formation.style.opacity="0";
-      hint.textContent="♡";
+        if (isOpening || isEnding) {
+            octx.font = `${pFontSize}px "Short Stack", cursive`;
+        }
 
-      setTimeout(()=>{
-        formation.style.display="none";
-      },650);
-    },350);
-  }
-}
+        const words = content.split(/\s+/);
+        let line = "";
+        const x = isCentered ? off.width / 2 : 0;
 
-canvas.addEventListener("click",burst);
+        for (const word of words) {
+            const test = line ? line + " " + word : word;
 
-function animate(time){
-  drawBackground(time);
-  drawHeart(time);
+            if (octx.measureText(test).width > off.width - 4 && line) {
+                octx.fillText(line, x, y);
+                y += pLineHeight;
+                line = word;
+            } else {
+                line = test;
+            }
+        }
 
-  if(!forming && clicked){
-    const r=canvas.getBoundingClientRect();
-    ctx.clearRect(0,0,r.width,r.height);
+        if (line) {
+            octx.fillText(line, x, y);
+            y += pLineHeight;
+        }
 
-    const elapsed=time-burstStart;
-    for(const p of burstParticles){
-      if(p.life<=0)continue;
-      p.x+=p.vx;p.y+=p.vy;
-      p.vx*=.965;p.vy*=.965;
-      p.life-=.018;
-      ctx.globalAlpha=Math.max(0,p.life);
-      ctx.fillStyle=p.color;
-      ctx.shadowBlur=18;
-      ctx.shadowColor="#168bff";
-      ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
+        y += paragraphGap;
     }
-    ctx.globalAlpha=1;ctx.shadowBlur=0;
-  }
 
-  requestAnimationFrame(animate);
+    const pixels = octx.getImageData(0, 0, off.width, off.height).data;
+    const step = innerWidth < 600 ? 3 : 3;
+    const targets = [];
+
+    for (let py = 0; py < off.height; py += step) {
+        for (let px = 0; px < off.width; px += step) {
+            const index = (py * off.width + px) * 4 + 3;
+
+            if (pixels[index] > 40) {
+                targets.push({
+                    x: textRect.left - cardRect.left + px,
+                    y: textRect.top - cardRect.top + py
+                });
+            }
+        }
+    }
+
+    formationTargets = targets;
+
+    // Build particles across the entire letter, not just the heading.
+    const total = Math.min(formationTargets.length, 8500);
+    letterParticles = [];
+
+    const heartRect = heartCanvas.getBoundingClientRect();
+
+    for (let i = 0; i < total; i++) {
+        const target = formationTargets[
+            Math.floor(i * formationTargets.length / total)
+        ];
+
+        const sourceX = heartRect.left + heartRect.width / 2;
+        const sourceY = heartRect.top + heartRect.height / 2;
+
+        letterParticles.push({
+            x: sourceX - cardRect.left + rand(-100, 100),
+            y: sourceY - cardRect.top + rand(-100, 100),
+            tx: target.x,
+            ty: target.y,
+            size: rand(.65, 1.45),
+            alpha: rand(.55, 1),
+            phase: rand(0, Math.PI * 2),
+            settled: false
+        });
+    }
 }
 
-window.addEventListener("resize",()=>{
-  if(clicked)return;
-  clearTimeout(resizeTimer);
-  resizeTimer=setTimeout(resize,100);
+function beginLetterFormation() {
+    formationRunning = true;
+    formationStart = performance.now();
+
+    // Hide the real words until the particles have formed the letter.
+    letterText.style.visibility = "hidden";
+    formationCanvas.style.opacity = "1";
+
+    if (!formationTargets.length) {
+        prepareLetterTargets();
+    }
+}
+
+function drawLetterFormation(time) {
+    if (!formationRunning) return;
+
+    const elapsed = time - formationStart;
+
+    // Smooth, readable formation, around 2.6 seconds.
+    const duration = 2600;
+    const progress = clamp(elapsed / duration, 0, 1);
+    const ease = progress * progress * (3 - 2 * progress);
+
+    formationCtx.clearRect(0, 0, formationWidth, formationHeight);
+
+    for (const p of letterParticles) {
+        const dx = p.tx - p.x;
+        const dy = p.ty - p.y;
+
+        // Move quickly at first, then ease into the exact text position.
+        const speed = .045 + ease * .16;
+        p.x += dx * speed;
+        p.y += dy * speed;
+
+        if (progress > .88) {
+            p.x += (p.tx - p.x) * .2;
+            p.y += (p.ty - p.y) * .2;
+        }
+
+        const shimmer = .7 + .3 * Math.sin(time * .004 + p.phase);
+
+        formationCtx.beginPath();
+        formationCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        formationCtx.fillStyle = `rgba(132,194,255,${p.alpha * shimmer})`;
+        formationCtx.shadowBlur = 5;
+        formationCtx.shadowColor = "#3d8dff";
+        formationCtx.fill();
+    }
+
+    formationCtx.shadowBlur = 0;
+
+    if (elapsed >= duration) {
+        formationRunning = false;
+
+        // Reveal the real full letter and softly fade out the particles.
+        letterText.style.visibility = "visible";
+        formationCanvas.classList.add("fade-out");
+
+        setTimeout(() => {
+            formationCtx.clearRect(0, 0, formationWidth, formationHeight);
+            formationCanvas.style.opacity = "0";
+        }, 1050);
+    }
+}
+
+function animate(time) {
+    drawBackground(time);
+    drawHeart(time);
+    drawBurst(time);
+    drawLetterFormation(time);
+    animationFrame = requestAnimationFrame(animate);
+}
+
+heartCanvas.addEventListener("click", burstHeart);
+
+closeNote.addEventListener("click", () => {
+    cancelAnimationFrame(animationFrame);
+
+    clicked = false;
+    animating = false;
+    formationRunning = false;
+    burstParticles = [];
+    letterParticles = [];
+    formationTargets = [];
+
+    letterWrap.classList.remove("show");
+    letterWrap.style.display = "none";
+
+    letterText.style.visibility = "visible";
+    formationCanvas.classList.remove("fade-out");
+    formationCanvas.style.opacity = "1";
+
+    hint.style.display = "block";
+
+    resize();
+    animationFrame = requestAnimationFrame(animate);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+window.addEventListener("resize", resize);
+
 resize();
-requestAnimationFrame(animate);
+animationFrame = requestAnimationFrame(animate);
+
+})();
 </script>
+
 </body>
 </html>
