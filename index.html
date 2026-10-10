@@ -4,10 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You, Hon 💙</title>
+<title>💙</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
 
 * {
   box-sizing: border-box;
@@ -21,10 +21,12 @@ html {
 
 body {
   min-height: 100vh;
-  background: #020714;
-  color: #e8f5ff;
-  font-family: 'Quicksand', sans-serif;
   overflow-x: hidden;
+  color: #e5f3ff;
+  background:
+    radial-gradient(ellipse at 50% 15%,
+      #0a2045 0%, #030b1b 48%, #01040c 100%);
+  font-family: 'Quicksand', sans-serif;
 }
 
 #particles {
@@ -32,261 +34,88 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
   pointer-events: none;
+  z-index: 0;
 }
 
-.background {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(ellipse at 50% 35%,
-      #10376b 0%,
-      #071a38 38%,
-      #020714 78%);
-}
-
-.background::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 20%, #168bff13, transparent 30%),
-    radial-gradient(circle at 80% 70%, #376dff12, transparent 35%);
-}
-
-.page {
+main {
   position: relative;
   z-index: 1;
   width: 100%;
-  min-height: 100vh;
-  padding: 55px 18px 75px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 0 16px 60px;
 }
 
-.intro {
-  text-align: center;
-  margin-bottom: 5px;
-  animation: fadeIn 2s ease both;
-}
-
-.eyebrow {
-  font-size: 10px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: #8ddaff;
-  margin-bottom: 16px;
-}
-
-.intro h1 {
-  font-family: 'Short Stack', cursive;
-  font-size: clamp(27px, 7vw, 42px);
-  font-weight: 400;
-  color: #e9f7ff;
-  text-shadow: 0 0 25px #239cff80;
-}
-
-.intro p {
-  margin-top: 12px;
-  color: #9ebddd;
-  font-size: 13px;
-}
-
-.heart-container {
-  width: min(86vw, 370px);
-  height: min(78vw, 335px);
-  position: relative;
-  margin: 0 auto 8px;
-  flex-shrink: 0;
-}
-
-.heart-container svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.heart-outline {
-  fill: none;
-  stroke: #66ceff;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-dasharray: 1100;
-  stroke-dashoffset: 1100;
-  filter:
-    drop-shadow(0 0 5px #41baff)
-    drop-shadow(0 0 15px #168bff);
-  animation: drawHeart 5s ease-in-out 2s forwards;
-}
-
-.heart-inner {
-  fill: url(#blueGradient);
-  opacity: 0;
-  animation: fillHeart 3s ease 6s forwards;
-}
-
-.heart-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 35px;
-  opacity: 0;
-  animation: heartBeat 2s ease 7s infinite;
-  filter: drop-shadow(0 0 12px #66cfff);
-}
-
-.subtitle {
-  margin-top: 0;
-  margin-bottom: 30px;
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-align: center;
-  color: #7ebde9;
-  opacity: 0;
-  animation: fadeIn 2s ease 7s forwards;
+/* Empty space for the particle heart */
+.heart-space {
+  height: 370px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .letter {
   width: min(100%, 680px);
-  padding: clamp(22px, 5vw, 42px);
-  border: 1px solid #64bfff38;
-  border-radius: 22px;
+  margin: 0 auto;
+  padding: clamp(22px, 5vw, 40px);
+  border: 1px solid #64bfff30;
+  border-radius: 20px;
   background: linear-gradient(
-    150deg,
-    rgba(12, 36, 70, .94),
-    rgba(4, 14, 31, .96)
+    145deg,
+    rgba(10, 30, 58, .92),
+    rgba(3, 11, 25, .96)
   );
   box-shadow:
-    0 0 40px #168bff16,
-    0 0 100px #1269d00a,
-    inset 0 0 35px #1c8fff09;
+    0 0 35px #168bff12,
+    inset 0 0 30px #168bff08;
 
   opacity: 0;
-  transform: translateY(25px);
-  animation: revealLetter 3s ease 8s forwards;
+  transform: translateY(22px);
+  animation: reveal 2.8s ease 8s forwards;
 }
 
-.letter-heading {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.letter-heading .tiny-heart {
-  font-size: 25px;
-  display: block;
-  margin-bottom: 15px;
-  filter: drop-shadow(0 0 10px #48baff);
-}
-
-.letter-heading h2 {
-  font-family: 'Short Stack', cursive;
-  font-weight: 400;
-  font-size: clamp(23px, 6vw, 31px);
-  color: #b9eaff;
-  text-shadow: 0 0 18px #168bff55;
-}
-
-.letter-heading p {
-  margin-top: 10px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: #759bc4;
-}
-
-.letter-body {
-  font-family: 'Quicksand', sans-serif;
+.letter-text {
   font-size: 14px;
   line-height: 2;
-  color: #dcecff;
+  color: #e0edff;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-.letter-body::first-line {
-  color: #c3edff;
-}
-
-.signature {
+.ending {
+  text-align: center;
+  color: #91d8ff;
+  font-size: 21px;
   margin-top: 30px;
-  text-align: center;
-  font-family: 'Short Stack', cursive;
-  font-size: clamp(20px, 5vw, 27px);
-  color: #a7e2ff;
-  text-shadow: 0 0 15px #168bff60;
-  line-height: 1.8;
+  text-shadow: 0 0 15px #168bff65;
 }
 
-.footer {
-  margin-top: 32px;
-  text-align: center;
-  color: #7098c3;
-  font-size: 10px;
-  letter-spacing: 3px;
-  line-height: 2;
-  opacity: 0;
-  animation: fadeIn 2s ease 10s forwards;
-}
-
-.footer span {
-  display: block;
-  color: #7acfff;
-  font-size: 20px;
-  margin-top: 8px;
-}
-
-@keyframes drawHeart {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes fillHeart {
-  to { opacity: .12; }
-}
-
-@keyframes revealLetter {
+@keyframes reveal {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-@keyframes heartBeat {
-  0%, 100% {
-    opacity: .65;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.15);
-  }
-}
-
 @media (max-width: 480px) {
-  .page {
-    padding: 42px 15px 55px;
-  }
-
-  .letter-body {
-    font-size: 13px;
-    line-height: 1.95;
+  .heart-space {
+    height: 330px;
   }
 
   .letter {
-    border-radius: 18px;
+    padding: 22px 18px;
+    border-radius: 17px;
+  }
+
+  .letter-text {
+    font-size: 13px;
+    line-height: 1.95;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
+  .letter {
+    animation-duration: .01ms;
+    animation-delay: 0ms;
+    animation-fill-mode: forwards;
   }
 }
 </style>
@@ -294,57 +123,13 @@ body {
 
 <body>
 
-<div class="background"></div>
 <canvas id="particles"></canvas>
 
-<main class="page">
-
-  <header class="intro">
-    <div class="eyebrow">A little piece of my heart</div>
-    <h1>For You, Hon 💙</h1>
-    <p>Something I want you to know...</p>
-  </header>
-
-  <div class="heart-container">
-    <svg viewBox="0 0 300 280" aria-label="A glowing blue heart">
-      <defs>
-        <linearGradient id="blueGradient"
-          x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#58c9ff"/>
-          <stop offset="50%" stop-color="#168bff"/>
-          <stop offset="100%" stop-color="#5472ff"/>
-        </linearGradient>
-      </defs>
-
-      <path class="heart-inner"
-        d="M150 260
-           C120 230 20 165 20 85
-           C20 25 100 5 150 70
-           C200 5 280 25 280 85
-           C280 165 180 230 150 260 Z"/>
-
-      <path class="heart-outline"
-        d="M150 260
-           C120 230 20 165 20 85
-           C20 25 100 5 150 70
-           C200 5 280 25 280 85
-           C280 165 180 230 150 260 Z"/>
-    </svg>
-
-    <div class="heart-center">💙</div>
-  </div>
-
-  <div class="subtitle">EVERY LITTLE PIECE OF MY HEART IS YOURS</div>
+<main>
+  <div class="heart-space"></div>
 
   <article class="letter">
-
-    <div class="letter-heading">
-      <span class="tiny-heart">♡</span>
-      <h2>Happy 4th Monthsary!</h2>
-      <p>TO MY FAVORITE PERSON</p>
-    </div>
-
-    <div class="letter-body">Hi, hon. 💙
+    <div class="letter-text">Hi, hon. 💙
 
 Today marks the 4th month since I gathered the courage to ask you kung ano ba tayo. HAHAHAHAHA. Wala eh, crush talaga kita, hehez. I know, nasabi ko naman na before na type talaga kita. The moment na pinakilala ka ni Pat, na-curious agad ako sa'yo. Sobrang aloof mo sa social media, walang pics, kaya nung una, I was really interested in knowing you more. Pero habang mas nakikilala kita, mas lalo rin kitang nagugustuhan. Sige, ako na nauna. HAHAHAHAHA. 😭
 
@@ -366,7 +151,7 @@ If there's one thing I want you to remember, it's that you don't have to do anyt
 
 Happy 4th monthsary, hon! 💙🫶🏻 Four months na pala, pero kinikilig pa rin ako hehe. HAHAHAHAHA. Thank you for being part of my life and for giving me more reasons to smile. I hope we get to make memories together, try new things, laugh at the most nonsense jokes, and collect more little moments na tayo lang ang nakakaintindi.
 
-I hope that when we look back on this someday, we'll smile at how everything started. From me being curious kasi para kang scammer HAHAHAHAHA, to this na kaya na kitang tarayan HAHAHAHA. Ang cute lang isipin na ang daming nagbago in just four months, and yet there's still so much waiting for us to discover.
+I hope that when we look back on this someday, we'll smile at how everything started. From me being curious kasi para kang scammer HAHAHAHAHA, to this na kaya ka ng tarayan HAHHAHA. Ang cute lang isipin na ang daming nagbago in just four months, and yet there's still so much waiting for us to discover.
 
 I'm not saying na alam ko na alam ko na ang mangyayari in the future, but I do know that I'm happy to have you in my present. And I want to keep making the most of what we have, one day at a time. I want more ordinary days with you, more random kwentos, more lambing, more kulit, more memories, and more moments that remind us why we chose to give this a chance.
 
@@ -374,69 +159,72 @@ Thank you for being you, hon. Thank you for being the person who makes me smile 
 
 Four months down, and I'm still glad that it was you. If I could go back to that day when I first asked you kung ano ba tayo, knowing what I know now, I'd still do it all over again. I'd still choose to be brave, even if I had to be the first one to make a move, because getting to know you and having you in my life is something I'm genuinely grateful for.
 
-Happy 4th monthsary ulit, hon. I love you more than my words can fully explain, and I hope I get to show you that in a thousand little ways. I hope you'll feel the sincerity behind every word I wrote here.
+Happy 4th monthsary ulit, hon. I love you more than my words can fully explain, and I hope I get to show you that in a thousand little ways. I hoe na you'll feel the sincerity behind every word I wrote here.
 
-I love you, hon. Thank you for being my hon, my boi, tomboi, buseng, ssob, or kung ano man maisip kong itawag sa'yo HAHAHAHAHA. I really love giving you nicknames kasi di ka naman nagrereklamo. Try lang HAHAHAHAHA eme.
+I love you, hon. Thank you for being my hon, my boi, tomboi, buseng, ssob or kung ano man maisip kong itawag sayo HAHAHAHAHA. I really love giving you nicknames kasi di ka naman nagrereklamo. Try lang hahahahah eme.
 
 Happy 4th monthsary, hoooon. More months, memories, and little moments with you. Always remember that you are appreciated, you are special to me, and I'm so happy that out of all the people in this world, somehow, I got to know you.
 
 I love you so muchyyyyy!!!!! 💙</div>
 
-    <div class="signature">
-      Always yours, hon ♡
-    </div>
-
+    <div class="ending">♡</div>
   </article>
-
-  <footer class="footer">
-    MADE WITH ALL MY LOVE
-    <span>💙 ✧ 💙 ✧ 💙</span>
-  </footer>
-
 </main>
 
 <script>
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 
-let width, height, dpr;
+let w, h, dpr;
 let particles = [];
-let startTime = performance.now();
-
-const PARTICLE_COUNT = 260;
+const COUNT = 360;
+const start = performance.now();
 
 function resize() {
   dpr = Math.min(window.devicePixelRatio || 1, 2);
-  width = window.innerWidth;
-  height = window.innerHeight;
+  w = window.innerWidth;
+  h = window.innerHeight;
 
-  canvas.width = width * dpr;
-  canvas.height = height * dpr;
-  canvas.style.width = width + "px";
-  canvas.style.height = height + "px";
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + "px";
+  canvas.style.height = h + "px";
 
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   createParticles();
 }
 
+function random(min, max) {
+  return min + Math.random() * (max - min);
+}
+
 function createParticles() {
   particles = [];
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+  for (let i = 0; i < COUNT; i++) {
+    const t = Math.random() * Math.PI * 2;
+
     particles.push({
-      angle: Math.random() * Math.PI * 2,
-      orbit: 0.35 + Math.random() * 1.5,
-      speed: 0.0015 + Math.random() * 0.004,
+      t,
+      // A little spread around the heart outline.
+      spread: random(-1, 1),
+      size: random(0.7, 2.4),
+      alpha: random(0.45, 1),
+      phase: random(0, Math.PI * 2),
+      speed: random(0.0002, 0.0008),
       direction: Math.random() > 0.5 ? 1 : -1,
-      size: 0.5 + Math.random() * 2,
-      phase: Math.random() * Math.PI * 2,
-      alpha: 0.35 + Math.random() * 0.65,
-      floatX: Math.random() * width,
-      floatY: Math.random() * height,
-      floatSpeed: 0.2 + Math.random() * 0.6,
-      seed: Math.random() * 1000
+      orbit: random(0.65, 1.4),
+      x: random(0, w),
+      y: random(0, h),
+      driftX: random(-0.3, 0.3),
+      driftY: random(-0.4, 0.4)
     });
   }
+}
+
+function smoothstep(value) {
+  const x = Math.max(0, Math.min(1, value));
+  return x * x * (3 - 2 * x);
 }
 
 function heartPoint(t, scale) {
@@ -449,97 +237,94 @@ function heartPoint(t, scale) {
   };
 }
 
-function smoothstep(x) {
-  x = Math.max(0, Math.min(1, x));
-  return x * x * (3 - 2 * x);
-}
-
 function draw(now) {
-  ctx.clearRect(0, 0, width, height);
+  ctx.clearRect(0, 0, w, h);
 
-  const seconds = (now - startTime) / 1000;
+  const seconds = (now - start) / 1000;
 
-  // First float freely, then circle, then form the heart.
-  const gather = smoothstep((seconds - 2) / 5);
+  // Stage 1: particles drift around randomly.
+  // Stage 2: particles begin swirling.
+  // Stage 3: particles gather into a heart.
+  const gathering = smoothstep((seconds - 2) / 6);
 
-  const cx = width / 2;
-  const cy = height * 0.35;
+  const swirl = smoothstep((seconds - 2) / 2);
+  const cx = w / 2;
+  const cy = Math.min(185, h * 0.27);
 
-  const scale = Math.min(width * 0.0076, 5.5);
+  // Heart size scales to the screen.
+  const scale = Math.min(w / 27, 13.2);
 
-  particles.forEach(p => {
-    p.angle += p.speed * p.direction;
+  for (const p of particles) {
+    p.t += p.speed * p.direction * (1 + swirl * 2.5);
 
-    // Free-floating starting positions.
-    p.floatX += Math.sin(now * 0.0003 + p.seed) *
-                p.floatSpeed * 0.35;
+    // Free floating movement.
+    p.x += p.driftX;
+    p.y += p.driftY;
 
-    p.floatY -= p.floatSpeed * 0.25;
+    if (p.x < -10) p.x = w + 10;
+    if (p.x > w + 10) p.x = -10;
+    if (p.y < -10) p.y = h + 10;
+    if (p.y > h + 10) p.y = -10;
 
-    if (p.floatY < -10) p.floatY = height + 10;
-    if (p.floatX < -10) p.floatX = width + 10;
-    if (p.floatX > width + 10) p.floatX = -10;
+    const freeX = p.x;
+    const freeY = p.y;
 
-    // Orbiting positions.
-    const orbitRadius =
-      p.orbit * Math.min(width, height) * 0.43;
+    // Swirling orbit before the heart forms.
+    const orbitAngle = p.t * 2.5;
+    const orbitRadius = Math.min(w, h) *
+      (0.15 + p.orbit * 0.20);
 
-    const ox = cx + Math.cos(p.angle) * orbitRadius;
-    const oy = cy + Math.sin(p.angle) * orbitRadius;
+    const orbitX = cx + Math.cos(orbitAngle) * orbitRadius;
+    const orbitY = cy + Math.sin(orbitAngle) * orbitRadius;
 
-    // Heart-shaped positions.
-    const t = p.angle;
-    const hp = heartPoint(t, scale);
+    // Every particle's destination lies on the heart curve.
+    const heart = heartPoint(p.t, scale);
+    const spread = p.spread * (1.2 + p.orbit * 0.7);
 
-    const spread = 0.92 + p.orbit * 0.13;
+    const heartX = cx + heart.x + Math.cos(p.t) * spread;
+    const heartY = cy + heart.y + Math.sin(p.t) * spread;
 
-    const hx = cx + hp.x * spread;
-    const hy = cy + hp.y * spread;
+    // Random drift -> swirling -> heart outline.
+    const middleX = freeX * (1 - swirl) + orbitX * swirl;
+    const middleY = freeY * (1 - swirl) + orbitY * swirl;
 
-    // Gradual transition between all three stages.
-    const sx = p.floatX * (1 - gather) + ox * gather;
-    const sy = p.floatY * (1 - gather) + oy * gather;
+    const x = middleX * (1 - gathering) +
+              heartX * gathering;
+    const y = middleY * (1 - gathering) +
+              heartY * gathering;
 
-    const x = sx * (1 - gather) + hx * gather;
-    const y = sy * (1 - gather) + hy * gather;
-
-    const twinkle =
-      0.55 + 0.45 * Math.sin(now * 0.003 + p.phase);
+    const twinkle = 0.55 +
+      0.45 * Math.sin(now * 0.003 + p.phase);
 
     const alpha = p.alpha * twinkle;
 
     ctx.beginPath();
-
-    const blue = Math.floor(185 + 70 * twinkle);
-
-    ctx.fillStyle = `rgba(110, ${blue}, 255, ${alpha})`;
-    ctx.shadowColor = "#269bff";
+    ctx.fillStyle = `rgba(113, 199, 255, ${alpha})`;
+    ctx.shadowColor = "#238fff";
     ctx.shadowBlur = 5 + p.size * 5;
-
     ctx.arc(x, y, p.size, 0, Math.PI * 2);
     ctx.fill();
 
-    // Tiny cross-shaped glitter.
-    if (p.size > 1.7) {
+    // Small glitter flashes.
+    if (p.size > 1.65) {
       ctx.beginPath();
       ctx.strokeStyle =
-        `rgba(205, 239, 255, ${alpha * 0.75})`;
-
+        `rgba(205, 240, 255, ${alpha * 0.75})`;
       ctx.lineWidth = 0.65;
-      ctx.moveTo(x - 4, y);
-      ctx.lineTo(x + 4, y);
-      ctx.moveTo(x, y - 4);
-      ctx.lineTo(x, y + 4);
+
+      ctx.moveTo(x - 3.5, y);
+      ctx.lineTo(x + 3.5, y);
+      ctx.moveTo(x, y - 3.5);
+      ctx.lineTo(x, y + 3.5);
       ctx.stroke();
     }
-  });
+  }
 
   ctx.shadowBlur = 0;
   requestAnimationFrame(draw);
 }
 
 window.addEventListener("resize", resize);
-
 resize();
 requestAnimationFrame(draw);
 </script>
