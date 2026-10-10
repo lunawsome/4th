@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Hon 💙</title>
+<title>💙 For You, Hon</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Patrick+Hand&display=swap');
@@ -12,17 +12,29 @@
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
+:root {
+    --blue: #7dd3fc;
+    --light-blue: #bae6fd;
+    --deep-blue: #2563eb;
+    --white: #effaff;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #030713;
+    color: var(--white);
+    font-family: 'Short Stack', cursive;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    background: #020511;
-    color: #dcecff;
-    font-family: 'Patrick Hand', cursive;
-    overflow-x: hidden;
+    position: relative;
+}
+
+canvas {
+    display: block;
 }
 
 #space {
@@ -35,35 +47,52 @@ body {
 }
 
 .universe {
-    position: relative;
-    z-index: 1;
-    min-height: 100svh;
+    position: fixed;
+    inset: 0;
+    z-index: 2;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 24px 12px;
-    transition: opacity 0.7s ease;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity .35s ease;
+}
+
+.universe.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scene {
+    position: relative;
+    width: min(100vw, 620px);
+    height: min(100dvh, 760px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #heart {
-    display: block;
-    width: min(94vw, 650px);
-    height: min(72vh, 560px);
-    min-height: 340px;
-    max-height: 560px;
+    position: absolute;
+    width: min(100vw, 620px);
+    height: min(100dvh, 760px);
+    inset: 0;
     cursor: pointer;
     touch-action: manipulation;
 }
 
 .hint {
-    margin-top: -15px;
-    color: #9fcaff;
-    font-size: 16px;
-    letter-spacing: 1.5px;
+    position: absolute;
+    bottom: max(32px, env(safe-area-inset-bottom));
+    left: 0;
+    right: 0;
+    padding: 0 20px;
     text-align: center;
-    text-shadow: 0 0 12px #287aff;
-    animation: hintPulse 2s ease-in-out infinite;
+    color: #b8dcff;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    text-shadow: 0 0 15px #38bdf8;
+    animation: hintPulse 2s infinite ease-in-out;
+    pointer-events: none;
 }
 
 @keyframes hintPulse {
@@ -71,147 +100,171 @@ body {
     50% { opacity: 1; }
 }
 
+/* LETTER SCREEN: occupies the same screen as the heart */
 #letterWrap {
-    position: relative;
-    z-index: 2;
-    width: min(940px, 94%);
-    margin: 35px auto 70px;
+    position: fixed;
+    inset: 0;
+    z-index: 5;
     display: none;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    padding:
+        max(22px, env(safe-area-inset-top))
+        15px
+        max(35px, env(safe-area-inset-bottom));
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(30, 100, 200, .19), transparent 58%),
+        rgba(3, 7, 19, .94);
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #081326;
 }
 
 #letterWrap.show {
-    opacity: 1;
-    transform: translateY(0);
+    display: block;
+    animation: screenFadeIn .5s ease both;
+}
+
+@keyframes screenFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .letter-card {
     position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(99, 164, 255, .42);
+    width: min(100%, 540px);
+    margin: 0 auto;
+    padding: 28px 23px 35px;
+    border: 1px solid rgba(125, 211, 252, .42);
     border-radius: 24px;
-    padding: clamp(22px, 5vw, 52px);
     background:
-        radial-gradient(ellipse at top, rgba(35, 95, 181, .19), transparent 60%),
-        rgba(3, 10, 29, .94);
+        linear-gradient(145deg, rgba(14, 35, 67, .96), rgba(5, 13, 30, .98));
     box-shadow:
-        0 0 35px rgba(36, 111, 255, .15),
-        inset 0 0 30px rgba(49, 119, 255, .05);
+        0 0 30px rgba(37, 99, 235, .15),
+        inset 0 0 25px rgba(96, 165, 250, .035);
+    overflow: hidden;
+}
+
+.letter-card::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(147, 197, 253, .12);
+    border-radius: 18px;
+    pointer-events: none;
 }
 
 .letter-heading {
+    position: relative;
+    margin: 0 0 24px;
     text-align: center;
-    margin-bottom: 30px;
-    color: #a9d5ff;
-    font-family: 'Short Stack', cursive;
-    font-size: clamp(23px, 4vw, 34px);
-    text-shadow: 0 0 20px rgba(66, 147, 255, .6);
+    font-size: clamp(23px, 6vw, 31px);
+    line-height: 1.4;
+    color: #bae6fd;
+    text-shadow: 0 0 20px rgba(56, 189, 248, .45);
 }
 
-.letter-heading span {
-    display: block;
-    margin-top: 8px;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 17px;
-    letter-spacing: 2px;
-    color: #78b6ff;
+.letter-decoration {
+    text-align: center;
+    margin: 0 0 22px;
+    color: #7dd3fc;
+    font-size: 18px;
+    letter-spacing: 8px;
 }
 
 #letterText {
-    color: #dce9ff;
-    font-size: clamp(16px, 2.3vw, 19px);
+    position: relative;
+    color: #e5f4ff;
+    font-size: 14px;
     line-height: 1.95;
-    white-space: pre-line;
     overflow-wrap: anywhere;
-    text-shadow: 0 0 5px rgba(83, 151, 255, .12);
 }
 
 #letterText p {
-    margin: 0 0 23px;
+    margin: 0 0 19px;
 }
 
 #letterText .opening {
-    color: #a9d5ff;
-    font-size: 22px;
-    margin-bottom: 24px;
+    font-size: 17px;
+    color: #bae6fd;
+    margin-bottom: 20px;
 }
 
 #letterText .ending {
     text-align: center;
-    color: #a9d5ff;
-    font-family: 'Short Stack', cursive;
-    font-size: 21px;
-    margin-top: 35px;
-}
-
-.close-note {
-    display: block;
-    margin: 28px auto 0;
-    border: 1px solid rgba(117, 180, 255, .5);
-    background: rgba(30, 93, 181, .17);
-    color: #b9dcff;
-    border-radius: 30px;
-    padding: 10px 24px;
-    font: inherit;
+    color: #bae6fd;
     font-size: 17px;
+    margin-top: 26px;
+}
+
+.letter-footer {
+    position: relative;
+    text-align: center;
+    color: #7dd3fc;
+    font-size: 12px;
+    margin-top: 25px;
+    letter-spacing: 1px;
+}
+
+#backButton {
+    display: block;
+    margin: 25px auto 0;
+    border: 1px solid rgba(125, 211, 252, .6);
+    border-radius: 30px;
+    padding: 12px 23px;
+    background: rgba(37, 99, 235, .18);
+    color: #dff5ff;
+    font-family: inherit;
+    font-size: 13px;
     cursor: pointer;
-    transition: .25s ease;
+    box-shadow: 0 0 18px rgba(59, 130, 246, .15);
 }
 
-.close-note:hover {
-    background: rgba(47, 123, 224, .3);
-    box-shadow: 0 0 18px rgba(69, 146, 255, .3);
+#backButton:active {
+    transform: scale(.97);
 }
 
+/* Particle letter formation overlay */
 #formation {
     position: absolute;
-    z-index: 5;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    z-index: 4;
     pointer-events: none;
-    opacity: 1;
-    transition: opacity 1s ease;
+    display: none;
 }
 
-#formation.fade-out {
-    opacity: 0;
+#letterWrap.forming #letterText,
+#letterWrap.forming .letter-heading,
+#letterWrap.forming .letter-decoration,
+#letterWrap.forming .letter-footer,
+#letterWrap.forming #backButton {
+    visibility: hidden;
 }
 
-#burstCanvas {
-    position: fixed;
-    z-index: 10;
-    pointer-events: none;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+#letterWrap.forming #formation {
+    display: block;
 }
 
-@media (max-width: 600px) {
-    .universe {
-        padding: 12px 5px;
+#letterWrap.forming .letter-card {
+    min-height: 100%;
+}
+
+@media (max-width: 420px) {
+    .letter-card {
+        padding: 24px 18px 30px;
+        border-radius: 20px;
     }
 
-    #heart {
-        width: 100vw;
-        height: 54vh;
-        min-height: 300px;
+    #letterText {
+        font-size: 13px;
+        line-height: 1.9;
     }
 
     .hint {
-        font-size: 14px;
-    }
-
-    #letterWrap {
-        width: 95%;
-        margin-top: 18px;
-    }
-
-    .letter-card {
-        border-radius: 18px;
-        padding: 23px 19px;
+        font-size: 11px;
     }
 }
 
@@ -224,21 +277,19 @@ body {
 </head>
 
 <body>
-
 <canvas id="space"></canvas>
-<canvas id="burstCanvas"></canvas>
 
-<section class="universe" id="universe">
-    <canvas id="heart" aria-label="Click the blue heart to open your letter"></canvas>
-    <div class="hint" id="hint">✦ click the heart, hon ✦</div>
-</section>
+<div class="universe" id="universe">
+    <div class="scene">
+        <canvas id="heart"></canvas>
+        <div class="hint">TAP THE HEART, HON 💙</div>
+    </div>
+</div>
 
-<main id="letterWrap">
-    <article class="letter-card" id="letterCard">
-        <div class="letter-heading">
-            For My Hon 💙
-            <span>four months with you ✦</span>
-        </div>
+<div id="letterWrap">
+    <div class="letter-card" id="letterCard">
+        <div class="letter-decoration">✦ · 💙 · ✦</div>
+        <h1 class="letter-heading">Happy 4th Monthsary, Hon! 💙</h1>
 
         <div id="letterText">
             <p class="opening">Hi, hon. 💙</p>
@@ -280,552 +331,634 @@ body {
             <p class="ending">I love you so muchyyyyy!!!!! 💙🫶🏻</p>
         </div>
 
-        <button class="close-note" id="closeNote">♡ back to the stars ♡</button>
+        <div class="letter-footer">MADE WITH LOVE, JUST FOR YOU 💙</div>
+        <button id="backButton" type="button">↶ Back to my heart</button>
         <canvas id="formation"></canvas>
-    </article>
-</main>
+    </div>
+</div>
 
 <script>
 (() => {
-"use strict";
+    const spaceCanvas = document.getElementById('space');
+    const spaceCtx = spaceCanvas.getContext('2d');
 
-const heartCanvas = document.getElementById("heart");
-const heartCtx = heartCanvas.getContext("2d");
-const spaceCanvas = document.getElementById("space");
-const spaceCtx = spaceCanvas.getContext("2d");
-const burstCanvas = document.getElementById("burstCanvas");
-const burstCtx = burstCanvas.getContext("2d");
-const formationCanvas = document.getElementById("formation");
-const formationCtx = formationCanvas.getContext("2d");
+    const heartCanvas = document.getElementById('heart');
+    const heartCtx = heartCanvas.getContext('2d');
 
-const universe = document.getElementById("universe");
-const hint = document.getElementById("hint");
-const letterWrap = document.getElementById("letterWrap");
-const letterCard = document.getElementById("letterCard");
-const letterText = document.getElementById("letterText");
-const closeNote = document.getElementById("closeNote");
+    const universe = document.getElementById('universe');
+    const letterWrap = document.getElementById('letterWrap');
+    const letterCard = document.getElementById('letterCard');
+    const letterText = document.getElementById('letterText');
+    const formationCanvas = document.getElementById('formation');
+    const formationCtx = formationCanvas.getContext('2d');
+    const backButton = document.getElementById('backButton');
 
-let W = innerWidth;
-let H = innerHeight;
-let dpr = Math.min(devicePixelRatio || 1, 2);
+    let W = 0, H = 0, dpr = 1;
+    let heartParticles = [];
+    let stars = [];
+    let orbitAngle = 0;
+    let heartRotation = 0;
+    let isTransitioning = false;
+    let letterIsOpen = false;
+    let burstParticles = [];
+    let formationParticles = [];
+    let formationStart = 0;
+    let formationDuration = 3000;
+    let animationFrame = 0;
+    let resizeTimer = null;
 
-let heartW = 0;
-let heartH = 0;
-let heartParticles = [];
-let stars = [];
-let burstParticles = [];
-let letterParticles = [];
+    const rand = (min, max) => Math.random() * (max - min) + min;
 
-let clicked = false;
-let animating = false;
-let formationRunning = false;
-let rotation = 0;
-let burstStart = 0;
-let formationStart = 0;
-let formationTargets = [];
-let formationWidth = 0;
-let formationHeight = 0;
-let animationFrame = 0;
-
-const rand = (min, max) => Math.random() * (max - min) + min;
-const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-
-function setCanvasSize(canvas, ctx, width, height) {
-    canvas.width = Math.max(1, Math.floor(width * dpr));
-    canvas.height = Math.max(1, Math.floor(height * dpr));
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-
-function resize() {
-    W = innerWidth;
-    H = innerHeight;
-    dpr = Math.min(devicePixelRatio || 1, 2);
-
-    setCanvasSize(spaceCanvas, spaceCtx, W, H);
-    setCanvasSize(burstCanvas, burstCtx, W, H);
-
-    const rect = heartCanvas.getBoundingClientRect();
-    heartW = rect.width;
-    heartH = rect.height;
-    setCanvasSize(heartCanvas, heartCtx, heartW, heartH);
-
-    makeStars();
-    makeHeartParticles();
-
-    if (formationRunning) {
-        prepareLetterTargets();
+    function resizeCanvas(canvas, ctx, width, height) {
+        canvas.width = Math.max(1, Math.round(width * dpr));
+        canvas.height = Math.max(1, Math.round(height * dpr));
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
-}
 
-function makeStars() {
-    stars = [];
-    const count = Math.min(230, Math.floor(W * H / 5500));
+    function resizeAll() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
 
-    for (let i = 0; i < count; i++) {
-        stars.push({
-            x: rand(0, W),
-            y: rand(0, H),
-            r: rand(.3, 1.5),
-            alpha: rand(.2, .95),
-            twinkle: rand(.005, .025),
-            phase: rand(0, Math.PI * 2)
-        });
+        resizeCanvas(spaceCanvas, spaceCtx, W, H);
+        resizeCanvas(heartCanvas, heartCtx, W, H);
+
+        const sceneSize = heartCanvas.getBoundingClientRect();
+        heartCanvas.width = Math.round(sceneSize.width * dpr);
+        heartCanvas.height = Math.round(sceneSize.height * dpr);
+        heartCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        makeStars();
+        makeHeartParticles();
+        drawHeart();
+        drawSpace();
     }
-}
 
-function drawBackground(time) {
-    spaceCtx.clearRect(0, 0, W, H);
-
-    const gradient = spaceCtx.createRadialGradient(
-        W * .5, H * .45, 0,
-        W * .5, H * .45, Math.max(W, H) * .72
-    );
-
-    gradient.addColorStop(0, "#07152d");
-    gradient.addColorStop(.52, "#030918");
-    gradient.addColorStop(1, "#01030a");
-
-    spaceCtx.fillStyle = gradient;
-    spaceCtx.fillRect(0, 0, W, H);
-
-    for (const s of stars) {
-        const twinkle = .55 + .45 * Math.sin(time * s.twinkle + s.phase);
-        spaceCtx.beginPath();
-        spaceCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        spaceCtx.fillStyle = `rgba(157,202,255,${s.alpha * twinkle})`;
-        spaceCtx.fill();
-
-        if (s.r > 1.1 && twinkle > .9) {
-            spaceCtx.strokeStyle = `rgba(130,185,255,${.25 * twinkle})`;
-            spaceCtx.lineWidth = .5;
-            spaceCtx.beginPath();
-            spaceCtx.moveTo(s.x - 3, s.y);
-            spaceCtx.lineTo(s.x + 3, s.y);
-            spaceCtx.moveTo(s.x, s.y - 3);
-            spaceCtx.lineTo(s.x, s.y + 3);
-            spaceCtx.stroke();
+    function makeStars() {
+        stars = [];
+        const count = Math.min(180, Math.floor(W * H / 4800));
+        for (let i = 0; i < count; i++) {
+            stars.push({
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: rand(.4, 1.7),
+                a: rand(.2, .9),
+                phase: rand(0, Math.PI * 2),
+                speed: rand(.006, .025)
+            });
         }
     }
-}
 
-function makeHeartParticles() {
-    heartParticles = [];
-
-    const scale = Math.min(heartW, heartH) * .016;
-    const count = Math.min(1500, Math.max(650, Math.floor(heartW * heartH / 220)));
-
-    for (let i = 0; i < count; i++) {
-        const t = Math.random() * Math.PI * 2;
-        const fill = Math.sqrt(Math.random());
-        const x = 16 * Math.pow(Math.sin(t), 3);
-        const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-
-        heartParticles.push({
-            x: heartW / 2 + x * scale * fill,
-            y: heartH / 2 + y * scale * fill,
-            z: rand(-1, 1),
-            size: rand(.6, 2.2),
-            alpha: rand(.45, 1),
-            phase: rand(0, Math.PI * 2),
-            speed: rand(.3, 1.2)
-        });
-    }
-}
-
-function drawHeart(time) {
-    heartCtx.clearRect(0, 0, heartW, heartH);
-
-    // Once clicked, remove the heart AND all orbital rings immediately.
-    if (clicked) return;
-
-    rotation += .0045;
-
-    const cx = heartW / 2;
-    const cy = heartH / 2;
-    const orbitX = Math.min(heartW * .36, heartH * .43);
-    const orbitY = Math.min(heartW * .16, heartH * .18);
-
-    // Orbit rings
-    heartCtx.save();
-    heartCtx.translate(cx, cy);
-    heartCtx.rotate(-.35 + Math.sin(rotation * .5) * .12);
-
-    for (let i = 0; i < 3; i++) {
-        heartCtx.beginPath();
-        heartCtx.ellipse(
-            0, 0,
-            orbitX + i * 13,
-            orbitY + i * 5,
-            i * .12,
-            0, Math.PI * 2
+    function drawSpace() {
+        spaceCtx.clearRect(0, 0, W, H);
+        const glow = spaceCtx.createRadialGradient(
+            W * .5, H * .47, 0, W * .5, H * .47, Math.max(W, H) * .72
         );
-        heartCtx.strokeStyle = `rgba(61,145,255,${.17 - i * .035})`;
-        heartCtx.lineWidth = 1;
-        heartCtx.stroke();
+        glow.addColorStop(0, '#0b1b3a');
+        glow.addColorStop(.5, '#050d20');
+        glow.addColorStop(1, '#02040c');
+        spaceCtx.fillStyle = glow;
+        spaceCtx.fillRect(0, 0, W, H);
+
+        const t = performance.now() * .001;
+        for (const s of stars) {
+            const alpha = s.a * (.65 + .35 * Math.sin(t * s.speed * 40 + s.phase));
+            spaceCtx.beginPath();
+            spaceCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            spaceCtx.fillStyle = `rgba(186,230,253,${alpha})`;
+            spaceCtx.fill();
+
+            if (s.r > 1.35) {
+                spaceCtx.strokeStyle = `rgba(125,211,252,${alpha * .5})`;
+                spaceCtx.lineWidth = .6;
+                spaceCtx.beginPath();
+                spaceCtx.moveTo(s.x - 3, s.y);
+                spaceCtx.lineTo(s.x + 3, s.y);
+                spaceCtx.moveTo(s.x, s.y - 3);
+                spaceCtx.lineTo(s.x, s.y + 3);
+                spaceCtx.stroke();
+            }
+        }
     }
 
-    heartCtx.restore();
+    /*
+      Build a hollow 3D heart shell from front and back surfaces.
+      The Z depth makes the heart look like a rotating globe rather than a flat icon.
+    */
+    function makeHeartParticles() {
+        heartParticles = [];
 
-    // Heart-shaped 3D particle globe
-    for (const p of heartParticles) {
-        const x = p.x - cx;
-        const y = p.y - cy;
-        const cos = Math.cos(rotation);
-        const sin = Math.sin(rotation);
+        const count = 1550;
+        const golden = Math.PI * (3 - Math.sqrt(5));
 
-        const rx = x * cos - p.z * 35 * sin;
-        const rz = x * sin + p.z * 35 * cos;
-        const perspective = 1 + rz / 400;
+        for (let i = 0; i < count; i++) {
+            const y = 1 - (i / (count - 1)) * 2;
+            const radiusAtY = Math.sqrt(Math.max(0, 1 - y * y));
+            const theta = golden * i;
 
-        const px = cx + rx * perspective;
-        const py = cy + y * perspective;
+            const sx = Math.cos(theta) * radiusAtY;
+            const sz = Math.sin(theta) * radiusAtY;
 
-        const depthAlpha = clamp(.55 + rz / 100, .16, 1);
-        const pulse = .75 + .25 * Math.sin(time * .002 * p.speed + p.phase);
-        const size = p.size * clamp(perspective, .55, 1.4);
+            // Convert a sphere point into a heart-like volume.
+            const heartX = sx * (1 - .23 * y * y);
+            const heartY = y * 1.06;
+            const heartZ = sz * .52;
 
-        heartCtx.beginPath();
-        heartCtx.arc(px, py, size, 0, Math.PI * 2);
-        heartCtx.fillStyle = `rgba(${90 + Math.floor(pulse * 70)},${165 + Math.floor(pulse * 60)},255,${p.alpha * depthAlpha})`;
-        heartCtx.shadowBlur = 8;
-        heartCtx.shadowColor = "#338dff";
-        heartCtx.fill();
-    }
-
-    heartCtx.shadowBlur = 0;
-
-    // Orbiting blue glows
-    for (let i = 0; i < 5; i++) {
-        const a = rotation * 1.5 + i * Math.PI * 2 / 5;
-        const ox = cx + Math.cos(a) * orbitX;
-        const oy = cy + Math.sin(a) * orbitY;
-
-        heartCtx.beginPath();
-        heartCtx.arc(ox, oy, 2.3, 0, Math.PI * 2);
-        heartCtx.fillStyle = "#9ed4ff";
-        heartCtx.shadowBlur = 14;
-        heartCtx.shadowColor = "#348bff";
-        heartCtx.fill();
-    }
-
-    heartCtx.shadowBlur = 0;
-}
-
-function burstHeart() {
-    if (clicked || animating) return;
-
-    clicked = true;
-    animating = true;
-    burstStart = performance.now();
-
-    hint.style.display = "none";
-
-    const rect = heartCanvas.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-
-    burstParticles = [];
-
-    const count = 1700;
-
-    for (let i = 0; i < count; i++) {
-        const angle = rand(0, Math.PI * 2);
-        const speed = rand(2, 13);
-        const source = heartParticles[Math.floor(Math.random() * heartParticles.length)];
-
-        const x = rect.left + source.x;
-        const y = rect.top + source.y;
-
-        burstParticles.push({
-            x, y,
-            vx: Math.cos(angle) * speed + (x - cx) * .012,
-            vy: Math.sin(angle) * speed + (y - cy) * .012,
-            size: rand(.7, 2.8),
-            alpha: rand(.5, 1),
-            life: rand(.7, 1.2),
-            hue: Math.random() > .25 ? rand(195, 218) : rand(220, 245)
-        });
-    }
-
-    // Hide the globe immediately; no orbit is drawn after this point.
-    heartCtx.clearRect(0, 0, heartW, heartH);
-
-    // Start preparing the letter while the explosion runs.
-    letterWrap.style.display = "block";
-    letterWrap.classList.add("show");
-
-    requestAnimationFrame(() => {
-        prepareLetterTargets();
-    });
-}
-
-function drawBurst(time) {
-    burstCtx.clearRect(0, 0, W, H);
-
-    if (!animating) return;
-
-    const elapsed = time - burstStart;
-    const duration = 650;
-    const progress = clamp(elapsed / duration, 0, 1);
-
-    for (const p of burstParticles) {
-        const drag = Math.pow(.985, elapsed / 16.7);
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= drag;
-        p.vy *= drag;
-
-        const fade = p.alpha * (1 - progress);
-
-        if (fade <= 0) continue;
-
-        burstCtx.beginPath();
-        burstCtx.arc(p.x, p.y, p.size * (1 - progress * .35), 0, Math.PI * 2);
-        burstCtx.fillStyle = `hsla(${p.hue},100%,${70 + progress * 15}%,${fade})`;
-        burstCtx.shadowBlur = 10;
-        burstCtx.shadowColor = "#368fff";
-        burstCtx.fill();
-    }
-
-    burstCtx.shadowBlur = 0;
-
-    if (elapsed >= duration) {
-        animating = false;
-        burstCtx.clearRect(0, 0, W, H);
-        beginLetterFormation();
-    }
-}
-
-function prepareLetterTargets() {
-    const cardRect = letterCard.getBoundingClientRect();
-    const textRect = letterText.getBoundingClientRect();
-
-    formationWidth = Math.max(1, Math.floor(cardRect.width));
-    formationHeight = Math.max(1, Math.floor(cardRect.height));
-
-    setCanvasSize(formationCanvas, formationCtx, formationWidth, formationHeight);
-
-    // Keep the overlay aligned with the card's full content.
-    formationCanvas.style.position = "absolute";
-    formationCanvas.style.inset = "0";
-    formationCanvas.style.width = "100%";
-    formationCanvas.style.height = "100%";
-
-    const off = document.createElement("canvas");
-    off.width = Math.max(1, Math.floor(textRect.width));
-    off.height = Math.max(1, Math.floor(textRect.height));
-
-    const octx = off.getContext("2d", { willReadFrequently: true });
-
-    const styles = getComputedStyle(letterText);
-    const fontSize = parseFloat(styles.fontSize) || 18;
-    const lineHeight = parseFloat(styles.lineHeight) || fontSize * 1.95;
-
-    octx.clearRect(0, 0, off.width, off.height);
-    octx.fillStyle = "#ffffff";
-    octx.textBaseline = "top";
-    octx.font = `${fontSize}px "Patrick Hand", cursive`;
-
-    // Render every paragraph onto the offscreen canvas, preserving wrapping.
-    const paragraphs = [...letterText.children];
-    let y = 0;
-    const paragraphGap = 23;
-
-    for (const paragraph of paragraphs) {
-        const content = paragraph.innerText || "";
-        const pStyle = getComputedStyle(paragraph);
-        const pFontSize = parseFloat(pStyle.fontSize) || fontSize;
-        const pLineHeight = parseFloat(pStyle.lineHeight) || pFontSize * 1.95;
-        const isCentered = pStyle.textAlign === "center";
-        const isEnding = paragraph.classList.contains("ending");
-        const isOpening = paragraph.classList.contains("opening");
-
-        octx.font = `${pFontSize}px "Patrick Hand", cursive`;
-        octx.textAlign = isCentered ? "center" : "left";
-
-        if (isOpening || isEnding) {
-            octx.font = `${pFontSize}px "Short Stack", cursive`;
+            heartParticles.push({
+                x: heartX,
+                y: heartY,
+                z: heartZ,
+                size: rand(.65, 1.65),
+                phase: rand(0, Math.PI * 2),
+                bright: Math.random(),
+                drift: rand(.5, 1.5)
+            });
         }
 
-        const words = content.split(/\s+/);
-        let line = "";
-        const x = isCentered ? off.width / 2 : 0;
+        // Add extra particles along the characteristic heart outline.
+        for (let i = 0; i < 420; i++) {
+            const t = Math.random() * Math.PI * 2;
+            const x = 16 * Math.pow(Math.sin(t), 3) / 17;
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t)
+                - 2 * Math.cos(3*t) - Math.cos(4*t)) / 17;
 
-        for (const word of words) {
-            const test = line ? line + " " + word : word;
+            heartParticles.push({
+                x: x * rand(.92, 1.04),
+                y: y * rand(.92, 1.04),
+                z: rand(-.42, .42),
+                size: rand(.7, 1.8),
+                phase: rand(0, Math.PI * 2),
+                bright: Math.random(),
+                drift: rand(.5, 1.5),
+                outline: true
+            });
+        }
+    }
 
-            if (octx.measureText(test).width > off.width - 4 && line) {
-                octx.fillText(line, x, y);
-                y += pLineHeight;
-                line = word;
+    function heartScreenCenter() {
+        return { x: W / 2, y: H * .47 };
+    }
+
+    function drawOrbit(ctx, cx, cy, rx, ry, angle, alpha, lineWidth) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(96,190,255,${alpha})`;
+        ctx.lineWidth = lineWidth;
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 12;
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function drawHeart() {
+        if (letterIsOpen || isTransitioning) return;
+
+        heartCtx.clearRect(0, 0, W, H);
+        const { x: cx, y: cy } = heartScreenCenter();
+
+        const size = Math.min(W * .34, H * .245, 150);
+        const scaleX = size;
+        const scaleY = size * 1.03;
+        const time = performance.now() * .001;
+
+        // Atmospheric blue glow behind the heart.
+        const halo = heartCtx.createRadialGradient(cx, cy, 0, cx, cy, size * 2.05);
+        halo.addColorStop(0, 'rgba(37,99,235,.2)');
+        halo.addColorStop(.42, 'rgba(14,165,233,.075)');
+        halo.addColorStop(1, 'rgba(2,6,23,0)');
+        heartCtx.fillStyle = halo;
+        heartCtx.fillRect(0, 0, W, H);
+
+        // Orbiting rings surrounding the heart.
+        drawOrbit(heartCtx, cx, cy, size * 1.62, size * .47,
+            -.35 + Math.sin(orbitAngle * .7) * .12, .55, 1.15);
+        drawOrbit(heartCtx, cx, cy, size * 1.43, size * .66,
+            .72 + orbitAngle * .32, .33, .9);
+        drawOrbit(heartCtx, cx, cy, size * 1.76, size * .35,
+            .23 - orbitAngle * .22, .25, .8);
+
+        // Small orbiting stars.
+        for (let i = 0; i < 4; i++) {
+            const a = orbitAngle + i * Math.PI / 2;
+            const ox = cx + Math.cos(a) * size * 1.62;
+            const oy = cy + Math.sin(a) * size * .47;
+            heartCtx.beginPath();
+            heartCtx.arc(ox, oy, 2.1, 0, Math.PI * 2);
+            heartCtx.fillStyle = '#bae6fd';
+            heartCtx.shadowColor = '#38bdf8';
+            heartCtx.shadowBlur = 12;
+            heartCtx.fill();
+        }
+        heartCtx.shadowBlur = 0;
+
+        // Rotate the volume around its vertical axis.
+        const cosR = Math.cos(heartRotation);
+        const sinR = Math.sin(heartRotation);
+
+        const projected = heartParticles.map(p => {
+            const x = p.x * cosR - p.z * sinR;
+            const z = p.x * sinR + p.z * cosR;
+            const y = p.y;
+
+            // Slight 3D tilt and perspective.
+            const tilt = -.12;
+            const yy = y * Math.cos(tilt) - z * Math.sin(tilt);
+            const zz = y * Math.sin(tilt) + z * Math.cos(tilt);
+
+            const perspective = 1 / (1.22 - zz * .2);
+            return {
+                x: cx + x * scaleX * perspective,
+                y: cy - yy * scaleY * perspective,
+                z: zz,
+                size: p.size * perspective,
+                bright: p.bright,
+                phase: p.phase,
+                drift: p.drift,
+                outline: p.outline
+            };
+        }).sort((a, b) => a.z - b.z);
+
+        // Back-to-front draw order gives the shape more volume.
+        for (const p of projected) {
+            const twinkle = .72 + .28 * Math.sin(time * p.drift + p.phase);
+            const depth = (p.z + 1.2) / 2.2;
+            const alpha = Math.max(.13, Math.min(.98, (.38 + depth * .58) * twinkle));
+            const hue = p.bright > .82 ? '#effaff'
+                : p.bright > .47 ? '#7dd3fc'
+                : p.bright > .2 ? '#38bdf8'
+                : '#2563eb';
+
+            heartCtx.beginPath();
+            heartCtx.arc(p.x, p.y, p.size * (p.outline ? 1.15 : 1), 0, Math.PI * 2);
+            heartCtx.fillStyle = hue;
+            heartCtx.globalAlpha = alpha;
+            heartCtx.shadowColor = hue;
+            heartCtx.shadowBlur = p.z > 0 ? 8 : 2;
+            heartCtx.fill();
+        }
+
+        heartCtx.globalAlpha = 1;
+        heartCtx.shadowBlur = 0;
+
+        // Soft front-side sheen.
+        const sheen = heartCtx.createRadialGradient(
+            cx - size * .28, cy - size * .38, 1,
+            cx - size * .05, cy - size * .08, size * 1.12
+        );
+        sheen.addColorStop(0, 'rgba(186,230,253,.10)');
+        sheen.addColorStop(.5, 'rgba(59,130,246,.035)');
+        sheen.addColorStop(1, 'rgba(37,99,235,0)');
+        heartCtx.fillStyle = sheen;
+        heartCtx.beginPath();
+        heartCtx.ellipse(cx, cy, size * .84, size * .95, 0, 0, Math.PI * 2);
+        heartCtx.fill();
+
+        orbitAngle += .009;
+        heartRotation += .007;
+    }
+
+    function makeBurst() {
+        const { x: cx, y: cy } = heartScreenCenter();
+        burstParticles = [];
+
+        for (let i = 0; i < 420; i++) {
+            const a = Math.random() * Math.PI * 2;
+            const speed = rand(2, 10);
+            burstParticles.push({
+                x: cx + rand(-70, 70),
+                y: cy + rand(-80, 80),
+                vx: Math.cos(a) * speed,
+                vy: Math.sin(a) * speed,
+                r: rand(.8, 2.8),
+                life: rand(35, 85),
+                maxLife: 85,
+                hue: Math.random() > .45 ? '#7dd3fc' : '#effaff'
+            });
+        }
+    }
+
+    function drawBurst() {
+        heartCtx.clearRect(0, 0, W, H);
+
+        for (const p of burstParticles) {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vx *= .984;
+            p.vy *= .984;
+            p.life--;
+
+            heartCtx.beginPath();
+            heartCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            heartCtx.globalAlpha = Math.max(0, p.life / p.maxLife);
+            heartCtx.fillStyle = p.hue;
+            heartCtx.shadowColor = p.hue;
+            heartCtx.shadowBlur = 12;
+            heartCtx.fill();
+        }
+
+        heartCtx.globalAlpha = 1;
+        heartCtx.shadowBlur = 0;
+    }
+
+    function prepareLetterTargets() {
+        formationParticles = [];
+
+        const cardRect = letterCard.getBoundingClientRect();
+        const textRect = letterText.getBoundingClientRect();
+
+        // Overlay canvas covers the visible letter screen.
+        const width = Math.max(1, cardRect.width);
+        const height = Math.max(1, cardRect.height);
+
+        formationCanvas.width = Math.round(width * dpr);
+        formationCanvas.height = Math.round(height * dpr);
+        formationCanvas.style.width = width + 'px';
+        formationCanvas.style.height = height + 'px';
+        formationCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // Draw the whole card to an offscreen canvas, so particles can
+        // form the visible letter and its heading in the same place.
+        const off = document.createElement('canvas');
+        off.width = Math.round(width * dpr);
+        off.height = Math.round(height * dpr);
+        const offCtx = off.getContext('2d');
+        offCtx.scale(dpr, dpr);
+
+        const cardStyle = getComputedStyle(letterCard);
+        offCtx.fillStyle = cardStyle.backgroundColor || '#081326';
+        offCtx.fillRect(0, 0, width, height);
+
+        const heading = letterCard.querySelector('.letter-heading');
+        const decoration = letterCard.querySelector('.letter-decoration');
+
+        function drawTextBlock(element, colorOverride = null) {
+            const rect = element.getBoundingClientRect();
+            const x = rect.left - cardRect.left;
+            const y = rect.top - cardRect.top;
+            const style = getComputedStyle(element);
+
+            offCtx.font = style.font;
+            offCtx.textBaseline = 'top';
+            offCtx.fillStyle = colorOverride || style.color;
+            offCtx.textAlign = style.textAlign;
+
+            if (element.tagName === 'P') {
+                offCtx.fillText('', x, y);
+                const text = element.innerText;
+                const maxWidth = rect.width;
+                const lineHeight = parseFloat(style.lineHeight) || 22;
+                const words = text.split(/\s+/);
+                let line = '';
+                let lineY = y;
+
+                for (const word of words) {
+                    const testLine = line ? line + ' ' + word : word;
+                    if (offCtx.measureText(testLine).width > maxWidth && line) {
+                        offCtx.fillText(line, x, lineY);
+                        line = word;
+                        lineY += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                if (line) offCtx.fillText(line, x, lineY);
             } else {
-                line = test;
+                const text = element.innerText;
+                const maxWidth = rect.width;
+                const lineHeight = parseFloat(style.lineHeight) || 28;
+                const words = text.split(/\s+/);
+                let line = '';
+                let lineY = y;
+
+                for (const word of words) {
+                    const testLine = line ? line + ' ' + word : word;
+                    if (offCtx.measureText(testLine).width > maxWidth && line) {
+                        offCtx.fillText(line, x + (style.textAlign === 'center' ? maxWidth / 2 : 0), lineY);
+                        line = word;
+                        lineY += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                if (line) offCtx.fillText(line, x + (style.textAlign === 'center' ? maxWidth / 2 : 0), lineY);
             }
         }
 
-        if (line) {
-            octx.fillText(line, x, y);
-            y += pLineHeight;
+        // Use a simple readable particle mask for the letter content.
+        offCtx.fillStyle = '#effaff';
+        offCtx.font = 'bold 18px Short Stack, cursive';
+        offCtx.textAlign = 'center';
+        offCtx.fillText('💙', width / 2, 20);
+
+        if (heading) {
+            const rect = heading.getBoundingClientRect();
+            offCtx.fillStyle = '#bae6fd';
+            offCtx.font = 'bold 22px Short Stack, cursive';
+            offCtx.textAlign = 'center';
+            offCtx.fillText('Happy 4th Monthsary, Hon! 💙', width / 2, rect.top - cardRect.top + 2);
         }
 
-        y += paragraphGap;
+        // Paint the actual paragraphs into the mask, using their layout.
+        const paragraphs = [...letterText.querySelectorAll('p')];
+        for (const p of paragraphs) {
+            const rect = p.getBoundingClientRect();
+            const style = getComputedStyle(p);
+            const x = rect.left - cardRect.left;
+            const y = rect.top - cardRect.top;
+            const maxWidth = rect.width;
+            const lineHeight = parseFloat(style.lineHeight) || 26;
+
+            offCtx.font = style.font;
+            offCtx.fillStyle = style.color;
+            offCtx.textAlign = 'left';
+            offCtx.textBaseline = 'top';
+
+            const words = p.innerText.split(/\s+/);
+            let line = '';
+            let lineY = y;
+
+            for (const word of words) {
+                const test = line ? line + ' ' + word : word;
+                if (offCtx.measureText(test).width > maxWidth && line) {
+                    offCtx.fillText(line, x, lineY);
+                    line = word;
+                    lineY += lineHeight;
+                } else {
+                    line = test;
+                }
+            }
+            if (line) offCtx.fillText(line, x, lineY);
+        }
+
+        const image = offCtx.getImageData(0, 0, off.width, off.height);
+        const data = image.data;
+        const step = 3;
+
+        for (let y = 0; y < off.height; y += step) {
+            for (let x = 0; x < off.width; x += step) {
+                const idx = (y * off.width + x) * 4;
+                if (data[idx + 3] > 90 &&
+                    (data[idx] > 80 || data[idx + 1] > 90 || data[idx + 2] > 100)) {
+                    formationParticles.push({
+                        tx: x / dpr,
+                        ty: y / dpr,
+                        x: width / 2 + rand(-60, 60),
+                        y: height / 2 + rand(-60, 60),
+                        vx: rand(-2, 2),
+                        vy: rand(-2, 2),
+                        size: rand(.55, 1.35),
+                        color: Math.random() > .45 ? '#7dd3fc' : '#effaff',
+                        delay: Math.random() * .22
+                    });
+                }
+            }
+        }
+
+        // Limit the number of particles to keep phones smooth.
+        if (formationParticles.length > 10000) {
+            const stride = Math.ceil(formationParticles.length / 10000);
+            formationParticles = formationParticles.filter((_, i) => i % stride === 0);
+        }
+
+        formationStart = performance.now();
     }
 
-    const pixels = octx.getImageData(0, 0, off.width, off.height).data;
-    const step = innerWidth < 600 ? 3 : 3;
-    const targets = [];
+    function animateFormation(now) {
+        if (!letterIsOpen) return;
 
-    for (let py = 0; py < off.height; py += step) {
-        for (let px = 0; px < off.width; px += step) {
-            const index = (py * off.width + px) * 4 + 3;
+        const elapsed = now - formationStart;
+        const progress = Math.min(1, elapsed / formationDuration);
+        const ease = t => t < .5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-            if (pixels[index] > 40) {
-                targets.push({
-                    x: textRect.left - cardRect.left + px,
-                    y: textRect.top - cardRect.top + py
+        const cardRect = letterCard.getBoundingClientRect();
+        const width = cardRect.width;
+        const height = cardRect.height;
+
+        formationCtx.clearRect(0, 0, width, height);
+
+        for (const p of formationParticles) {
+            const localProgress = Math.max(0, Math.min(1, (progress - p.delay) / (1 - p.delay)));
+            const eased = ease(localProgress);
+
+            const dx = p.tx - p.x;
+            const dy = p.ty - p.y;
+
+            const x = p.x + dx * eased;
+            const y = p.y + dy * eased;
+
+            formationCtx.beginPath();
+            formationCtx.arc(x, y, p.size, 0, Math.PI * 2);
+            formationCtx.fillStyle = p.color;
+            formationCtx.globalAlpha = .25 + .75 * localProgress;
+            formationCtx.shadowColor = p.color;
+            formationCtx.shadowBlur = localProgress < 1 ? 6 : 1;
+            formationCtx.fill();
+        }
+
+        formationCtx.globalAlpha = 1;
+        formationCtx.shadowBlur = 0;
+
+        if (progress < 1) {
+            animationFrame = requestAnimationFrame(animateFormation);
+        } else {
+            // Reveal the real, selectable text once the particles finish.
+            setTimeout(() => {
+                letterWrap.classList.remove('forming');
+                formationCtx.clearRect(0, 0, formationCanvas.width, formationCanvas.height);
+            }, 180);
+        }
+    }
+
+    function openLetter() {
+        if (isTransitioning || letterIsOpen) return;
+
+        isTransitioning = true;
+        makeBurst();
+
+        // Hide the orbit rings immediately with the heart scene.
+        universe.classList.add('hidden');
+
+        // Bring the letter into the same viewport, never underneath the heart.
+        letterWrap.style.display = 'block';
+        letterWrap.classList.add('show', 'forming');
+        letterWrap.scrollTop = 0;
+        letterIsOpen = true;
+
+        // Reset the card to its top before sampling the letter.
+        letterCard.scrollTop = 0;
+
+        // Draw the heart burst while the letter screen is revealed.
+        const burstStart = performance.now();
+        function burstAndForm(now) {
+            drawBurst();
+
+            if (now - burstStart < 450) {
+                requestAnimationFrame(burstAndForm);
+            } else {
+                heartCtx.clearRect(0, 0, W, H);
+                isTransitioning = false;
+
+                requestAnimationFrame(() => {
+                    prepareLetterTargets();
+                    cancelAnimationFrame(animationFrame);
+                    animationFrame = requestAnimationFrame(animateFormation);
                 });
             }
         }
+
+        requestAnimationFrame(burstAndForm);
     }
 
-    formationTargets = targets;
+    function closeLetter() {
+        cancelAnimationFrame(animationFrame);
+        letterIsOpen = false;
+        isTransitioning = false;
 
-    // Build particles across the entire letter, not just the heading.
-    const total = Math.min(formationTargets.length, 8500);
-    letterParticles = [];
+        letterWrap.classList.remove('show', 'forming');
+        letterWrap.style.display = 'none';
+        universe.classList.remove('hidden');
 
-    const heartRect = heartCanvas.getBoundingClientRect();
-
-    for (let i = 0; i < total; i++) {
-        const target = formationTargets[
-            Math.floor(i * formationTargets.length / total)
-        ];
-
-        const sourceX = heartRect.left + heartRect.width / 2;
-        const sourceY = heartRect.top + heartRect.height / 2;
-
-        letterParticles.push({
-            x: sourceX - cardRect.left + rand(-100, 100),
-            y: sourceY - cardRect.top + rand(-100, 100),
-            tx: target.x,
-            ty: target.y,
-            size: rand(.65, 1.45),
-            alpha: rand(.55, 1),
-            phase: rand(0, Math.PI * 2),
-            settled: false
-        });
+        heartCtx.clearRect(0, 0, W, H);
+        drawHeart();
     }
-}
 
-function beginLetterFormation() {
-    formationRunning = true;
-    formationStart = performance.now();
+    heartCanvas.addEventListener('click', openLetter);
+    heartCanvas.addEventListener('touchend', function(e) {
+        // Native click will normally fire after touch; avoid double-triggering.
+        if (e.cancelable) e.preventDefault();
+        openLetter();
+    }, { passive: false });
 
-    // Hide the real words until the particles have formed the letter.
-    letterText.style.visibility = "hidden";
-    formationCanvas.style.opacity = "1";
+    backButton.addEventListener('click', closeLetter);
 
-    if (!formationTargets.length) {
-        prepareLetterTargets();
-    }
-}
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            resizeAll();
+            if (letterIsOpen && letterWrap.classList.contains('forming')) {
+                prepareLetterTargets();
+            }
+        }, 120);
+    });
 
-function drawLetterFormation(time) {
-    if (!formationRunning) return;
-
-    const elapsed = time - formationStart;
-
-    // Smooth, readable formation, around 2.6 seconds.
-    const duration = 2600;
-    const progress = clamp(elapsed / duration, 0, 1);
-    const ease = progress * progress * (3 - 2 * progress);
-
-    formationCtx.clearRect(0, 0, formationWidth, formationHeight);
-
-    for (const p of letterParticles) {
-        const dx = p.tx - p.x;
-        const dy = p.ty - p.y;
-
-        // Move quickly at first, then ease into the exact text position.
-        const speed = .045 + ease * .16;
-        p.x += dx * speed;
-        p.y += dy * speed;
-
-        if (progress > .88) {
-            p.x += (p.tx - p.x) * .2;
-            p.y += (p.ty - p.y) * .2;
+    function mainLoop() {
+        drawSpace();
+        if (!letterIsOpen && !isTransitioning) {
+            drawHeart();
         }
-
-        const shimmer = .7 + .3 * Math.sin(time * .004 + p.phase);
-
-        formationCtx.beginPath();
-        formationCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        formationCtx.fillStyle = `rgba(132,194,255,${p.alpha * shimmer})`;
-        formationCtx.shadowBlur = 5;
-        formationCtx.shadowColor = "#3d8dff";
-        formationCtx.fill();
+        requestAnimationFrame(mainLoop);
     }
 
-    formationCtx.shadowBlur = 0;
-
-    if (elapsed >= duration) {
-        formationRunning = false;
-
-        // Reveal the real full letter and softly fade out the particles.
-        letterText.style.visibility = "visible";
-        formationCanvas.classList.add("fade-out");
-
-        setTimeout(() => {
-            formationCtx.clearRect(0, 0, formationWidth, formationHeight);
-            formationCanvas.style.opacity = "0";
-        }, 1050);
-    }
-}
-
-function animate(time) {
-    drawBackground(time);
-    drawHeart(time);
-    drawBurst(time);
-    drawLetterFormation(time);
-    animationFrame = requestAnimationFrame(animate);
-}
-
-heartCanvas.addEventListener("click", burstHeart);
-
-closeNote.addEventListener("click", () => {
-    cancelAnimationFrame(animationFrame);
-
-    clicked = false;
-    animating = false;
-    formationRunning = false;
-    burstParticles = [];
-    letterParticles = [];
-    formationTargets = [];
-
-    letterWrap.classList.remove("show");
-    letterWrap.style.display = "none";
-
-    letterText.style.visibility = "visible";
-    formationCanvas.classList.remove("fade-out");
-    formationCanvas.style.opacity = "1";
-
-    hint.style.display = "block";
-
-    resize();
-    animationFrame = requestAnimationFrame(animate);
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-window.addEventListener("resize", resize);
-
-resize();
-animationFrame = requestAnimationFrame(animate);
-
+    resizeAll();
+    mainLoop();
 })();
 </script>
-
 </body>
 </html>
