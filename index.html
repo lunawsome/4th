@@ -1,427 +1,379 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#030713">
-<title>💙</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Short+Stack&display=swap" rel="stylesheet">
+<title>For You, Hon 💙</title>
 
 <style>
-:root {
-    --navy: #030713;
-    --blue: #7dd3fc;
-    --ice: #dff5ff;
-    --gold: #d9c18b;
-    --muted-gold: rgba(217,193,139,.5);
-}
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Patrick+Hand&display=swap');
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --blue: #8bd7ff;
+    --light-blue: #c6eaff;
+    --gold: #ffe7a6;
+    --navy: #030713;
 }
 
 html, body {
     width: 100%;
-    height: 100%;
-    margin: 0;
+    min-height: 100%;
+    overflow-x: hidden;
     background: var(--navy);
-    color: var(--ice);
+    color: white;
+    font-family: 'Short Stack', cursive;
 }
 
 body {
-    overflow: hidden;
-    font-family: 'Cormorant Garamond', serif;
-}
-
-canvas {
-    display: block;
+    min-height: 100vh;
 }
 
 #space {
     position: fixed;
     inset: 0;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 50% 45%, #14264b 0%, #080f24 40%, #02040c 100%);
+    z-index: 0;
+}
+
+#starCanvas,
+#burstCanvas {
+    position: fixed;
+    inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
     pointer-events: none;
 }
 
-.universe {
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    opacity: 1;
-    transition: opacity .45s ease;
+#starCanvas {
+    z-index: 1;
 }
 
-.universe.hidden {
+#burstCanvas {
+    z-index: 6;
+}
+
+.universe {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 15px;
+    transition: opacity 1.2s ease, transform 1.5s ease, filter 1.5s ease;
+}
+
+.universe.vanish {
     opacity: 0;
+    transform: scale(0.82);
+    filter: blur(12px);
     pointer-events: none;
 }
 
 .scene {
     position: relative;
-    width: 100vw;
-    height: 100dvh;
-    overflow: hidden;
+    width: min(88vw, 390px);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatHeart 4s ease-in-out infinite;
+}
+
+@keyframes floatHeart {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.orbit {
+    position: absolute;
+    width: 95%;
+    height: 35%;
+    border: 1px solid rgba(137, 206, 255, 0.24);
+    border-radius: 50%;
+    transform: rotate(-28deg);
+    box-shadow: 0 0 20px rgba(91, 174, 255, 0.09);
+    animation: orbitGlow 4s ease-in-out infinite;
+}
+
+.orbit.two {
+    width: 110%;
+    height: 48%;
+    transform: rotate(35deg);
+    border-color: rgba(255, 226, 164, 0.2);
+    animation-delay: 1s;
+}
+
+.orbit.three {
+    width: 78%;
+    height: 110%;
+    transform: rotate(62deg);
+    border-color: rgba(125, 186, 255, 0.13);
+    animation-delay: 2s;
+}
+
+@keyframes orbitGlow {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
 }
 
 #heart {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    z-index: 2;
     width: 100%;
     height: 100%;
+    filter: drop-shadow(0 0 22px rgba(93, 174, 255, 0.6));
     cursor: pointer;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+#heart:hover {
+    transform: scale(1.035);
+    filter: drop-shadow(0 0 35px rgba(126, 202, 255, 0.9));
 }
 
 .hint {
-    position: absolute;
-    bottom: max(38px, env(safe-area-inset-bottom));
-    left: 0;
-    right: 0;
-    padding: 0 18px;
     text-align: center;
-    color: #d1eaff;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-shadow: 0 0 15px rgba(125,211,252,.9);
-    animation: breathe 3s ease-in-out infinite;
-    pointer-events: none;
+    margin-top: 20px;
+    color: #c9e8ff;
+    font-size: clamp(12px, 3vw, 15px);
+    letter-spacing: 1px;
+    animation: hintPulse 2.5s ease-in-out infinite;
 }
 
-@keyframes breathe {
-    0%, 100% { opacity: .55; letter-spacing: 3px; }
-    50% { opacity: 1; letter-spacing: 4px; }
+@keyframes hintPulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
 }
 
-/* EXTRA CELESTIAL DECOR */
-
-.corner {
-    position: fixed;
-    width: 90px;
-    height: 90px;
-    z-index: 1;
-    pointer-events: none;
-    opacity: .35;
+.subtitle {
+    margin-top: 10px;
+    color: rgba(220, 237, 255, 0.55);
+    font-size: 11px;
+    text-align: center;
+    letter-spacing: 1.5px;
 }
-
-.corner::before,
-.corner::after {
-    content: "";
-    position: absolute;
-    background: var(--gold);
-}
-
-.corner::before {
-    width: 1px;
-    height: 50px;
-}
-
-.corner::after {
-    width: 50px;
-    height: 1px;
-}
-
-.corner.tl { top: 16px; left: 16px; }
-.corner.tr { top: 16px; right: 16px; transform: rotate(90deg); }
-.corner.bl { bottom: 16px; left: 16px; transform: rotate(-90deg); }
-.corner.br { bottom: 16px; right: 16px; transform: rotate(180deg); }
-
-#burstCanvas {
-    position: fixed;
-    inset: 0;
-    z-index: 4;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-/* LETTER SCREEN */
 
 #letterWrap {
-    position: fixed;
-    inset: 0;
+    position: relative;
     z-index: 5;
+    min-height: 100vh;
+    width: 100%;
     display: none;
-    overflow-y: auto;
-    overflow-x: hidden;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    padding:
-        max(25px, env(safe-area-inset-top))
-        15px
-        max(35px, env(safe-area-inset-bottom));
+    align-items: center;
+    justify-content: center;
+    padding: 35px 14px;
+    opacity: 0;
     background:
-        radial-gradient(ellipse at 50% 0%, rgba(37,99,235,.2), transparent 55%),
-        radial-gradient(ellipse at 100% 80%, rgba(30,64,175,.09), transparent 50%),
-        rgba(3,7,19,.97);
-    scrollbar-width: thin;
-    scrollbar-color: #476a9b #071020;
+        radial-gradient(ellipse at 50% 25%, rgba(32, 61, 111, 0.2), transparent 65%);
 }
 
 #letterWrap.show {
-    display: block;
-    animation: revealScreen .65s ease both;
+    display: flex;
+    animation: letterReveal 2.4s cubic-bezier(.16, 1, .3, 1) forwards;
 }
 
-@keyframes revealScreen {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes letterReveal {
+    0% {
+        opacity: 0;
+        filter: blur(12px);
+        transform: scale(0.96);
+    }
+    45% {
+        opacity: 0.4;
+        filter: blur(5px);
+    }
+    75% {
+        opacity: 0.85;
+        filter: blur(1px);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+    }
 }
 
 .letter-card {
     position: relative;
-    isolation: isolate;
-    width: min(100%, 560px);
-    margin: 0 auto;
-    padding: 35px 25px 32px;
-    border: 1px solid rgba(217,193,139,.42);
-    border-radius: 4px;
-    background:
-        radial-gradient(ellipse at top, rgba(24,54,92,.42), transparent 55%),
-        linear-gradient(150deg, #0b1930, #050b18 72%);
+    width: min(100%, 760px);
+    margin: auto;
+    padding: clamp(23px, 5vw, 48px);
+    border: 1px solid rgba(151, 206, 255, 0.3);
+    border-radius: 25px;
+    background: linear-gradient(
+        145deg,
+        rgba(15, 30, 59, 0.94),
+        rgba(5, 12, 29, 0.97)
+    );
     box-shadow:
-        0 0 45px rgba(37,99,235,.12),
-        0 0 0 5px rgba(217,193,139,.025),
-        inset 0 0 45px rgba(125,211,252,.025);
+        0 0 35px rgba(91, 158, 255, 0.13),
+        0 0 90px rgba(72, 126, 230, 0.08),
+        inset 0 0 30px rgba(146, 202, 255, 0.035);
+    animation: cardGlow 5s ease-in-out infinite;
 }
 
-/* DOUBLE GOLD FRAME */
+@keyframes cardGlow {
+    0%, 100% {
+        box-shadow:
+            0 0 35px rgba(91, 158, 255, 0.13),
+            0 0 90px rgba(72, 126, 230, 0.08),
+            inset 0 0 30px rgba(146, 202, 255, 0.035);
+    }
+    50% {
+        box-shadow:
+            0 0 45px rgba(91, 158, 255, 0.24),
+            0 0 110px rgba(72, 126, 230, 0.13),
+            inset 0 0 40px rgba(146, 202, 255, 0.055);
+    }
+}
 
 .letter-card::before {
-    content: "";
+    content: "✧";
     position: absolute;
-    inset: 7px;
-    border: 1px solid rgba(217,193,139,.19);
-    pointer-events: none;
-    z-index: -1;
+    top: 13px;
+    right: 20px;
+    color: var(--gold);
+    font-size: 24px;
+    opacity: 0.85;
+    animation: twinkle 2s ease-in-out infinite;
 }
 
 .letter-card::after {
     content: "✧";
     position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0 14px;
-    background: #0a1428;
-    color: var(--gold);
+    bottom: 13px;
+    left: 20px;
+    color: var(--blue);
     font-size: 20px;
+    opacity: 0.75;
+    animation: twinkle 2.7s ease-in-out infinite reverse;
 }
 
-.letter-decoration {
-    position: relative;
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0); }
+    50% { opacity: 1; transform: scale(1.2) rotate(35deg); }
+}
+
+#formation {
+    display: block;
+    width: 100%;
+    height: 130px;
+    margin: 0 auto 12px;
+}
+
+.letter-title {
     text-align: center;
-    margin: 0 0 24px;
-    color: var(--gold);
-    font-size: 15px;
-    letter-spacing: 7px;
+    color: var(--light-blue);
+    font-size: clamp(22px, 5vw, 33px);
+    line-height: 1.5;
+    text-shadow: 0 0 20px rgba(130, 197, 255, 0.55);
+    margin-bottom: 8px;
 }
 
-.letter-heading {
-    position: relative;
-    margin: 0 0 12px;
+.letter-subtitle {
     text-align: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: clamp(30px, 7vw, 39px);
-    line-height: 1.15;
-    letter-spacing: .5px;
-    color: #d7efff;
-    text-shadow: 0 0 24px rgba(56,189,248,.28);
-}
-
-.subtitle {
-    position: relative;
-    margin: 0 0 27px;
-    text-align: center;
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-}
-
-.divider {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin: 20px 0 25px;
     color: var(--gold);
     font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 28px;
 }
 
-.divider::before,
-.divider::after {
-    content: "";
-    height: 1px;
-    width: 65px;
-    background: linear-gradient(90deg, transparent, var(--muted-gold));
-}
-
-.divider::after {
-    transform: rotate(180deg);
-}
-
-#letterText {
-    position: relative;
-    color: #dbe9f8;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    line-height: 1.8;
+.letter-content {
+    color: #e0edff;
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(17px, 3.8vw, 20px);
+    line-height: 1.85;
     overflow-wrap: anywhere;
 }
 
-#letterText p {
-    margin: 0 0 21px;
+.letter-content p {
+    margin: 0 0 22px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-#letterText .opening {
-    font-size: 23px;
-    font-weight: 600;
-    color: #b9e6ff;
-    margin-bottom: 22px;
+.letter-content p.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-#letterText .ending {
+.signature {
     text-align: center;
-    color: #d8efff;
-    font-size: 23px;
-    line-height: 1.6;
+    color: #b8dfff;
+    font-family: 'Short Stack', cursive;
+    font-size: clamp(17px, 4vw, 21px);
+    line-height: 1.8;
     margin-top: 32px;
-    margin-bottom: 12px;
 }
 
-.letter-footer {
-    position: relative;
+.bottom-sparkle {
     text-align: center;
     color: var(--gold);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 12px;
-    margin-top: 27px;
-    letter-spacing: 3px;
+    letter-spacing: 10px;
+    margin-top: 24px;
+    animation: hintPulse 3s ease-in-out infinite;
 }
 
-#backButton {
-    position: relative;
-    display: block;
-    margin: 27px auto 0;
-    border: 1px solid rgba(217,193,139,.5);
-    border-radius: 2px;
-    padding: 12px 25px;
-    background: linear-gradient(120deg, rgba(37,99,235,.12), rgba(217,193,139,.06));
-    color: #e3efff;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: background .25s, border-color .25s, transform .25s;
-}
+@media (max-width: 480px) {
+    .scene {
+        width: min(88vw, 340px);
+    }
 
-#backButton:active {
-    transform: scale(.97);
-}
-
-#backButton:hover {
-    background: rgba(37,99,235,.22);
-    border-color: var(--gold);
-}
-
-/* PARTICLE LETTER */
-
-#formation {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 4;
-    pointer-events: none;
-    display: none;
-}
-
-#letterWrap.forming #formation {
-    display: block;
-}
-
-#letterWrap.forming #letterText,
-#letterWrap.forming .letter-heading,
-#letterWrap.forming .subtitle,
-#letterWrap.forming .divider,
-#letterWrap.forming .letter-decoration,
-#letterWrap.forming .letter-footer,
-#letterWrap.forming #backButton {
-    visibility: hidden;
-}
-
-@media (max-width: 420px) {
     .letter-card {
-        padding: 30px 20px 27px;
+        border-radius: 20px;
     }
 
-    #letterText {
-        font-size: 17px;
-        line-height: 1.75;
-    }
-
-    .letter-heading {
-        font-size: 31px;
-    }
-
-    .hint {
-        font-size: 11px;
+    #formation {
+        height: 105px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .hint {
-        animation: none;
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
     }
 }
 </style>
 </head>
 
 <body>
-
-<canvas id="space"></canvas>
-
-<div class="corner tl"></div>
-<div class="corner tr"></div>
-<div class="corner bl"></div>
-<div class="corner br"></div>
-
-<div class="universe" id="universe">
-    <div class="scene">
-        <canvas id="heart"></canvas>
-        <div class="hint">✧ TAP THE HEART, HON ✧</div>
-    </div>
-</div>
-
+<div id="space"></div>
+<canvas id="starCanvas"></canvas>
 <canvas id="burstCanvas"></canvas>
 
-<div id="letterWrap">
-    <div class="letter-card" id="letterCard">
+<main class="universe" id="universe">
+    <div class="scene">
+        <div class="orbit"></div>
+        <div class="orbit two"></div>
+        <div class="orbit three"></div>
+        <canvas id="heart"></canvas>
+    </div>
+    <div class="hint">✧ tap the heart, hon ✧</div>
+    <div class="subtitle">A LITTLE PIECE OF MY HEART, JUST FOR YOU</div>
+</main>
 
-        <div class="letter-decoration">✧ &nbsp; · &nbsp; 💙 &nbsp; · &nbsp; ✧</div>
+<section id="letterWrap">
+    <article class="letter-card">
+        <canvas id="formation"></canvas>
+        <h1 class="letter-title">Happy 4th Monthsary, Hon! 💙</h1>
+        <div class="letter-subtitle">✧ FOUR MONTHS OF US ✧</div>
 
-        <h1 class="letter-heading">Happy 4th Monthsary, Hon!</h1>
-        <div class="subtitle">A little letter, just for you</div>
-        <div class="divider">✦</div>
-
-        <div id="letterText">
-            <p class="opening">Hi, hon. 💙</p>
+        <div class="letter-content" id="letterContent">
+            <p>Hi, hon. 💙</p>
 
             <p>Today marks the 4th month since I gathered the courage to ask you kung ano ba tayo. HAHAHAHAHA. Wala eh, crush talaga kita, hehez. I know, nasabi ko naman na before na type talaga kita. The moment na pinakilala ka ni Pat, na-curious agad ako sa'yo. Sobrang aloof mo sa social media, walang pics, kaya nung una, I was really interested in knowing you more. Pero habang mas nakikilala kita, mas lalo rin kitang nagugustuhan. Sige, ako na nauna. HAHAHAHAHA. 😭</p>
 
@@ -457,637 +409,527 @@ canvas {
 
             <p>Happy 4th monthsary, hoooon. More months, memories, and little moments with you. Always remember that you are appreciated, you are special to me, and I'm so happy that out of all the people in this world, somehow, I got to know you.</p>
 
-            <p class="ending">I love you so muchyyyyy!!!!! 💙🫶🏻</p>
+            <p>I love you so muchyyyyy!!!!! 💙🫶🏻</p>
         </div>
 
-        <div class="divider">✦ &nbsp; 💙 &nbsp; ✦</div>
-        <div class="letter-footer">MADE WITH LOVE, JUST FOR YOU</div>
-        <button id="backButton" type="button">↶ &nbsp; Back to my heart</button>
-
-        <canvas id="formation"></canvas>
-    </div>
-</div>
+        <div class="signature">always yours, hon 💙</div>
+        <div class="bottom-sparkle">✧ ⋆ ✧ ⋆ ✧</div>
+    </article>
+</section>
 
 <script>
-(() => {
-    const $ = id => document.getElementById(id);
+const starCanvas = document.getElementById('starCanvas');
+const starCtx = starCanvas.getContext('2d');
+const heartCanvas = document.getElementById('heart');
+const heartCtx = heartCanvas.getContext('2d');
+const burstCanvas = document.getElementById('burstCanvas');
+const burstCtx = burstCanvas.getContext('2d');
+const formationCanvas = document.getElementById('formation');
+const formationCtx = formationCanvas.getContext('2d');
 
-    const spaceCanvas = $('space');
-    const spaceCtx = spaceCanvas.getContext('2d');
+const universe = document.getElementById('universe');
+const letterWrap = document.getElementById('letterWrap');
+const letterContent = document.getElementById('letterContent');
 
-    const heartCanvas = $('heart');
-    const heartCtx = heartCanvas.getContext('2d');
+let stars = [];
+let heartParticles = [];
+let burstParticles = [];
+let formationParticles = [];
+let burstRaf = null;
+let heartRaf = null;
+let formationRaf = null;
+let opened = false;
+let width = window.innerWidth;
+let height = window.innerHeight;
+let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    const burstCanvas = $('burstCanvas');
-    const burstCtx = burstCanvas.getContext('2d');
+function resizeCanvas(canvas, ctx, w, h) {
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
 
-    const universe = $('universe');
-    const letterWrap = $('letterWrap');
-    const letterCard = $('letterCard');
-    const letterText = $('letterText');
-    const formationCanvas = $('formation');
-    const formationCtx = formationCanvas.getContext('2d');
-    const backButton = $('backButton');
+function resizeAll() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    let W = innerWidth;
-    let H = innerHeight;
-    let dpr = Math.min(devicePixelRatio || 1, 2);
+    resizeCanvas(starCanvas, starCtx, width, height);
+    resizeCanvas(burstCanvas, burstCtx, width, height);
 
-    let stars = [];
-    let heartParticles = [];
-    let burstParticles = [];
-    let formationParticles = [];
+    const heartRect = heartCanvas.getBoundingClientRect();
+    resizeCanvas(heartCanvas, heartCtx, heartRect.width, heartRect.height);
 
-    let orbitAngle = 0;
-    let heartRotation = 0;
-    let isOpening = false;
-    let letterOpen = false;
-    let formationStart = 0;
-    let formationRaf = 0;
-    let burstRaf = 0;
+    createStars();
+    createHeartParticles();
+    drawHeart();
+}
 
-    const rand = (a, b) => Math.random() * (b - a) + a;
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
-    function setupCanvas(canvas, ctx, width, height) {
-        canvas.width = Math.max(1, Math.round(width * dpr));
-        canvas.height = Math.max(1, Math.round(height * dpr));
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+/* Background stars */
+function createStars() {
+    stars = [];
+    const count = Math.min(220, Math.floor(width * height / 4500));
+
+    for (let i = 0; i < count; i++) {
+        stars.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            r: rand(0.35, 1.5),
+            alpha: rand(0.2, 0.9),
+            phase: rand(0, Math.PI * 2),
+            speed: rand(0.006, 0.025),
+            gold: Math.random() < 0.12
+        });
+    }
+}
+
+function drawStars() {
+    starCtx.clearRect(0, 0, width, height);
+
+    for (const s of stars) {
+        s.phase += s.speed;
+        const alpha = s.alpha * (0.55 + 0.45 * Math.sin(s.phase));
+
+        starCtx.beginPath();
+        starCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        starCtx.fillStyle = s.gold
+            ? `rgba(255,225,163,${alpha})`
+            : `rgba(201,229,255,${alpha})`;
+        starCtx.shadowBlur = s.r > 1 ? 8 : 3;
+        starCtx.shadowColor = s.gold ? '#ffe2a3' : '#8ccfff';
+        starCtx.fill();
     }
 
-    function resize() {
-        W = innerWidth;
-        H = innerHeight;
-        dpr = Math.min(devicePixelRatio || 1, 2);
+    starCtx.shadowBlur = 0;
+    requestAnimationFrame(drawStars);
+}
 
-        setupCanvas(spaceCanvas, spaceCtx, W, H);
-        setupCanvas(heartCanvas, heartCtx, W, H);
-        setupCanvas(burstCanvas, burstCtx, W, H);
+/* Build a glowing 3D heart out of particles */
+function heartPoint(t) {
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t)
+        - 2 * Math.cos(3 * t) - Math.cos(4 * t));
 
-        makeStars();
-        makeHeartParticles();
+    return { x, y };
+}
 
-        if (letterOpen && letterWrap.classList.contains('forming')) {
-            requestAnimationFrame(() => {
-                prepareFormation();
-                cancelAnimationFrame(formationRaf);
-                formationRaf = requestAnimationFrame(animateFormation);
-            });
-        }
+function createHeartParticles() {
+    heartParticles = [];
+
+    const rect = heartCanvas.getBoundingClientRect();
+    const scale = Math.min(rect.width, rect.height) / 36;
+
+    for (let i = 0; i < 950; i++) {
+        const t = Math.random() * Math.PI * 2;
+        const edge = heartPoint(t);
+        const fill = Math.sqrt(Math.random());
+
+        const x = edge.x * fill * scale + rect.width / 2;
+        const y = edge.y * fill * scale + rect.height / 2;
+
+        heartParticles.push({
+            x, y,
+            z: rand(-1, 1),
+            r: rand(0.45, 1.65),
+            phase: rand(0, Math.PI * 2),
+            speed: rand(0.008, 0.035),
+            alpha: rand(0.35, 1),
+            gold: Math.random() < 0.045
+        });
     }
+}
 
-    /* STARFIELD */
+function drawHeart() {
+    if (opened) return;
 
-    function makeStars() {
-        stars = [];
+    const rect = heartCanvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
 
-        const count = Math.min(230, Math.floor(W * H / 3600));
+    heartCtx.clearRect(0, 0, w, h);
 
-        for (let i = 0; i < count; i++) {
-            stars.push({
-                x: Math.random() * W,
-                y: Math.random() * H,
-                r: rand(.35, 1.3),
-                alpha: rand(.2, .85),
-                phase: rand(0, Math.PI * 2),
-                speed: rand(.3, 1.3)
-            });
-        }
-    }
+    const glow = heartCtx.createRadialGradient(
+        w / 2, h / 2, 2,
+        w / 2, h / 2, w * 0.47
+    );
 
-    function drawSpace(time) {
-        const bg = spaceCtx.createRadialGradient(
-            W * .5, H * .42, 0,
-            W * .5, H * .42, Math.max(W, H) * .8
-        );
+    glow.addColorStop(0, 'rgba(72,151,255,0.11)');
+    glow.addColorStop(0.65, 'rgba(46,105,205,0.045)');
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
 
-        bg.addColorStop(0, '#0b1d3a');
-        bg.addColorStop(.4, '#061127');
-        bg.addColorStop(1, '#02040b');
+    heartCtx.fillStyle = glow;
+    heartCtx.fillRect(0, 0, w, h);
 
-        spaceCtx.fillStyle = bg;
-        spaceCtx.fillRect(0, 0, W, H);
+    for (const p of heartParticles) {
+        p.phase += p.speed;
 
-        // Soft distant nebulae
-        for (let i = 0; i < 3; i++) {
-            const x = W * (.2 + i * .3);
-            const y = H * (.2 + (i % 2) * .45);
-            const r = Math.max(W, H) * .22;
+        const pulse = 0.65 + Math.sin(p.phase) * 0.35;
+        const depthScale = 0.75 + (p.z + 1) * 0.16;
+        const x = w / 2 + (p.x - w / 2) * depthScale;
+        const y = h / 2 + (p.y - h / 2) * depthScale;
 
-            const glow = spaceCtx.createRadialGradient(x, y, 0, x, y, r);
-            glow.addColorStop(0, 'rgba(39,110,205,.045)');
-            glow.addColorStop(1, 'rgba(39,110,205,0)');
-
-            spaceCtx.fillStyle = glow;
-            spaceCtx.fillRect(x - r, y - r, r * 2, r * 2);
-        }
-
-        for (const s of stars) {
-            const alpha = s.alpha *
-                (.6 + .4 * Math.sin(time * .001 * s.speed + s.phase));
-
-            spaceCtx.beginPath();
-            spaceCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            spaceCtx.fillStyle = `rgba(205,232,255,${alpha})`;
-            spaceCtx.fill();
-
-            if (s.r > 1.05) {
-                spaceCtx.beginPath();
-                spaceCtx.moveTo(s.x - 3, s.y);
-                spaceCtx.lineTo(s.x + 3, s.y);
-                spaceCtx.moveTo(s.x, s.y - 3);
-                spaceCtx.lineTo(s.x, s.y + 3);
-                spaceCtx.strokeStyle = `rgba(217,239,255,${alpha * .45})`;
-                spaceCtx.lineWidth = .5;
-                spaceCtx.stroke();
-            }
-        }
-    }
-
-    /* 3D PARTICLE HEART */
-
-    function makeHeartParticles() {
-        heartParticles = [];
-
-        // Dense volumetric heart plus a brighter outer contour.
-        const count = 1900;
-
-        for (let i = 0; i < count; i++) {
-            const t = Math.random() * Math.PI * 2;
-            const fill = Math.sqrt(Math.random());
-
-            const outlineX = 16 * Math.pow(Math.sin(t), 3) / 17;
-            const outlineY = (
-                13 * Math.cos(t) -
-                5 * Math.cos(2 * t) -
-                2 * Math.cos(3 * t) -
-                Math.cos(4 * t)
-            ) / 17;
-
-            const x = outlineX * fill;
-            const y = -outlineY * fill;
-            const depth = Math.sqrt(Math.max(0, 1 - fill * fill));
-
-            heartParticles.push({
-                x,
-                y,
-                z: rand(-1, 1) * depth * .75,
-                size: rand(.55, 1.5),
-                brightness: Math.random(),
-                phase: rand(0, Math.PI * 2)
-            });
-        }
-
-        // Bright outline makes the silhouette unmistakable.
-        for (let i = 0; i < 340; i++) {
-            const t = (i / 340) * Math.PI * 2;
-
-            const x = 16 * Math.pow(Math.sin(t), 3) / 17;
-            const y = -(
-                13 * Math.cos(t) -
-                5 * Math.cos(2 * t) -
-                2 * Math.cos(3 * t) -
-                Math.cos(4 * t)
-            ) / 17;
-
-            heartParticles.push({
-                x,
-                y,
-                z: rand(-.08, .08),
-                size: rand(.9, 1.8),
-                brightness: .8 + Math.random() * .2,
-                phase: rand(0, Math.PI * 2)
-            });
-        }
-    }
-
-    function drawOrbit(ctx, cx, cy, rx, ry, angle, alpha, width) {
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(angle);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(125,211,252,${alpha})`;
-        ctx.lineWidth = width;
-        ctx.shadowColor = '#38bdf8';
-        ctx.shadowBlur = 12;
-        ctx.stroke();
-        ctx.restore();
-    }
-
-    function drawHeart(time) {
-        heartCtx.clearRect(0, 0, W, H);
-
-        const cx = W / 2;
-        const cy = H * .46;
-        const size = Math.min(W * .34, H * .245, 165);
-
-        // Outer halo
-        const halo = heartCtx.createRadialGradient(
-            cx, cy, 0, cx, cy, size * 2.25
-        );
-
-        halo.addColorStop(0, 'rgba(37,99,235,.25)');
-        halo.addColorStop(.35, 'rgba(14,165,233,.1)');
-        halo.addColorStop(1, 'rgba(2,6,23,0)');
-
-        heartCtx.fillStyle = halo;
-        heartCtx.fillRect(0, 0, W, H);
-
-        // Subtle gold celestial accent
         heartCtx.beginPath();
-        heartCtx.arc(cx, cy, size * 1.95, 0, Math.PI * 2);
-        heartCtx.strokeStyle = 'rgba(217,193,139,.08)';
-        heartCtx.lineWidth = .7;
-        heartCtx.stroke();
-
-        drawOrbit(
-            heartCtx, cx, cy, size * 1.65, size * .47,
-            -.32 + Math.sin(orbitAngle) * .1, .52, 1.1
-        );
-
-        drawOrbit(
-            heartCtx, cx, cy, size * 1.43, size * .7,
-            .72 + orbitAngle * .25, .34, .9
-        );
-
-        drawOrbit(
-            heartCtx, cx, cy, size * 1.78, size * .34,
-            .2 - orbitAngle * .2, .26, .8
-        );
-
-        const cos = Math.cos(heartRotation);
-        const sin = Math.sin(heartRotation);
-        const tilt = -.12;
-
-        const projected = heartParticles.map(p => {
-            const x = p.x * cos - p.z * sin;
-            const z = p.x * sin + p.z * cos;
-
-            const y2 = p.y * Math.cos(tilt) - z * Math.sin(tilt);
-            const z2 = p.y * Math.sin(tilt) + z * Math.cos(tilt);
-            const perspective = 1 / (1.28 - z2 * .2);
-
-            return {
-                x: cx + x * size * perspective,
-                y: cy + y2 * size * 1.08 * perspective,
-                z: z2,
-                r: p.size * perspective,
-                brightness: p.brightness,
-                phase: p.phase
-            };
-        }).sort((a, b) => a.z - b.z);
-
-        for (const p of projected) {
-            const depth = Math.max(0, Math.min(1, (p.z + 1.2) / 2.4));
-            const twinkle = .82 + .18 * Math.sin(time * .002 + p.phase);
-            const alpha = (.4 + depth * .6) * twinkle;
-
-            let color;
-
-            if (p.brightness > .91) color = '#ffffff';
-            else if (p.brightness > .65) color = '#dff5ff';
-            else if (p.brightness > .32) color = '#7dd3fc';
-            else color = '#3186e8';
-
-            heartCtx.beginPath();
-            heartCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            heartCtx.globalAlpha = alpha;
-            heartCtx.fillStyle = color;
-            heartCtx.shadowColor = color;
-            heartCtx.shadowBlur = p.z > 0 ? 9 : 2;
-            heartCtx.fill();
-        }
-
-        heartCtx.globalAlpha = 1;
-        heartCtx.shadowBlur = 0;
-
-        // Small orbiting stars
-        for (let i = 0; i < 4; i++) {
-            const angle = orbitAngle * (i % 2 ? -1 : 1) + i * 1.57;
-            const x = cx + Math.cos(angle) * size * 1.62;
-            const y = cy + Math.sin(angle) * size * .48;
-
-            heartCtx.beginPath();
-            heartCtx.arc(x, y, i % 2 ? 1.6 : 1.1, 0, Math.PI * 2);
-            heartCtx.fillStyle = '#e6f8ff';
-            heartCtx.shadowColor = '#7dd3fc';
-            heartCtx.shadowBlur = 10;
-            heartCtx.fill();
-        }
-
-        heartCtx.shadowBlur = 0;
-        orbitAngle += .008;
-        heartRotation += .009;
+        heartCtx.arc(x, y, p.r * depthScale, 0, Math.PI * 2);
+        heartCtx.fillStyle = p.gold
+            ? `rgba(255,224,160,${p.alpha * pulse})`
+            : `rgba(${115 + Math.floor(pulse * 55)},${180 + Math.floor(pulse * 50)},255,${p.alpha * pulse})`;
+        heartCtx.shadowBlur = p.r * 5;
+        heartCtx.shadowColor = p.gold ? '#ffe2a3' : '#78c5ff';
+        heartCtx.fill();
     }
 
-    /* HEART EXPLOSION */
+    heartCtx.shadowBlur = 0;
+    heartRaf = requestAnimationFrame(drawHeart);
+}
 
-    function createBurst() {
-        burstParticles = [];
+/* Magical burst: slow spirals, glitter, comet trails, and a central flash */
+function createBurst() {
+    burstParticles = [];
 
-        const cx = W / 2;
-        const cy = H * .46;
+    const cx = width / 2;
+    const cy = height / 2;
 
-        for (let i = 0; i < 560; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const speed = rand(2.5, 11);
+    // Main radiant sparks
+    for (let i = 0; i < 460; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = rand(1.2, 6.4);
+        const hue = Math.random();
 
-            burstParticles.push({
-                x: cx + rand(-45, 45),
-                y: cy + rand(-55, 55),
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                r: rand(.7, 2.5),
-                life: rand(28, 53),
-                maxLife: 53,
-                color: Math.random() > .3
-                    ? '#7dd3fc'
-                    : (Math.random() > .5 ? '#ffffff' : '#d9c18b')
-            });
-        }
-
-        // Delicate outward sparkle trails
-        for (let i = 0; i < 85; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const speed = rand(1, 5);
-
-            burstParticles.push({
-                x: cx,
-                y: cy,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                r: rand(1, 2),
-                life: rand(35, 60),
-                maxLife: 60,
-                color: '#d9c18b'
-            });
-        }
+        burstParticles.push({
+            type: 'spark',
+            x: cx + rand(-15, 15),
+            y: cy + rand(-15, 15),
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            drag: rand(0.982, 0.994),
+            gravity: rand(-0.008, 0.018),
+            size: rand(0.8, 2.6),
+            life: rand(125, 205),
+            maxLife: 205,
+            delay: rand(0, 650),
+            hue,
+            twinkle: rand(0, Math.PI * 2)
+        });
     }
 
-    function drawBurst() {
-        burstCtx.clearRect(0, 0, W, H);
+    // Slow golden dust
+    for (let i = 0; i < 180; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = rand(0.35, 2.5);
 
-        for (const p of burstParticles) {
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vx *= .975;
-            p.vy *= .975;
-            p.life--;
-
-            const alpha = Math.max(0, p.life / p.maxLife);
-
-            burstCtx.beginPath();
-            burstCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            burstCtx.globalAlpha = alpha;
-            burstCtx.fillStyle = p.color;
-            burstCtx.shadowColor = p.color;
-            burstCtx.shadowBlur = 12;
-            burstCtx.fill();
-        }
-
-        burstCtx.globalAlpha = 1;
-        burstCtx.shadowBlur = 0;
+        burstParticles.push({
+            type: 'dust',
+            x: cx + rand(-12, 12),
+            y: cy + rand(-12, 12),
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            drag: rand(0.988, 0.997),
+            gravity: -0.006,
+            size: rand(0.7, 2),
+            life: rand(140, 230),
+            maxLife: 230,
+            delay: rand(100, 950),
+            hue: 1,
+            twinkle: rand(0, Math.PI * 2)
+        });
     }
 
-    /* PARTICLE LETTER FORMATION */
+    // Curving spiral particles
+    for (let i = 0; i < 240; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = rand(0.8, 3.2);
 
-    function prepareFormation() {
-        formationParticles = [];
+        burstParticles.push({
+            type: 'spiral',
+            x: cx + rand(-8, 8),
+            y: cy + rand(-8, 8),
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            drag: rand(0.989, 0.996),
+            gravity: 0,
+            size: rand(0.8, 2),
+            life: rand(120, 205),
+            maxLife: 205,
+            delay: rand(150, 1100),
+            hue: Math.random(),
+            twinkle: rand(0, Math.PI * 2),
+            swirl: Math.random() < 0.5 ? -1 : 1
+        });
+    }
+}
 
-        const cardRect = letterCard.getBoundingClientRect();
-        const width = cardRect.width;
-        const height = cardRect.height;
+function drawComet(ctx, p, alpha, color) {
+    const tailLength = p.type === 'spiral' ? 15 : 11;
+    const tx = p.x - p.vx * tailLength;
+    const ty = p.y - p.vy * tailLength;
 
-        setupCanvas(formationCanvas, formationCtx, width, height);
+    const gradient = ctx.createLinearGradient(tx, ty, p.x, p.y);
+    gradient.addColorStop(0, 'rgba(110,180,255,0)');
+    gradient.addColorStop(1, color.replace('ALPHA', String(alpha)));
 
-        const mask = document.createElement('canvas');
-        mask.width = Math.max(1, Math.round(width * dpr));
-        mask.height = Math.max(1, Math.round(height * dpr));
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(p.x, p.y);
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = p.size;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+}
 
-        const mctx = mask.getContext('2d');
-        mctx.scale(dpr, dpr);
+function drawBurst() {
+    // Fade previous frame without painting an opaque background.
+    burstCtx.globalCompositeOperation = 'destination-out';
+    burstCtx.fillStyle = 'rgba(0,0,0,0.12)';
+    burstCtx.fillRect(0, 0, width, height);
+    burstCtx.globalCompositeOperation = 'lighter';
 
-        // Black is transparent to our sampling logic.
-        mctx.fillStyle = '#000000';
-        mctx.fillRect(0, 0, width, height);
+    const cx = width / 2;
+    const cy = height / 2;
 
-        function drawWrapped(element, fontSize, weight = 'normal') {
-            const rect = element.getBoundingClientRect();
-            const x = rect.left - cardRect.left;
-            const y = rect.top - cardRect.top;
-            const style = getComputedStyle(element);
-            const maxWidth = rect.width;
-            const lineHeight = parseFloat(style.lineHeight) || fontSize * 1.7;
+    // A gentle luminous pulse at the heart's center
+    const elapsed = performance.now() - burstStart;
+    const flashAlpha = Math.max(0, 1 - elapsed / 900);
 
-            mctx.font = `${weight} ${fontSize}px "Cormorant Garamond", serif`;
-            mctx.textBaseline = 'top';
-            mctx.textAlign = 'left';
-            mctx.fillStyle = '#ffffff';
+    if (flashAlpha > 0) {
+        const radius = 30 + elapsed * 0.17;
+        const flash = burstCtx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        flash.addColorStop(0, `rgba(225,244,255,${flashAlpha * 0.7})`);
+        flash.addColorStop(0.22, `rgba(116,191,255,${flashAlpha * 0.32})`);
+        flash.addColorStop(1, 'rgba(80,140,255,0)');
 
-            const words = element.innerText.split(/\s+/);
-            let line = '';
-            let lineY = y;
-
-            for (const word of words) {
-                const test = line ? line + ' ' + word : word;
-
-                if (mctx.measureText(test).width > maxWidth && line) {
-                    mctx.fillText(line, x, lineY);
-                    line = word;
-                    lineY += lineHeight;
-                } else {
-                    line = test;
-                }
-            }
-
-            if (line) mctx.fillText(line, x, lineY);
-        }
-
-        const heading = letterCard.querySelector('.letter-heading');
-        const headingRect = heading.getBoundingClientRect();
-
-        mctx.textAlign = 'center';
-        mctx.textBaseline = 'top';
-        mctx.fillStyle = '#ffffff';
-        mctx.font = '500 30px "Cormorant Garamond", serif';
-        mctx.fillText(
-            'Happy 4th Monthsary, Hon!',
-            width / 2,
-            headingRect.top - cardRect.top + 2
-        );
-
-        for (const p of letterText.querySelectorAll('p')) {
-            const style = getComputedStyle(p);
-            drawWrapped(
-                p,
-                parseFloat(style.fontSize) || 18,
-                style.fontWeight
-            );
-        }
-
-        const pixels = mctx.getImageData(
-            0, 0, mask.width, mask.height
-        ).data;
-
-        const step = 3;
-
-        for (let y = 0; y < mask.height; y += step) {
-            for (let x = 0; x < mask.width; x += step) {
-                const i = (y * mask.width + x) * 4;
-
-                if (
-                    pixels[i] > 15 ||
-                    pixels[i + 1] > 15 ||
-                    pixels[i + 2] > 15
-                ) {
-                    formationParticles.push({
-                        tx: x / dpr,
-                        ty: y / dpr,
-                        x: width / 2 + rand(-width * .45, width * .45),
-                        y: height / 2 + rand(-height * .28, height * .28),
-                        size: rand(.55, 1.15),
-                        color: Math.random() > .22
-                            ? '#bdeaff'
-                            : '#ffffff',
-                        delay: Math.random() * .22
-                    });
-                }
-            }
-        }
-
-        // Keep mobile rendering smooth.
-        if (formationParticles.length > 8500) {
-            const stride = Math.ceil(formationParticles.length / 8500);
-            formationParticles = formationParticles.filter((_, i) => i % stride === 0);
-        }
-
-        formationStart = performance.now();
+        burstCtx.fillStyle = flash;
+        burstCtx.beginPath();
+        burstCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+        burstCtx.fill();
     }
 
-    function animateFormation(now) {
-        if (!letterOpen || !letterWrap.classList.contains('forming')) return;
-
-        const duration = 2900;
-        const progress = Math.min(1, (now - formationStart) / duration);
-        const ease = t => 1 - Math.pow(1 - t, 3);
-
-        const rect = letterCard.getBoundingClientRect();
-        formationCtx.clearRect(0, 0, rect.width, rect.height);
-
-        for (const p of formationParticles) {
-            const t = Math.max(
-                0,
-                Math.min(1, (progress - p.delay) / (1 - p.delay))
-            );
-
-            const eased = ease(t);
-            const x = p.x + (p.tx - p.x) * eased;
-            const y = p.y + (p.ty - p.y) * eased;
-
-            formationCtx.beginPath();
-            formationCtx.arc(x, y, p.size, 0, Math.PI * 2);
-            formationCtx.globalAlpha = .25 + .75 * t;
-            formationCtx.fillStyle = p.color;
-            formationCtx.shadowColor = p.color;
-            formationCtx.shadowBlur = t < 1 ? 5 : 1;
-            formationCtx.fill();
+    for (const p of burstParticles) {
+        if (p.delay > 0) {
+            p.delay -= 16.67;
+            continue;
         }
 
-        formationCtx.globalAlpha = 1;
-        formationCtx.shadowBlur = 0;
+        if (p.life <= 0) continue;
 
-        if (progress < 1) {
-            formationRaf = requestAnimationFrame(animateFormation);
+        if (p.type === 'spiral') {
+            const dx = p.x - cx;
+            const dy = p.y - cy;
+
+            p.vx += (-dy) * 0.0008 * p.swirl;
+            p.vy += dx * 0.0008 * p.swirl;
+        }
+
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= p.drag;
+        p.vy = p.vy * p.drag + p.gravity;
+        p.life--;
+        p.twinkle += 0.11;
+
+        const lifeAlpha = Math.min(1, p.life / 28);
+        const shimmer = 0.6 + 0.4 * Math.sin(p.twinkle);
+        const alpha = lifeAlpha * shimmer;
+
+        let color;
+
+        if (p.hue > 0.82) {
+            color = `rgba(255,224,157,${alpha})`;
+        } else if (p.hue > 0.5) {
+            color = `rgba(182,225,255,${alpha})`;
         } else {
-            // Reveal the real HTML letter after the particles finish.
-            setTimeout(() => {
-                if (!letterOpen) return;
+            color = `rgba(93,166,255,${alpha})`;
+        }
 
-                letterWrap.classList.remove('forming');
-                formationCtx.clearRect(
-                    0, 0, formationCanvas.width, formationCanvas.height
-                );
-            }, 220);
+        if (p.type === 'dust') {
+            color = `rgba(255,225,166,${alpha})`;
+        }
+
+        drawComet(
+            burstCtx,
+            p,
+            alpha,
+            p.type === 'dust'
+                ? 'rgba(255,225,166,ALPHA)'
+                : 'rgba(142,203,255,ALPHA)'
+        );
+
+        burstCtx.beginPath();
+        burstCtx.arc(p.x, p.y, p.size * (0.65 + shimmer * 0.5), 0, Math.PI * 2);
+        burstCtx.fillStyle = color;
+        burstCtx.shadowBlur = p.type === 'dust' ? 13 : 9;
+        burstCtx.shadowColor = p.type === 'dust' ? '#ffe4a6' : '#7fc7ff';
+        burstCtx.fill();
+
+        // Tiny four-point star sparkles
+        if (p.type === 'spark' && Math.random() < 0.045) {
+            const s = p.size * 2.6;
+            burstCtx.strokeStyle = `rgba(235,247,255,${alpha})`;
+            burstCtx.lineWidth = 0.8;
+            burstCtx.beginPath();
+            burstCtx.moveTo(p.x - s, p.y);
+            burstCtx.lineTo(p.x + s, p.y);
+            burstCtx.moveTo(p.x, p.y - s);
+            burstCtx.lineTo(p.x, p.y + s);
+            burstCtx.stroke();
         }
     }
 
-    /* OPEN AND CLOSE */
+    burstCtx.shadowBlur = 0;
+    burstCtx.globalCompositeOperation = 'source-over';
 
-    function openLetter() {
-        if (isOpening || letterOpen) return;
+    burstRaf = requestAnimationFrame(drawBurst);
+}
 
-        isOpening = true;
+let burstStart = 0;
 
-        // The heart and all three orbital rings disappear together.
-        universe.classList.add('hidden');
+function prepareFormation() {
+    const rect = formationCanvas.getBoundingClientRect();
+    resizeCanvas(formationCanvas, formationCtx, rect.width, rect.height);
 
-        // The separate canvas keeps the explosion visible.
-        createBurst();
-        burstCtx.clearRect(0, 0, W, H);
+    const w = rect.width;
+    const h = rect.height;
 
-        const start = performance.now();
+    formationCtx.clearRect(0, 0, w, h);
+    formationCtx.font = '36px "Short Stack"';
+    formationCtx.textAlign = 'center';
+    formationCtx.textBaseline = 'middle';
+    formationCtx.fillStyle = '#fff';
 
-        function burstStep(now) {
-            drawBurst();
+    formationCtx.fillText('I ♥ YOU', w / 2, h / 2);
 
-            if (now - start < 520) {
-                burstRaf = requestAnimationFrame(burstStep);
-            } else {
-                cancelAnimationFrame(burstRaf);
-                burstCtx.clearRect(0, 0, W, H);
+    const image = formationCtx.getImageData(0, 0, w * dpr, h * dpr);
+    const data = image.data;
+    formationParticles = [];
 
-                // Show the letter in the same screen area after the burst.
-                letterWrap.scrollTop = 0;
-                letterWrap.classList.add('show', 'forming');
-                letterOpen = true;
+    for (let y = 0; y < image.height; y += 4) {
+        for (let x = 0; x < image.width; x += 4) {
+            const index = (y * image.width + x) * 4 + 3;
 
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        prepareFormation();
-                        isOpening = false;
-                        formationRaf = requestAnimationFrame(animateFormation);
-                    });
+            if (data[index] > 100) {
+                formationParticles.push({
+                    x: rand(0, w),
+                    y: rand(0, h),
+                    tx: x / dpr,
+                    ty: y / dpr,
+                    size: rand(0.7, 1.8),
+                    alpha: rand(0.5, 1),
+                    delay: rand(0, 45)
                 });
             }
         }
-
-        burstRaf = requestAnimationFrame(burstStep);
     }
 
-    function closeLetter() {
-        cancelAnimationFrame(formationRaf);
-        cancelAnimationFrame(burstRaf);
+    formationCtx.clearRect(0, 0, w, h);
+}
 
-        letterOpen = false;
-        isOpening = false;
+function animateFormation() {
+    const rect = formationCanvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
 
-        letterWrap.classList.remove('show', 'forming');
-        universe.classList.remove('hidden');
-        letterWrap.scrollTop = 0;
+    formationCtx.clearRect(0, 0, w, h);
 
-        heartCtx.clearRect(0, 0, W, H);
-        burstCtx.clearRect(0, 0, W, H);
-    }
+    let allArrived = true;
 
-    heartCanvas.addEventListener('click', openLetter);
-    backButton.addEventListener('click', closeLetter);
-    window.addEventListener('resize', resize);
+    for (const p of formationParticles) {
+        if (p.delay > 0) {
+            p.delay--;
+            allArrived = false;
+        } else {
+            p.x += (p.tx - p.x) * 0.075;
+            p.y += (p.ty - p.y) * 0.075;
 
-    function animate(time) {
-        drawSpace(time);
-
-        if (!letterOpen && !isOpening) {
-            drawHeart(time);
+            if (Math.abs(p.tx - p.x) > 0.6 || Math.abs(p.ty - p.y) > 0.6) {
+                allArrived = false;
+            }
         }
 
-        requestAnimationFrame(animate);
+        formationCtx.beginPath();
+        formationCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        formationCtx.fillStyle = `rgba(158,218,255,${p.alpha})`;
+        formationCtx.shadowBlur = 7;
+        formationCtx.shadowColor = '#78c5ff';
+        formationCtx.fill();
     }
 
-    resize();
-    requestAnimationFrame(animate);
-})();
+    formationCtx.shadowBlur = 0;
+
+    if (!allArrived) {
+        formationRaf = requestAnimationFrame(animateFormation);
+    }
+}
+
+function revealLetterParagraphs() {
+    const paragraphs = [...letterContent.querySelectorAll('p')];
+
+    paragraphs.forEach((paragraph, index) => {
+        setTimeout(() => {
+            paragraph.classList.add('visible');
+        }, 500 + index * 240);
+    });
+}
+
+function openLetter() {
+    if (opened) return;
+    opened = true;
+
+    if (heartRaf) cancelAnimationFrame(heartRaf);
+
+    burstStart = performance.now();
+    createBurst();
+
+    // Hide the heart gently while the magical burst continues.
+    universe.classList.add('vanish');
+    drawBurst();
+
+    // Keep the burst on screen longer for a more magical reveal.
+    setTimeout(() => {
+        if (burstRaf) cancelAnimationFrame(burstRaf);
+
+        burstCtx.clearRect(0, 0, width, height);
+
+        letterWrap.classList.add('show');
+
+        prepareFormation();
+        animateFormation();
+        revealLetterParagraphs();
+    }, 3000);
+}
+
+heartCanvas.addEventListener('click', openLetter);
+
+heartCanvas.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openLetter();
+    }
+});
+
+heartCanvas.setAttribute('role', 'button');
+heartCanvas.setAttribute('aria-label', 'Open your monthsary letter');
+heartCanvas.setAttribute('tabindex', '0');
+
+window.addEventListener('resize', () => {
+    if (!opened) {
+        resizeAll();
+    } else {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        resizeCanvas(starCanvas, starCtx, width, height);
+        resizeCanvas(burstCanvas, burstCtx, width, height);
+        createStars();
+    }
+});
+
+resizeAll();
+drawStars();
 </script>
 </body>
 </html>
